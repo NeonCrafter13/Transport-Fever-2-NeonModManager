@@ -4,6 +4,6 @@ import os
 
 
 config = configparser.ConfigParser()
-config.read(os.path.abspath("../settings.ini"))
+config.read("settings.ini")
 print(config.sections())
 print(config['DIRECTORY']['externalMods'])
