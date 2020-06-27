@@ -84,3 +84,11 @@ def getSteamMods(steamModsDirectory):
     for folder in folders:
         Mods.append(getSteamMod(os.path.join(steamModsDirectory, folder)))
     return Mods
+
+def getAllMods(externalModsDirectory, steamModsDirectory):
+    Mods = []
+    for mod in getExternalMods(externalModsDirectory):
+        Mods.append(mod)
+    for mod in getSteamMods(steamModsDirectory):
+        Mods.append(mod)
+    return Mods

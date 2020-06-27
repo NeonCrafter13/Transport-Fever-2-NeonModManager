@@ -9,4 +9,4 @@ config.read("settings.ini")
 externalModsDirectory = os.path.normpath(config['DIRECTORY']['externalMods'])
 steamModsDirectory = os.path.normpath(config["DIRECTORY"]["steamMods"])
 
-print(mod_finder.getExternalMods(externalModsDirectory)[0].source)
+print(mod_finder.getAllMods(externalModsDirectory, steamModsDirectory)[0])
