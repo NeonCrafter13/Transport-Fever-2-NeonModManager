@@ -4,6 +4,7 @@ import os,sys
 import mod_finder
 
 from PyQt5.QtWidgets import QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QApplication
+from PyQt5.QtGui import QIcon
 
 config = configparser.ConfigParser()
 config.read("settings.ini")
@@ -13,42 +14,21 @@ steamModsDirectory = os.path.normpath(config["DIRECTORY"]["steamMods"])
 
 Mods = mod_finder.getAllMods(externalModsDirectory, steamModsDirectory)[0]
 
-class Window(QWidget):
+app = QApplication(sys.argv)
 
+class Window(QWidget):
     def __init__(self):
         super().__init__()
+        self.initMe()
 
-        self.initUI()
-
-    def initUI(self):
-
-        okButton = QPushButton("OK")
-        cancelButton = QPushButton("Cancel")
-
-        hbox = QHBoxLayout()
-        hbox.addStretch(1)
-        hbox.addWidget(okButton)
-        hbox.addWidget(cancelButton)
-
-        self.vbox = QVBoxLayout()
-        self.vbox.addStretch(1)
-        self.vbox.addLayout(hbox)
-
-        self.setLayout(self.vbox)
-
-        self.setGeometry(300, 300, 300, 150)
-        self.setWindowTitle('Tpf2 NeonModManager')
+    def initMe(self):
+        self.setGeometry(50,50,500,500)
+        self.setWindowTitle("Tpf2 NeonModManager")
+        # w.setWindowIcon(QIcon("test.png"))
         self.show()
 
-    def displayMods(self):
-        for mod in Mods:
-            name = QLabel(mod.name, self)
-            self.vbox.addWidget(name, 3, 1, 5, 1)
-def main():
-    app = QApplication(sys.argv)
-    ex = Window()
-    sys.exit(app.exec_())
 
 
-if __name__ == '__main__':
-    main()
+w = Window()
+
+sys.exit(app.exec_())
