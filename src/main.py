@@ -1,16 +1,12 @@
 # Entrypoint to the Aplication
 import configparser
 import os
-import ast
+import mod_finder
 
 config = configparser.ConfigParser()
 config.read("settings.ini")
 
 externalModsDirectory = os.path.normpath(config['DIRECTORY']['externalMods'])
+steamModsDirectory = os.path.normpath(config["DIRECTORY"]["steamMods"])
 
-folders = os.listdir(externalModsDirectory)
-folders.remove("readme.txt")
-print(folders)
-for folder in folders:
-    mod_lua = open(os.path.join(externalModsDirectory,folder, "mod.lua"), "r")
-    print(eval(mod_lua.read()))
+print(mod_finder.getExternalMods(externalModsDirectory)[0].source)
