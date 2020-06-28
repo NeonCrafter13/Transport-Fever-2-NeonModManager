@@ -1,6 +1,6 @@
 import os, re
 
-from Mod import Mod
+from mod import Mod
 
 from helpfunctions import *
 
