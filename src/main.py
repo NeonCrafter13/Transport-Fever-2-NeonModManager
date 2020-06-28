@@ -3,7 +3,7 @@ import configparser
 import os,sys
 import mod_finder, modlist
 
-from PyQt5.QtWidgets import QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QApplication, QMainWindow, QAction
+from PyQt5.QtWidgets import QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QApplication, QMainWindow, QAction, QGridLayout
 from PyQt5.QtGui import QIcon
 
 config = configparser.ConfigParser()
@@ -14,6 +14,27 @@ steamModsDirectory = os.path.normpath(config["DIRECTORY"]["steamMods"])
 
 Mods = mod_finder.getAllMods(externalModsDirectory, steamModsDirectory)
 app = QApplication(sys.argv)
+
+class MainWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.initMe()
+
+    def initMe(self):
+        h = QHBoxLayout()
+        mod_box = QGridLayout()
+
+        i = 0
+        for mod in Mods:
+            i = i + 1
+            button = QPushButton(mod.name)
+            mod_box.addWidget(button, i , 1)
+
+        h.addLayout(mod_box)
+        B2 = QPushButton("2")
+        h.addWidget(B2)
+        self.setLayout(h)
+        self.show()
 
 class Window(QMainWindow):
     def __init__(self):
@@ -46,6 +67,10 @@ class Window(QMainWindow):
         self.setGeometry(50,50,500,500)
         self.setWindowTitle("Tpf2 NeonModManager")
         # w.setWindowIcon(QIcon("test.png"))
+
+        mainwidget = MainWidget()
+        self.setCentralWidget(mainwidget)
+
         self.show()
 
     def export_modlist(self):
