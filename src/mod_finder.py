@@ -11,10 +11,18 @@ def getExternalMod(folder):
     mod_lua_text = mod_lua.read()
     x = re.search("name.*=.*_.*,", mod_lua_text)
     if x:
-        name = x.group()[10: len(x.group())-3]
+        y = re.search('".*"', x.group())
+        if y != None:
+            name = y.group()[1: len(y.group())-1]
+        else:
+            name = x.group()[10: len(x.group())-3]
     else:
         x = re.search("name.*=.*,", mod_lua_text)
-        name = x.group()[9: len(x.group())-3]
+        y = re.search('".*"', x.group())
+        if y != None:
+            name = y.group()[1: len(y.group())-1]
+        else:
+            name = x.group()[9: len(x.group())-3]
 
     x = re.search("minorVersion.*=.*,", mod_lua_text)
     if x:
@@ -59,10 +67,18 @@ def getSteamMod(folder):
     mod_lua_text = mod_lua.read()
     x = re.search("name.*=.*_.*,", mod_lua_text)
     if x:
-        name = x.group()[10: len(x.group())-3]
+        y = re.search('".*"', x.group())
+        if y != None:
+            name = y.group()[1: len(y.group())-1]
+        else:
+            name = x.group()[10: len(x.group())-3]
     else:
         x = re.search("name.*=.*,", mod_lua_text)
-        name = x.group()[9: len(x.group())-3]
+        y = re.search('".*"', x.group())
+        if y != None:
+            name = y.group()[1: len(y.group())-1]
+        else:
+            name = x.group()[9: len(x.group())-3]
 
     x = re.search("minorVersion.*=.*,", mod_lua_text)
     if x:
