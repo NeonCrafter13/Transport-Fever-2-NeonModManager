@@ -12,8 +12,7 @@ config.read("settings.ini")
 externalModsDirectory = os.path.normpath(config['DIRECTORY']['externalMods'])
 steamModsDirectory = os.path.normpath(config["DIRECTORY"]["steamMods"])
 
-Mods = mod_finder.getAllMods(externalModsDirectory, steamModsDirectory)[0]
-
+Mods = mod_finder.getAllMods(externalModsDirectory, steamModsDirectory)
 app = QApplication(sys.argv)
 
 class Window(QWidget):

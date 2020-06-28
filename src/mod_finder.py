@@ -34,7 +34,13 @@ def getExternalMod(folder):
     except:
         image = None
 
-    return Mod(name, minorVersion, source, image)
+    x = re.search("options.*=.*{", mod_lua_text)
+    if x:
+        options = True
+    else:
+        options = False
+
+    return Mod(name, minorVersion, source, image, options, folder)
 def getExternalMods(externalModsDirectory):
     folders = os.listdir(externalModsDirectory)
 
@@ -72,7 +78,14 @@ def getSteamMod(folder):
     except:
         image = None
 
-    return Mod(name, minorVersion, source, image)
+    x = re.search("options.*=.*{", mod_lua_text)
+    if x:
+        options = True
+    else:
+        options = False
+
+    return Mod(name, minorVersion, source, image, options, folder)
+
 def getSteamMods(steamModsDirectory):
     folders = os.listdir(steamModsDirectory)
 

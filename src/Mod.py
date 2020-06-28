@@ -1,7 +1,9 @@
 
 class Mod():
-    def __init__(self, name, minorVersion, source, image):
+    def __init__(self, name, minorVersion, source, image, options, location):
         self.name = name
         self.minorVersion = minorVersion
         self.source = source
         self.image = image
+        self.options = options
+        self.location = location
