@@ -32,10 +32,16 @@ class Window(QMainWindow):
         ImportModlist.setStatusTip("import modlist")
         ImportModlist.triggered.connect(self.import_modlist)
 
+        InstallMod = QAction("install mod", self)
+        InstallMod.setShortcut("Ctrl+I")
+        InstallMod.setStatusTip("install mod")
+        InstallMod.triggered.connect(self.install_mod)
+
         menubar = self.menuBar()
         file = menubar.addMenu("File")
         file.addAction(ExportModlist)
         file.addAction(ImportModlist)
+        file.addAction(InstallMod)
 
         self.setGeometry(50,50,500,500)
         self.setWindowTitle("Tpf2 NeonModManager")
@@ -47,6 +53,9 @@ class Window(QMainWindow):
 
     def import_modlist(self):
         modlist.import_modlist(Mods)
+
+    def install_mod(self):
+        print("install mod")
 
 w = Window()
 
