@@ -3,7 +3,7 @@ import configparser
 import os,sys
 import mod_finder, modlist
 
-from PyQt5.QtWidgets import QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QApplication, QMainWindow, QAction, QGridLayout
+from PyQt5.QtWidgets import QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QApplication, QMainWindow, QAction, QGridLayout, QScrollArea, QLabel
 from PyQt5.QtGui import QIcon
 
 config = configparser.ConfigParser()
@@ -15,6 +15,18 @@ steamModsDirectory = os.path.normpath(config["DIRECTORY"]["steamMods"])
 Mods = mod_finder.getAllMods(externalModsDirectory, steamModsDirectory)
 app = QApplication(sys.argv)
 
+class ModBox(QWidget):
+    def __init__(self, Mod):
+        super().__init__()
+        self.initMe(Mod)
+
+    def initMe(self, Mod):
+        Layout = QHBoxLayout()
+        Layout.addWidget(QLabel(Mod.name))
+        Layout.addWidget(QLabel(str(Mod.minorVersion)))
+        Layout.addWidget(QLabel(Mod.authors))
+        self.setLayout(Layout)
+
 class MainWidget(QWidget):
     def __init__(self):
         super().__init__()
@@ -22,15 +34,26 @@ class MainWidget(QWidget):
 
     def initMe(self):
         h = QHBoxLayout()
-        mod_box = QGridLayout()
+        # mod_window = QGridLayout()
+
+        scroll = QScrollArea()
+        h.addWidget(scroll)
+        scroll.setWidgetResizable(True)
+        scrollcontent = QWidget(scroll)
+
+
+        mod_layout =  QVBoxLayout()
+        scrollcontent.setLayout(mod_layout)
 
         i = 0
         for mod in Mods:
-            i = i + 1
-            button = QPushButton(mod.name)
-            mod_box.addWidget(button, i , 1)
+            a = ModBox(mod)
+            mod_layout.addWidget(a)
+            a.show()
 
-        h.addLayout(mod_box)
+        scroll.setWidget(scrollcontent)
+
+        # h.addLayout(mod_box)
         B2 = QPushButton("2")
         h.addWidget(B2)
         self.setLayout(h)
