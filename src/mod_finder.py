@@ -46,7 +46,11 @@ def getExternalMod(folder):
     if x:
         options = True
     else:
-        options = False
+        try:
+            open(os.path.join(folder,"settings.lua"), "r")
+            options = True
+        except:
+            options = False
 
     return Mod(name, minorVersion, source, image, options, folder)
 def getExternalMods(externalModsDirectory):
@@ -98,7 +102,11 @@ def getSteamMod(folder):
     if x:
         options = True
     else:
-        options = False
+        try:
+            open(os.path.join(folder,"settings.lua"), "r")
+            options = True
+        except:
+            options = False
 
     return Mod(name, minorVersion, source, image, options, folder)
 
