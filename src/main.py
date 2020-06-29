@@ -24,7 +24,13 @@ class ModBox(QWidget):
         Layout = QHBoxLayout()
         Layout.addWidget(QLabel(Mod.name))
         Layout.addWidget(QLabel(str(Mod.minorVersion)))
-        Layout.addWidget(QLabel(Mod.authors))
+        authorString = ""
+        if Mod.authors == None:
+            Layout.addWidget(QLabel(Mod.authors))
+        else:
+            for author in Mod.authors:
+                authorString = authorString + author + ", "
+            Layout.addWidget(QLabel(authorString))
         self.setLayout(Layout)
 
 class MainWidget(QWidget):

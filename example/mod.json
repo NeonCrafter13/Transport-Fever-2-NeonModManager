@@ -1,8 +1,9 @@
 {
   "name": "modname",
   "minorVersion": "0",
-  "authors": {
-    "name": "test",
-    "name": "moin"
-  }
+  "authors": [
+    "author1",
+    "author2"
+  ]
+
 }

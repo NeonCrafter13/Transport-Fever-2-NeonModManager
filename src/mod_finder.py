@@ -1,4 +1,4 @@
-import os, re
+import os, re, json
 
 from mod import Mod
 
@@ -7,29 +7,44 @@ from helpfunctions import *
 def getExternalMod(folder):
 
     mod_lua = open(os.path.join(folder, "mod.lua"), "r", encoding="utf-8")
-
     mod_lua_text = mod_lua.read()
-    x = re.search("name.*=.*_.*,", mod_lua_text)
-    if x:
-        y = re.search('".*"', x.group())
-        if y != None:
-            name = y.group()[1: len(y.group())-1]
-        else:
-            name = x.group()[10: len(x.group())-3]
-    else:
-        x = re.search("name.*=.*,", mod_lua_text)
-        y = re.search('".*"', x.group())
-        if y != None:
-            name = y.group()[1: len(y.group())-1]
-        else:
-            name = x.group()[9: len(x.group())-3]
+    authors = None
+    name = None
+    minorVersion = None
+    try:
+        mod_json = open(os.path.join(folder, "mod.json"), "r", encoding="utf-8")
+    except:
+        mod_json = None
 
-    x = re.search("minorVersion.*=.*,", mod_lua_text)
-    if x:
-        x = x.group()[11: len(x.group())-1]
-        minorVersion = int(re.findall("[0-9]", x)[0])
-    else:
-        minorVersion = None
+    if mod_json:
+        mod_json = json.loads(mod_json.read())
+        name = mod_json["name"]
+        authors = mod_json["authors"]
+        minorVersion = mod_json["minorVersion"]
+
+    if not name:
+        x = re.search("name.*=.*_.*,", mod_lua_text)
+        if x:
+            y = re.search('".*"', x.group())
+            if y != None:
+                name = y.group()[1: len(y.group())-1]
+            else:
+                name = x.group()[10: len(x.group())-3]
+        else:
+            x = re.search("name.*=.*,", mod_lua_text)
+            y = re.search('".*"', x.group())
+            if y != None:
+                name = y.group()[1: len(y.group())-1]
+            else:
+                name = x.group()[9: len(x.group())-3]
+
+    if not minorVersion:
+        x = re.search("minorVersion.*=.*,", mod_lua_text)
+        if x:
+            x = x.group()[11: len(x.group())-1]
+            minorVersion = int(re.findall("[0-9]", x)[0])
+        else:
+            minorVersion = None
 
     x = re.search("tfnetId.*,", mod_lua_text)
     if x:
@@ -52,7 +67,7 @@ def getExternalMod(folder):
         except:
             options = False
 
-    return Mod(name, minorVersion, source, image, options, folder)
+    return Mod(name, minorVersion, source, image, options, folder, authors)
 def getExternalMods(externalModsDirectory):
     folders = os.listdir(externalModsDirectory)
 
@@ -67,29 +82,44 @@ def getExternalMods(externalModsDirectory):
 
 def getSteamMod(folder):
     mod_lua = open(os.path.join(folder, "mod.lua"), "r", encoding="utf-8")
-
     mod_lua_text = mod_lua.read()
-    x = re.search("name.*=.*_.*,", mod_lua_text)
-    if x:
-        y = re.search('".*"', x.group())
-        if y != None:
-            name = y.group()[1: len(y.group())-1]
-        else:
-            name = x.group()[10: len(x.group())-3]
-    else:
-        x = re.search("name.*=.*,", mod_lua_text)
-        y = re.search('".*"', x.group())
-        if y != None:
-            name = y.group()[1: len(y.group())-1]
-        else:
-            name = x.group()[9: len(x.group())-3]
+    authors = None
+    name = None
+    minorVersion = None
+    try:
+        mod_json = open(os.path.join(folder, "mod.json"), "r", encoding="utf-8")
+    except:
+        mod_json = None
 
-    x = re.search("minorVersion.*=.*,", mod_lua_text)
-    if x:
-        x = x.group()[11: len(x.group())-1]
-        minorVersion = int(re.findall("[0-9]", x)[0])
-    else:
-        minorVersion = None
+    if mod_json:
+        mod_json = json.loads(mod_json.read())
+        name = mod_json["name"]
+        authors = mod_json["authors"]
+        minorVersion = mod_json["minorVersion"]
+
+    if not name:
+        x = re.search("name.*=.*_.*,", mod_lua_text)
+        if x:
+            y = re.search('".*"', x.group())
+            if y != None:
+                name = y.group()[1: len(y.group())-1]
+            else:
+                name = x.group()[10: len(x.group())-3]
+        else:
+            x = re.search("name.*=.*,", mod_lua_text)
+            y = re.search('".*"', x.group())
+            if y != None:
+                name = y.group()[1: len(y.group())-1]
+            else:
+                name = x.group()[9: len(x.group())-3]
+
+    if not minorVersion:
+        x = re.search("minorVersion.*=.*,", mod_lua_text)
+        if x:
+            x = x.group()[11: len(x.group())-1]
+            minorVersion = int(re.findall("[0-9]", x)[0])
+        else:
+            minorVersion = None
 
     source = "Steam"
 
@@ -108,7 +138,7 @@ def getSteamMod(folder):
         except:
             options = False
 
-    return Mod(name, minorVersion, source, image, options, folder)
+    return Mod(name, minorVersion, source, image, options, folder, authors)
 
 def getSteamMods(steamModsDirectory):
     folders = os.listdir(steamModsDirectory)

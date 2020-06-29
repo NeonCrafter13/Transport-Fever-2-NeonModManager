@@ -1,6 +1,6 @@
 
 class Mod():
-    def __init__(self, name, minorVersion, source, image, options, location, authors="test"):
+    def __init__(self, name, minorVersion, source, image, options, location, authors):
         self.name = name
         self.minorVersion = minorVersion
         self.source = source
