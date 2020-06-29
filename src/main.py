@@ -1,6 +1,6 @@
 # Entrypoint to the Aplication
 import configparser
-import os,sys
+import os,sys, subprocess
 import mod_finder, modlist
 
 from PyQt5.QtWidgets import QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QApplication, QMainWindow, QAction, QGridLayout, QScrollArea, QLabel
@@ -55,9 +55,12 @@ class MainWidget(QWidget):
 
         # h.addLayout(mod_box)
         B2 = QPushButton("2")
+        B2.clicked.connect(self.test)
         h.addWidget(B2)
         self.setLayout(h)
         self.show()
+    def test(self):
+        subprocess.Popen(r'explorer /open,"'+ externalModsDirectory +'"')
 
 class Window(QMainWindow):
     def __init__(self):
