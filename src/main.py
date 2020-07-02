@@ -4,7 +4,7 @@ import os,sys, subprocess
 import mod_finder, modlist
 
 from PyQt5.QtWidgets import QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QApplication, QMainWindow, QAction, QGridLayout, QScrollArea, QLabel
-from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QIcon, QPixmap
 
 config = configparser.ConfigParser()
 config.read("settings.ini")
@@ -15,9 +15,30 @@ steamModsDirectory = os.path.normpath(config["DIRECTORY"]["steamMods"])
 Mods = mod_finder.getAllMods(externalModsDirectory, steamModsDirectory)
 app = QApplication(sys.argv)
 
-class ModBox(QWidget):
-    def __init__(self, Mod):
+class RPanal(QWidget):
+    def __init__(self, Mod, id):
         super().__init__()
+        self.id = id
+        self.initMe(Mod)
+
+    def initMe(self, Mod):
+        Layout = QVBoxLayout()
+
+        if Image:
+            Image = QLabel(self)
+            Image.setPixmap(QPixmap(image))
+            Layout.addWidget(Image)
+        else:
+            Image = QLabel()
+            Image.setPixmap(QPixmap("images/no_image.png"))
+            Layout.addWidget(Image)
+
+        self.setLayout = Layout
+
+class ModBox(QWidget):
+    def __init__(self, Mod, id):
+        super().__init__()
+        self.id = id
         self.initMe(Mod)
 
     def initMe(self, Mod):
@@ -51,11 +72,12 @@ class MainWidget(QWidget):
         mod_layout =  QVBoxLayout()
         scrollcontent.setLayout(mod_layout)
 
-        i = 0
+        i = -1
         for mod in Mods:
-            a = ModBox(mod)
+            i = i + 1
+            a = ModBox(mod, i)
+            a.mouseReleaseEvent = lambda event, a=a: self.update_RPanal(event, a)
             mod_layout.addWidget(a)
-            a.show()
 
         scroll.setWidget(scrollcontent)
 
@@ -67,6 +89,9 @@ class MainWidget(QWidget):
         self.show()
     def test(self):
         subprocess.Popen(r'explorer /open,"'+ externalModsDirectory +'"')
+
+    def update_RPanal(self, event, a):
+        print("clicked" + str(a.id))
 
 class Window(QMainWindow):
     def __init__(self):

@@ -2,8 +2,6 @@ import os, re, json
 
 from mod import Mod
 
-from helpfunctions import *
-
 def getExternalMod(folder):
 
     mod_lua = open(os.path.join(folder, "mod.lua"), "r", encoding="utf-8")
@@ -54,6 +52,7 @@ def getExternalMod(folder):
 
     try:
         image = open(os.path.join(folder,"workshop_preview.jpg"), "r")
+        image = os.path.join(folder,"workshop_preview.jpg")
     except:
         image = None
 
@@ -125,6 +124,7 @@ def getSteamMod(folder):
 
     try:
         image = open(os.path.join(folder,"workshop_preview.jpg"), "r")
+        image = os.path.join(folder,"workshop_preview.jpg")
     except:
         image = None
 
