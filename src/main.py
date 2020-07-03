@@ -24,16 +24,22 @@ class RPanal(QWidget):
     def initMe(self, Mod):
         Layout = QVBoxLayout()
 
-        if Image:
-            Image = QLabel(self)
-            Image.setPixmap(QPixmap(image))
+        Layout.addWidget(QLabel(str(Mod.name)))
+
+        if Mod.image:
+            Image = QLabel()
+            pixmap = QPixmap(Mod.image)
+            pixmap = pixmap.scaledToWidth(256)
+            Image.setPixmap(pixmap)
             Layout.addWidget(Image)
         else:
             Image = QLabel()
-            Image.setPixmap(QPixmap("images/no_image.png"))
+            pixmap = QPixmap("images/no_image.png")
+            pixmap = pixmap.scaledToWidth(256)
+            Image.setPixmap(pixmap)
             Layout.addWidget(Image)
 
-        self.setLayout = Layout
+        self.setLayout(Layout)
 
 class ModBox(QWidget):
     def __init__(self, Mod, id):
@@ -60,11 +66,11 @@ class MainWidget(QWidget):
         self.initMe()
 
     def initMe(self):
-        h = QHBoxLayout()
+        self.h = QHBoxLayout()
         # mod_window = QGridLayout()
 
         scroll = QScrollArea()
-        h.addWidget(scroll)
+        self.h.addWidget(scroll)
         scroll.setWidgetResizable(True)
         scrollcontent = QWidget(scroll)
 
@@ -81,16 +87,21 @@ class MainWidget(QWidget):
 
         scroll.setWidget(scrollcontent)
 
-        # h.addLayout(mod_box)
-        B2 = QPushButton("2")
-        B2.clicked.connect(self.test)
-        h.addWidget(B2)
-        self.setLayout(h)
+        # self.h.addLayout(mod_box)
+        self.mod_info = RPanal(Mods[0],0)
+        # mod_info.clicked.connect(self.test)
+        self.h.addWidget(self.mod_info)
+        self.mod_info.show()
+        self.setLayout(self.h)
         self.show()
     def test(self):
         subprocess.Popen(r'explorer /open,"'+ externalModsDirectory +'"')
 
     def update_RPanal(self, event, a):
+        self.mod_info.setParent(None)
+        self.mod_info = RPanal(Mods[a.id], a.id)
+        self.h.addWidget(self.mod_info)
+        self.mod_info.show()
         print("clicked" + str(a.id))
 
 class Window(QMainWindow):
