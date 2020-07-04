@@ -53,6 +53,8 @@ class InstallModWindow(QWidget):
                 if url.isLocalFile():
                     links.append(str(url.toLocalFile()))
             print(links)
+        else:
+            event.ignore()
 
 class RPanal(QWidget):
     def __init__(self, Mod, id):
