@@ -99,6 +99,7 @@ class MainWidget(QWidget):
 
     def update_RPanal(self, event, a):
         self.mod_info.setParent(None)
+        self.mod_info.pixmap = None
         self.mod_info = RPanal(Mods[a.id], a.id)
         self.h.addWidget(self.mod_info)
         self.mod_info.show()
