@@ -50,6 +50,9 @@ class RPanal(QWidget):
         else:
             Layout.addWidget(QLabel(f"Authors: not detected"))
 
+        # source
+        Layout.addWidget(QLabel(f"source: {str(Mod.source)}"))
+
         # minorVersion
         Layout.addWidget(QLabel(f"minorVersion: {str(Mod.minorVersion)}"))
 
