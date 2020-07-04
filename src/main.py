@@ -19,13 +19,17 @@ class RPanal(QWidget):
     def __init__(self, Mod, id):
         super().__init__()
         self.id = id
-        self.initMe(Mod)
+        self.Mod = Mod
+        self.initMe()
 
-    def initMe(self, Mod):
+    def initMe(self):
+        Mod = self.Mod
         Layout = QVBoxLayout()
 
+        #Name
         Layout.addWidget(QLabel(str(Mod.name)))
 
+        # Image
         if Mod.image:
             Image = QLabel()
             pixmap = QPixmap(Mod.image)
@@ -39,8 +43,30 @@ class RPanal(QWidget):
             Image.setPixmap(pixmap)
             Layout.addWidget(Image)
 
+        #Authors
+        separator = ', '
+        if Mod.authors:
+            Layout.addWidget(QLabel(f"Authors: {separator.join(Mod.authors)}"))
+        else:
+            Layout.addWidget(QLabel(f"Authors: not detected"))
+
+        # minorVersion
+        Layout.addWidget(QLabel(f"minorVersion: {str(Mod.minorVersion)}"))
+
+        # hasSettings
+        Layout.addWidget(QLabel(f"hasOptions: {str(Mod.options)}"))
+
+        # Open in Explorer Button
+        Open = QPushButton("Open in Expolorer")
+        Open.clicked.connect(self.open)
+        Layout.addWidget(Open)
+
+        # Uninstall
+
         self.setLayout(Layout)
 
+    def open(self):
+        subprocess.Popen(r'explorer /open,"'+ self.Mod.location +'"')
 class ModBox(QWidget):
     def __init__(self, Mod, id):
         super().__init__()
@@ -87,15 +113,11 @@ class MainWidget(QWidget):
 
         scroll.setWidget(scrollcontent)
 
-        # self.h.addLayout(mod_box)
         self.mod_info = RPanal(Mods[0],0)
-        # mod_info.clicked.connect(self.test)
         self.h.addWidget(self.mod_info)
         self.mod_info.show()
         self.setLayout(self.h)
         self.show()
-    def test(self):
-        subprocess.Popen(r'explorer /open,"'+ externalModsDirectory +'"')
 
     def update_RPanal(self, event, a):
         self.mod_info.setParent(None)
@@ -103,7 +125,6 @@ class MainWidget(QWidget):
         self.mod_info = RPanal(Mods[a.id], a.id)
         self.h.addWidget(self.mod_info)
         self.mod_info.show()
-        print("clicked" + str(a.id))
 
 class Window(QMainWindow):
     def __init__(self):
