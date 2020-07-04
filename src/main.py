@@ -70,17 +70,19 @@ class RPanal(QWidget):
         #Name
         Layout.addWidget(QLabel(str(Mod.name)))
 
+        Width = 256
+
         # Image
         if Mod.image:
             Image = QLabel()
             pixmap = QPixmap(Mod.image)
-            pixmap = pixmap.scaledToWidth(256)
+            pixmap = pixmap.scaledToWidth(Width)
             Image.setPixmap(pixmap)
             Layout.addWidget(Image)
         else:
             Image = QLabel()
             pixmap = QPixmap("images/no_image.png")
-            pixmap = pixmap.scaledToWidth(256)
+            pixmap = pixmap.scaledToWidth(Width)
             Image.setPixmap(pixmap)
             Layout.addWidget(Image)
 
@@ -118,6 +120,7 @@ class RPanal(QWidget):
     def uninstall(self):
         if not self.Mod.uninstall():
             print("ERROR")
+
 class ModBox(QWidget):
     def __init__(self, Mod, id):
         super().__init__()
@@ -222,6 +225,7 @@ class Window(QMainWindow):
 
     def install_mod(self):
         print("install mod")
+
 
 w = Window()
 
