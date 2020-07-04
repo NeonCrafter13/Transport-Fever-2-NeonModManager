@@ -62,11 +62,18 @@ class RPanal(QWidget):
         Layout.addWidget(Open)
 
         # Uninstall
+        Uninstall = QPushButton("Uninstall Mod")
+        Uninstall.clicked.connect(self.uninstall)
+        Layout.addWidget(Uninstall)
 
         self.setLayout(Layout)
 
     def open(self):
         subprocess.Popen(r'explorer /open,"'+ self.Mod.location +'"')
+
+    def uninstall(self):
+        if not self.Mod.uninstall():
+            print("ERROR")
 class ModBox(QWidget):
     def __init__(self, Mod, id):
         super().__init__()

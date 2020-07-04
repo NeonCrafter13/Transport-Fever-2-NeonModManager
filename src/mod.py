@@ -1,3 +1,4 @@
+import shutil
 
 class Mod():
     def __init__(self, name, minorVersion, source, image, options, location, authors):
@@ -8,3 +9,10 @@ class Mod():
         self.options = options
         self.location = location
         self.authors = authors
+
+    def uninstall(self):
+        try:
+            shutil.rmtree(self.location)
+            return True
+        except:
+            return False
