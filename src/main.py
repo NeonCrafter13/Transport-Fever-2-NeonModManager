@@ -5,6 +5,7 @@ import mod_finder, modlist
 
 from PyQt5.QtWidgets import QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QApplication, QMainWindow, QAction, QGridLayout, QScrollArea, QLabel
 from PyQt5.QtGui import QIcon, QPixmap
+from PyQt5.QtCore import Qt
 
 config = configparser.ConfigParser()
 config.read("settings.ini")
@@ -14,6 +15,44 @@ steamModsDirectory = os.path.normpath(config["DIRECTORY"]["steamMods"])
 
 Mods = mod_finder.getAllMods(externalModsDirectory, steamModsDirectory)
 app = QApplication(sys.argv)
+
+class InstallModWindow(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.setAcceptDrops(True)
+        self.setGeometry(50,50,500,500)
+        self.initMe()
+
+    def initMe(self):
+        Layout = QVBoxLayout()
+        Layout.addWidget(QLabel("test"))
+        self.setLayout(Layout)
+        self.show()
+
+    def dragEnterEvent(self, event):
+        if event.mimeData().hasUrls:
+            event.accept()
+        else:
+            event.ignore()
+
+    def dragMoveEvent(self, event):
+        if event.mimeData().hasUrls:
+            event.setDropAction(Qt.CopyAction)
+            event.accept()
+        else:
+            event.ignore()
+
+    def dropEvent(self, event):
+        if event.mimeData().hasUrls:
+            event.setDropAction(Qt.CopyAction)
+            event.accept()
+
+            links = []
+
+            for url in event.mimeData().urls():
+                if url.isLocalFile():
+                    links.append(str(url.toLocalFile()))
+            print(links)
 
 class RPanal(QWidget):
     def __init__(self, Mod, id):
