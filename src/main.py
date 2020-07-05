@@ -1,7 +1,7 @@
 # Entrypoint to the Aplication
 import configparser
 import os,sys, subprocess
-import mod_finder, modlist
+import mod_finder, modlist, modinstaller
 
 from PyQt5.QtWidgets import QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QApplication, QMainWindow, QAction, QGridLayout, QScrollArea, QLabel
 from PyQt5.QtGui import QIcon, QPixmap
@@ -51,8 +51,9 @@ class InstallModWindow(QWidget):
 
             for url in event.mimeData().urls():
                 if url.isLocalFile():
-                    links.append(str(url.toLocalFile()))
-            print(links)
+                    links.append(os.path.normpath(url.toLocalFile()))
+            for link in links:
+                modinstaller.install(link)
         else:
             event.ignore()
 
@@ -226,7 +227,7 @@ class Window(QMainWindow):
     def install_mod(self):
         print("install mod")
 
-
-w = Window()
+f = InstallModWindow()
+#w = Window()
 
 sys.exit(app.exec_())
