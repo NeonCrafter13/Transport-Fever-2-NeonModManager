@@ -1,4 +1,5 @@
-import sys, os, zipfile, configparser, rarfile
+import os, zipfile, configparser, rarfile
+from distutils.dir_util import copy_tree
 
 config = configparser.ConfigParser()
 config.read("settings.ini")
@@ -12,9 +13,11 @@ def install(link):
         ZipFile.extractall(path=externalModsDirectory)
         return True
     if link.lower().endswith(('rar')):
-
         RarFile = rarfile.RarFile(link, mode="r")
         RarFile.extractall(path=externalModsDirectory)
         return True
     if os.path.isdir(link):
-        print("FOLDER")
+        # copy subdirectory example
+        _, b = os.path.split(link)
+        copy_tree(link, os.path.join(externalModsDirectory, b))
+        return True
