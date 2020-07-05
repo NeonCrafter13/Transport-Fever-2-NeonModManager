@@ -1,7 +1,7 @@
 # Entrypoint to the Aplication
 import configparser
 import os,sys, subprocess
-import mod_finder, modlist
+import mod_finder, modlist, modinstaller
 
 from PyQt5.QtWidgets import QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QApplication, QMainWindow, QAction, QGridLayout, QScrollArea, QLabel
 from PyQt5.QtGui import QIcon, QPixmap
@@ -21,13 +21,13 @@ class InstallModWindow(QWidget):
         super().__init__()
         self.setAcceptDrops(True)
         self.setGeometry(50,50,500,500)
+        self.setWindowTitle("Mod Installer")
         self.initMe()
 
     def initMe(self):
         Layout = QVBoxLayout()
         Layout.addWidget(QLabel("test"))
         self.setLayout(Layout)
-        self.show()
 
     def dragEnterEvent(self, event):
         if event.mimeData().hasUrls:
@@ -51,8 +51,9 @@ class InstallModWindow(QWidget):
 
             for url in event.mimeData().urls():
                 if url.isLocalFile():
-                    links.append(str(url.toLocalFile()))
-            print(links)
+                    links.append(os.path.normpath(url.toLocalFile()))
+            for link in links:
+                modinstaller.install(link)
         else:
             event.ignore()
 
@@ -224,8 +225,8 @@ class Window(QMainWindow):
         modlist.import_modlist(Mods)
 
     def install_mod(self):
-        print("install mod")
-
+        self.installPopup = InstallModWindow()
+        self.installPopup.show()
 
 w = Window()
 
