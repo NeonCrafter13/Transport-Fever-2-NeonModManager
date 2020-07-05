@@ -21,13 +21,13 @@ class InstallModWindow(QWidget):
         super().__init__()
         self.setAcceptDrops(True)
         self.setGeometry(50,50,500,500)
+        self.setWindowTitle("Mod Installer")
         self.initMe()
 
     def initMe(self):
         Layout = QVBoxLayout()
         Layout.addWidget(QLabel("test"))
         self.setLayout(Layout)
-        self.show()
 
     def dragEnterEvent(self, event):
         if event.mimeData().hasUrls:
@@ -225,9 +225,9 @@ class Window(QMainWindow):
         modlist.import_modlist(Mods)
 
     def install_mod(self):
-        print("install mod")
+        self.installPopup = InstallModWindow()
+        self.installPopup.show()
 
-f = InstallModWindow()
-#w = Window()
+w = Window()
 
 sys.exit(app.exec_())
