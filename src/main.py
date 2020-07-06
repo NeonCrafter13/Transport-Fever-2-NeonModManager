@@ -252,12 +252,12 @@ class Window(QMainWindow):
             fd.ShowDirsOnly
             )
 
+        if f_dir != "":
+            config.set('DIRECTORY', 'steamMods', f_dir)
+            # Writing our configuration file to 'example.ini'
+            with open('settings.ini', 'w') as configfile:
+                config.write(configfile)
 
-        config.set('DIRECTORY', 'steamMods', f_dir)
-
-        # Writing our configuration file to 'example.ini'
-        with open('settings.ini', 'w') as configfile:
-            config.write(configfile)
 
 
     def setExternalMods(self):
@@ -269,11 +269,12 @@ class Window(QMainWindow):
             fd.ShowDirsOnly
             )
 
-        config.set('DIRECTORY', 'externalMods', f_dir)
+        if f_dir != "":
+            config.set('DIRECTORY', 'externalMods', f_dir)
+            # Writing our configuration file to 'example.ini'
+            with open('settings.ini', 'w') as configfile:
+                config.write(configfile)
 
-        # Writing our configuration file to 'example.ini'
-        with open('settings.ini', 'w') as configfile:
-            config.write(configfile)
 
 w = Window()
 
