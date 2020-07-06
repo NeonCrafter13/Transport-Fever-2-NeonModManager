@@ -2,8 +2,9 @@
 import configparser
 import os,sys, subprocess
 import mod_finder, modlist, modinstaller
+from os.path import expanduser
 
-from PyQt5.QtWidgets import QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QApplication, QMainWindow, QAction, QGridLayout, QScrollArea, QLabel
+from PyQt5.QtWidgets import QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QApplication, QMainWindow, QAction, QGridLayout, QScrollArea, QLabel, QFileDialog
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtCore import Qt
 
@@ -71,7 +72,7 @@ class RPanal(QWidget):
         #Name
         Layout.addWidget(QLabel(str(Mod.name)))
 
-        Width = 256
+        Width = 384
 
         # Image
         if Mod.image:
@@ -132,6 +133,7 @@ class ModBox(QWidget):
         Layout = QHBoxLayout()
         Layout.addWidget(QLabel(Mod.name))
         Layout.addWidget(QLabel(str(Mod.minorVersion)))
+        """
         authorString = ""
         if Mod.authors == None:
             Layout.addWidget(QLabel(Mod.authors))
@@ -139,6 +141,7 @@ class ModBox(QWidget):
             for author in Mod.authors:
                 authorString = authorString + author + ", "
             Layout.addWidget(QLabel(authorString))
+        """
         self.setLayout(Layout)
 
 class MainWidget(QWidget):
@@ -204,10 +207,22 @@ class Window(QMainWindow):
         InstallMod.triggered.connect(self.install_mod)
 
         menubar = self.menuBar()
-        file = menubar.addMenu("File")
-        file.addAction(ExportModlist)
-        file.addAction(ImportModlist)
-        file.addAction(InstallMod)
+        mod = menubar.addMenu("Mod")
+        mod.addAction(ExportModlist)
+        mod.addAction(ImportModlist)
+        mod.addAction(InstallMod)
+
+        steamMods = QAction("Set Steammods location", self)
+        steamMods.setStatusTip("Set Steammods location")
+        steamMods.triggered.connect(self.setSteamMods)
+
+        externalMods = QAction("Set externalmods location", self)
+        externalMods.setStatusTip("Set externalmods location")
+        externalMods.triggered.connect(self.setExternalMods)
+
+        settings = menubar.addMenu("Settings")
+        settings.addAction(steamMods)
+        settings.addAction(externalMods)
 
         self.setGeometry(50,50,500,500)
         self.setWindowTitle("Tpf2 NeonModManager")
@@ -227,6 +242,38 @@ class Window(QMainWindow):
     def install_mod(self):
         self.installPopup = InstallModWindow()
         self.installPopup.show()
+
+    def setSteamMods(self):
+        fd = QFileDialog()
+        f_dir =fd.getExistingDirectory(
+            self,
+            "Open steammods folder",
+            expanduser("~"),
+            fd.ShowDirsOnly
+            )
+
+
+        config.set('DIRECTORY', 'steamMods', f_dir)
+
+        # Writing our configuration file to 'example.ini'
+        with open('settings.ini', 'w') as configfile:
+            config.write(configfile)
+
+
+    def setExternalMods(self):
+        fd = QFileDialog()
+        f_dir =fd.getExistingDirectory(
+            self,
+            "Open externalmods folder",
+            expanduser("~"),
+            fd.ShowDirsOnly
+            )
+
+        config.set('DIRECTORY', 'externalMods', f_dir)
+
+        # Writing our configuration file to 'example.ini'
+        with open('settings.ini', 'w') as configfile:
+            config.write(configfile)
 
 w = Window()
 
