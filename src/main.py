@@ -1,10 +1,10 @@
 # Entrypoint to the Aplication
 import configparser
 import os,sys, subprocess
-import mod_finder, modlist, modinstaller
+import mod_finder, modlist, modinstaller, search
 from os.path import expanduser
 
-from PyQt5.QtWidgets import QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QApplication, QMainWindow, QAction, QGridLayout, QScrollArea, QLabel, QFileDialog
+from PyQt5.QtWidgets import QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QApplication, QMainWindow, QAction, QGridLayout, QScrollArea, QLabel, QFileDialog, QLineEdit
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtCore import Qt
 
@@ -144,12 +144,41 @@ class ModBox(QWidget):
         """
         self.setLayout(Layout)
 
+class SearchBox(QWidget):
+    def __init__(self, parent):
+        super().__init__()
+        self.parent = parent
+        self.initMe()
+
+    def initMe(self):
+        self.h = QHBoxLayout()
+        self.textbox = QLineEdit()
+
+        self.h.addWidget(self.textbox)
+
+        self.button = QPushButton('Search')
+        self.h.addWidget(self.button)
+        self.button.clicked.connect(self.search)
+
+        self.setLayout(self.h)
+
+
+
+    def search(self):
+        keyword = self.textbox.text()
+
+        result = search.find_mod(Mods, keyword)
+
+        if result:
+            self.parent.update_RPanal_With_Search(*result)
+
 class MainWidget(QWidget):
     def __init__(self):
         super().__init__()
         self.initMe()
 
     def initMe(self):
+        self.v = QVBoxLayout()
         self.h = QHBoxLayout()
         # mod_window = QGridLayout()
 
@@ -174,13 +203,26 @@ class MainWidget(QWidget):
         self.mod_info = RPanal(Mods[0],0)
         self.h.addWidget(self.mod_info)
         self.mod_info.show()
-        self.setLayout(self.h)
+
+        searchbox = SearchBox(self)
+        self.v.addWidget(searchbox)
+        searchbox.show()
+
+        self.v.addLayout(self.h)
+        self.setLayout(self.v)
         self.show()
 
     def update_RPanal(self, event, a):
         self.mod_info.setParent(None)
         self.mod_info.pixmap = None
         self.mod_info = RPanal(Mods[a.id], a.id)
+        self.h.addWidget(self.mod_info)
+        self.mod_info.show()
+
+    def update_RPanal_With_Search(self, Mod, id):
+        self.mod_info.setParent(None)
+        self.mod_info.pixmap = None
+        self.mod_info = RPanal(Mod, id)
         self.h.addWidget(self.mod_info)
         self.mod_info.show()
 
