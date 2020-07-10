@@ -4,7 +4,7 @@ import os,sys, subprocess
 import mod_finder, modlist, modinstaller, search
 from os.path import expanduser
 
-from PyQt5.QtWidgets import QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QApplication, QMainWindow, QAction, QGridLayout, QScrollArea, QLabel, QFileDialog, QLineEdit
+from PyQt5.QtWidgets import QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QApplication, QMainWindow, QAction, QGridLayout, QScrollArea, QLabel, QFileDialog, QLineEdit, QMessageBox
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtCore import Qt
 
@@ -14,8 +14,22 @@ config.read("settings.ini")
 externalModsDirectory = os.path.normpath(config['DIRECTORY']['externalMods'])
 steamModsDirectory = os.path.normpath(config["DIRECTORY"]["steamMods"])
 
-Mods = mod_finder.getAllMods(externalModsDirectory, steamModsDirectory)
 app = QApplication(sys.argv)
+
+class ErrorBox(QMessageBox):
+    def __init__(self,error: str):
+        super().__init__()
+        self.setIcon(QMessageBox.Critical)
+        self.setText(error)
+        self.setStandardButtons(QMessageBox.Close)
+        self.setWindowTitle("ERROR")
+        self.show()
+
+
+if os.path.isdir(externalModsDirectory) and os.path.isdir(steamModsDirectory):
+    Mods = mod_finder.getAllMods(externalModsDirectory, steamModsDirectory)
+else:
+    e = ErrorBox("Mod-Directories are incorrect")
 
 class InstallModWindow(QWidget):
     def __init__(self):
@@ -121,7 +135,7 @@ class RPanal(QWidget):
 
     def uninstall(self):
         if not self.Mod.uninstall():
-            print("ERROR")
+            self.error = ErrorBox("Mod couldn´t be uninstalled")
 
 class ModBox(QWidget):
     def __init__(self, Mod, id):
@@ -171,6 +185,8 @@ class SearchBox(QWidget):
 
         if result:
             self.parent.update_RPanal_With_Search(*result)
+        else:
+            self.error = ErrorBox("Could not find a Mod with matching name!")
 
 class MainWidget(QWidget):
     def __init__(self):
@@ -317,7 +333,7 @@ class Window(QMainWindow):
             with open('settings.ini', 'w') as configfile:
                 config.write(configfile)
 
-
-w = Window()
+if os.path.isdir(externalModsDirectory) and os.path.isdir(steamModsDirectory):
+    w = Window()
 
 sys.exit(app.exec_())
