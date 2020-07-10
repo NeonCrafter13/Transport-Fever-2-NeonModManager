@@ -54,7 +54,6 @@ def getExternalMod(folder):
         #["mod_name"] = "Stellwerke Paket",
         x = re.search('title.*=.*,', strings_lua_text)
         name = x.group()[9:len(x.group())-2]
-        print(name)    
 
     if not minorVersion:
         x = re.search("minorVersion.*=.*,", mod_lua_text)
@@ -150,7 +149,6 @@ def getSteamMod(folder):
         #["mod_name"] = "Stellwerke Paket",
         x = re.search('title.*=.*,', strings_lua_text)
         name = x.group()[9:len(x.group())-2]
-        print(name)
 
 
     if not minorVersion:
