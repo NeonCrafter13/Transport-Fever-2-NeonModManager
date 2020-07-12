@@ -293,7 +293,8 @@ class Window(QMainWindow):
 
         self.setGeometry(50,50,500,500)
         self.setWindowTitle("Tpf2 NeonModManager")
-        # w.setWindowIcon(QIcon("test.png"))
+
+        self.setWindowIcon(QIcon("images/icon.png"))
 
         self.mainwidget = MainWidget()
         self.setCentralWidget(self.mainwidget)
