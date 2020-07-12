@@ -39,19 +39,16 @@ def getExternalMod(folder):
     if name == "mod_name":
         with open(os.path.join(folder, "strings.lua"), "r", encoding="utf-8") as strings_lua:
             strings_lua_text = strings_lua.read()
-        #["mod_name"] = "Stellwerke Paket",
         x = re.search('mod_name.*=.*,', strings_lua_text)
         name = x.group()[14:len(x.group())-2]
     elif name == "name":
         with open(os.path.join(folder, "strings.lua"), "r", encoding="utf-8") as strings_lua:
             strings_lua_text = strings_lua.read()
-        #["mod_name"] = "Stellwerke Paket",
         x = re.search('name.*=.*,', strings_lua_text)
         name = x.group()[10:len(x.group())-2]
     elif name == "title":
         with open(os.path.join(folder, "strings.lua"), "r", encoding="utf-8") as strings_lua:
             strings_lua_text = strings_lua.read()
-        #["mod_name"] = "Stellwerke Paket",
         x = re.search('title.*=.*,', strings_lua_text)
         name = x.group()[9:len(x.group())-2]
 
@@ -134,19 +131,16 @@ def getSteamMod(folder):
     if name == "mod_name":
         with open(os.path.join(folder, "strings.lua"), "r", encoding="utf-8") as strings_lua:
             strings_lua_text = strings_lua.read()
-        #["mod_name"] = "Stellwerke Paket",
         x = re.search('mod_name.*=.*,', strings_lua_text)
         name = x.group()[14:len(x.group())-2]
     elif name == "name":
         with open(os.path.join(folder, "strings.lua"), "r", encoding="utf-8") as strings_lua:
             strings_lua_text = strings_lua.read()
-        #["mod_name"] = "Stellwerke Paket",
         x = re.search('name.*=.*,', strings_lua_text)
         name = x.group()[10:len(x.group())-2]
     elif name == "title":
         with open(os.path.join(folder, "strings.lua"), "r", encoding="utf-8") as strings_lua:
             strings_lua_text = strings_lua.read()
-        #["mod_name"] = "Stellwerke Paket",
         x = re.search('title.*=.*,', strings_lua_text)
         name = x.group()[9:len(x.group())-2]
 
