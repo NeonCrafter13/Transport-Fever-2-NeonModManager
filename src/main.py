@@ -26,6 +26,8 @@ class ErrorBox(QMessageBox):
         self.show()
 
 
+global Mods
+
 if os.path.isdir(externalModsDirectory) and os.path.isdir(steamModsDirectory):
     Mods = mod_finder.getAllMods(externalModsDirectory, steamModsDirectory)
 else:
@@ -69,6 +71,9 @@ class InstallModWindow(QWidget):
                     links.append(os.path.normpath(url.toLocalFile()))
             for link in links:
                 modinstaller.install(link)
+            global Mods
+            Mods = mod_finder.getAllMods(externalModsDirectory, steamModsDirectory)
+            w.reload()
         else:
             event.ignore()
 
@@ -136,6 +141,10 @@ class RPanal(QWidget):
     def uninstall(self):
         if not self.Mod.uninstall():
             self.error = ErrorBox("Mod couldn´t be uninstalled")
+        else:
+            global Mods
+            Mods = mod_finder.getAllMods(externalModsDirectory, steamModsDirectory)
+            w.reload()
 
 class ModBox(QWidget):
     def __init__(self, Mod, id):
@@ -226,7 +235,7 @@ class MainWidget(QWidget):
 
         self.v.addLayout(self.h)
         self.setLayout(self.v)
-        self.show()
+        # self.show()
 
     def update_RPanal(self, event, a):
         self.mod_info.setParent(None)
@@ -286,8 +295,8 @@ class Window(QMainWindow):
         self.setWindowTitle("Tpf2 NeonModManager")
         # w.setWindowIcon(QIcon("test.png"))
 
-        mainwidget = MainWidget()
-        self.setCentralWidget(mainwidget)
+        self.mainwidget = MainWidget()
+        self.setCentralWidget(self.mainwidget)
 
         self.show()
 
@@ -316,8 +325,6 @@ class Window(QMainWindow):
             with open('settings.ini', 'w') as configfile:
                 config.write(configfile)
 
-
-
     def setExternalMods(self):
         fd = QFileDialog()
         f_dir =fd.getExistingDirectory(
@@ -332,6 +339,11 @@ class Window(QMainWindow):
             # Writing our configuration file to 'example.ini'
             with open('settings.ini', 'w') as configfile:
                 config.write(configfile)
+
+    def reload(self):
+        self.mainwidget.setParent = None
+        self.mainwidget = MainWidget()
+        self.setCentralWidget = self.mainwidget
 
 if os.path.isdir(externalModsDirectory) and os.path.isdir(steamModsDirectory):
     w = Window()
