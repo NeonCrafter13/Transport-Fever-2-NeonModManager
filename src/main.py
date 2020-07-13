@@ -418,7 +418,10 @@ class Window(QMainWindow):
 
     def compare_modlist(self):
         list = modlist.import_modlist(Mods)
-        self.compare = CompareMods(list)
+        if list:
+            self.compare = CompareMods(list)
+        else:
+            self.error = ErrorBox("Couldn´t find the Modlist")
 
     def install_mod(self):
         self.installPopup = InstallModWindow()
