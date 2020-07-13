@@ -9,4 +9,6 @@ def export_modlist(mods):
     json_file.write(json.dumps(mods_json))
 
 def import_modlist(mods):
-    pass
+    with open("modlist.json", "r") as json_file:
+        modlist = json.loads(json_file.read())
+    return modlist

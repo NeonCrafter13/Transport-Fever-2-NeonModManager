@@ -2,6 +2,7 @@
 import configparser
 import os,sys, subprocess
 import mod_finder, modlist, modinstaller, search
+from mod import Mod
 from os.path import expanduser
 
 from PyQt5.QtWidgets import QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QApplication, QMainWindow, QAction, QGridLayout, QScrollArea, QLabel, QFileDialog, QLineEdit, QMessageBox
@@ -32,6 +33,68 @@ if os.path.isdir(externalModsDirectory) and os.path.isdir(steamModsDirectory):
     Mods = mod_finder.getAllMods(externalModsDirectory, steamModsDirectory)
 else:
     e = ErrorBox("Mod-Directories are incorrect")
+
+class CompareMods(QWidget):
+    def __init__(self, list):
+        super().__init__()
+        self.list = list
+        self.setGeometry(50, 50, 500, 500)
+        self.setWindowTitle("Compare Mods")
+        self.initMe()
+
+    def initMe(self):
+        self.h = QHBoxLayout()
+        scroll = QScrollArea()
+        self.h.addWidget(scroll)
+        scroll.setWidgetResizable(True)
+        scrollcontent = QWidget(scroll)
+
+        scroll.setWidget(scrollcontent)
+
+        TV = QVBoxLayout()
+        scrollcontent.setLayout(TV)
+
+        self.NotInstalledV = QVBoxLayout()
+        self.InstalledV = QVBoxLayout()
+        self.unusedV = QVBoxLayout()
+
+        NotInstalledLabel = QLabel("Not installed Mods:")
+        NotInstalledLabel.setStyleSheet("color: red; background-color: #a0a0a0;")
+        TV.addWidget(NotInstalledLabel)
+
+        TV.addLayout(self.NotInstalledV)
+
+        InstalledLabel = QLabel("Installed Mods:")
+        InstalledLabel.setStyleSheet("color: green; background-color: #a0a0a0;")
+        TV.addWidget(InstalledLabel)
+
+        TV.addLayout(self.InstalledV)
+
+        UnusedLabel = QLabel("Installed Mods that aren´t one the list:")
+        UnusedLabel.setStyleSheet("color: #ff6f00; background-color: #a0a0a0;")
+        TV.addWidget(UnusedLabel)
+
+        TV.addLayout(self.unusedV)
+
+        self.setLayout(self.h)
+        self.ListMods()
+        self.show()
+
+    def ListMods(self):
+        self.onList = []
+        for item in self.list:
+            result = search.find_mod(Mods, item["name"])
+            if result:
+                self.InstalledV.addWidget(ModBox(*result))
+                self.onList.append(result[1])
+            else:
+                #Create Mod Instance
+                mod = Mod(item["name"], None, item["source"], False, False, False, item["authors"])
+                self.NotInstalledV.addWidget(ModBox(mod, None))
+
+        for i in range(len(Mods)):
+            if not i in self.onList:
+                self.unusedV.addWidget(ModBox(Mods[i],i))
 
 class InstallModWindow(QWidget):
     def __init__(self):
@@ -312,10 +375,10 @@ class Window(QMainWindow):
         ExportModlist.setStatusTip("export modlist")
         ExportModlist.triggered.connect(self.export_modlist)
 
-        ImportModlist = QAction("import modlist",self)
+        ImportModlist = QAction("Compare modlist",self)
         ImportModlist.setShortcut("Ctrl+O")
-        ImportModlist.setStatusTip("import modlist")
-        ImportModlist.triggered.connect(self.import_modlist)
+        ImportModlist.setStatusTip("Compare modlist")
+        ImportModlist.triggered.connect(self.compare_modlist)
 
         InstallMod = QAction("install mod", self)
         InstallMod.setShortcut("Ctrl+I")
@@ -353,8 +416,9 @@ class Window(QMainWindow):
     def export_modlist(self):
         modlist.export_modlist(Mods)
 
-    def import_modlist(self):
-        modlist.import_modlist(Mods)
+    def compare_modlist(self):
+        list = modlist.import_modlist(Mods)
+        self.compare = CompareMods(list)
 
     def install_mod(self):
         self.installPopup = InstallModWindow()
