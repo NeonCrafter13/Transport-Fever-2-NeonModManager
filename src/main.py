@@ -43,7 +43,17 @@ class InstallModWindow(QWidget):
 
     def initMe(self):
         Layout = QVBoxLayout()
-        Layout.addWidget(QLabel("test"))
+
+        Layout.addWidget(QLabel("Drop your Mod in here"))
+
+        btn1 = QPushButton("Select a file here")
+        btn1.clicked.connect(self.openFile)
+        Layout.addWidget(btn1)
+
+        btn2 = QPushButton("Select a folder here")
+        btn2.clicked.connect(self.openFolder)
+        Layout.addWidget(btn2)
+
         self.setLayout(Layout)
 
     def dragEnterEvent(self, event):
@@ -69,13 +79,52 @@ class InstallModWindow(QWidget):
             for url in event.mimeData().urls():
                 if url.isLocalFile():
                     links.append(os.path.normpath(url.toLocalFile()))
+            a = False
             for link in links:
                 modinstaller.install(link)
+                a = True
+
+            if a:
+                global Mods
+                Mods = mod_finder.getAllMods(externalModsDirectory, steamModsDirectory)
+                w.reload()
+                self.setParent = None
+        else:
+            event.ignore()
+
+    def openFile(self):
+        fd = QFileDialog()
+        f_dir =fd.getOpenFileName(
+            self,
+            "Install Mod",
+            expanduser("~"),
+            "(*.rar,*.zip)"
+            )
+
+        if f_dir[0] != "":
+            modinstaller.install(f_dir[0])
             global Mods
             Mods = mod_finder.getAllMods(externalModsDirectory, steamModsDirectory)
             w.reload()
-        else:
-            event.ignore()
+
+            self.setParent = None
+
+    def openFolder(self):
+        fd = QFileDialog()
+        f_dir =fd.getExistingDirectory(
+            self,
+            "Install Mod",
+            expanduser("~"),
+            fd.ShowDirsOnly
+            )
+
+        if f_dir != "":
+            modinstaller.install(f_dir)
+            global Mods
+            Mods = mod_finder.getAllMods(externalModsDirectory, steamModsDirectory)
+            w.reload()
+
+            self.setParent = None
 
 class RPanal(QWidget):
     def __init__(self, Mod, id):
