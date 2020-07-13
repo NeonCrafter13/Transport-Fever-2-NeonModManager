@@ -2,6 +2,7 @@
 import configparser
 import os,sys, subprocess
 import mod_finder, modlist, modinstaller, search
+from mod import Mod
 from os.path import expanduser
 
 from PyQt5.QtWidgets import QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QApplication, QMainWindow, QAction, QGridLayout, QScrollArea, QLabel, QFileDialog, QLineEdit, QMessageBox
@@ -33,6 +34,68 @@ if os.path.isdir(externalModsDirectory) and os.path.isdir(steamModsDirectory):
 else:
     e = ErrorBox("Mod-Directories are incorrect")
 
+class CompareMods(QWidget):
+    def __init__(self, list):
+        super().__init__()
+        self.list = list
+        self.setGeometry(50, 50, 500, 500)
+        self.setWindowTitle("Compare Mods")
+        self.initMe()
+
+    def initMe(self):
+        self.h = QHBoxLayout()
+        scroll = QScrollArea()
+        self.h.addWidget(scroll)
+        scroll.setWidgetResizable(True)
+        scrollcontent = QWidget(scroll)
+
+        scroll.setWidget(scrollcontent)
+
+        TV = QVBoxLayout()
+        scrollcontent.setLayout(TV)
+
+        self.NotInstalledV = QVBoxLayout()
+        self.InstalledV = QVBoxLayout()
+        self.unusedV = QVBoxLayout()
+
+        NotInstalledLabel = QLabel("Not installed Mods:")
+        NotInstalledLabel.setStyleSheet("color: red; background-color: #a0a0a0;")
+        TV.addWidget(NotInstalledLabel)
+
+        TV.addLayout(self.NotInstalledV)
+
+        InstalledLabel = QLabel("Installed Mods:")
+        InstalledLabel.setStyleSheet("color: green; background-color: #a0a0a0;")
+        TV.addWidget(InstalledLabel)
+
+        TV.addLayout(self.InstalledV)
+
+        UnusedLabel = QLabel("Installed Mods that aren´t one the list:")
+        UnusedLabel.setStyleSheet("color: #ff6f00; background-color: #a0a0a0;")
+        TV.addWidget(UnusedLabel)
+
+        TV.addLayout(self.unusedV)
+
+        self.setLayout(self.h)
+        self.ListMods()
+        self.show()
+
+    def ListMods(self):
+        self.onList = []
+        for item in self.list:
+            result = search.find_mod(Mods, item["name"])
+            if result:
+                self.InstalledV.addWidget(ModBox(*result))
+                self.onList.append(result[1])
+            else:
+                #Create Mod Instance
+                mod = Mod(item["name"], None, item["source"], False, False, False, item["authors"])
+                self.NotInstalledV.addWidget(ModBox(mod, None))
+
+        for i in range(len(Mods)):
+            if not i in self.onList:
+                self.unusedV.addWidget(ModBox(Mods[i],i))
+
 class InstallModWindow(QWidget):
     def __init__(self):
         super().__init__()
@@ -43,7 +106,17 @@ class InstallModWindow(QWidget):
 
     def initMe(self):
         Layout = QVBoxLayout()
-        Layout.addWidget(QLabel("test"))
+
+        Layout.addWidget(QLabel("Drop your Mod in here"))
+
+        btn1 = QPushButton("Select a file here")
+        btn1.clicked.connect(self.openFile)
+        Layout.addWidget(btn1)
+
+        btn2 = QPushButton("Select a folder here")
+        btn2.clicked.connect(self.openFolder)
+        Layout.addWidget(btn2)
+
         self.setLayout(Layout)
 
     def dragEnterEvent(self, event):
@@ -69,13 +142,52 @@ class InstallModWindow(QWidget):
             for url in event.mimeData().urls():
                 if url.isLocalFile():
                     links.append(os.path.normpath(url.toLocalFile()))
+            a = False
             for link in links:
                 modinstaller.install(link)
+                a = True
+
+            if a:
+                global Mods
+                Mods = mod_finder.getAllMods(externalModsDirectory, steamModsDirectory)
+                w.reload()
+                self.setParent = None
+        else:
+            event.ignore()
+
+    def openFile(self):
+        fd = QFileDialog()
+        f_dir =fd.getOpenFileName(
+            self,
+            "Install Mod",
+            expanduser("~"),
+            "(*.rar,*.zip)"
+            )
+
+        if f_dir[0] != "":
+            modinstaller.install(f_dir[0])
             global Mods
             Mods = mod_finder.getAllMods(externalModsDirectory, steamModsDirectory)
             w.reload()
-        else:
-            event.ignore()
+
+            self.setParent = None
+
+    def openFolder(self):
+        fd = QFileDialog()
+        f_dir =fd.getExistingDirectory(
+            self,
+            "Install Mod",
+            expanduser("~"),
+            fd.ShowDirsOnly
+            )
+
+        if f_dir != "":
+            modinstaller.install(f_dir)
+            global Mods
+            Mods = mod_finder.getAllMods(externalModsDirectory, steamModsDirectory)
+            w.reload()
+
+            self.setParent = None
 
 class RPanal(QWidget):
     def __init__(self, Mod, id):
@@ -263,10 +375,10 @@ class Window(QMainWindow):
         ExportModlist.setStatusTip("export modlist")
         ExportModlist.triggered.connect(self.export_modlist)
 
-        ImportModlist = QAction("import modlist",self)
+        ImportModlist = QAction("Compare modlist",self)
         ImportModlist.setShortcut("Ctrl+O")
-        ImportModlist.setStatusTip("import modlist")
-        ImportModlist.triggered.connect(self.import_modlist)
+        ImportModlist.setStatusTip("Compare modlist")
+        ImportModlist.triggered.connect(self.compare_modlist)
 
         InstallMod = QAction("install mod", self)
         InstallMod.setShortcut("Ctrl+I")
@@ -293,7 +405,8 @@ class Window(QMainWindow):
 
         self.setGeometry(50,50,500,500)
         self.setWindowTitle("Tpf2 NeonModManager")
-        # w.setWindowIcon(QIcon("test.png"))
+
+        self.setWindowIcon(QIcon("images/icon.png"))
 
         self.mainwidget = MainWidget()
         self.setCentralWidget(self.mainwidget)
@@ -303,8 +416,9 @@ class Window(QMainWindow):
     def export_modlist(self):
         modlist.export_modlist(Mods)
 
-    def import_modlist(self):
-        modlist.import_modlist(Mods)
+    def compare_modlist(self):
+        list = modlist.import_modlist(Mods)
+        self.compare = CompareMods(list)
 
     def install_mod(self):
         self.installPopup = InstallModWindow()
