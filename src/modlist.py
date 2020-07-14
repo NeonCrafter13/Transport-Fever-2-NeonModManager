@@ -6,7 +6,7 @@ def export_modlist(mods):
         mod_json = {"name": mod.name, "source": mod.source, "authors": mod.authors}
         mods_json.append(mod_json)
     json_file = open("modlist.json", "w")
-    json_file.write(json.dumps(mods_json))
+    json_file.write(json.dumps(mods_json, indent=4, sort_keys=True))
 
 def import_modlist(mods):
     try:
