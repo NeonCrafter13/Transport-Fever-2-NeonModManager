@@ -1,4 +1,4 @@
-import os, re, json, threading
+import os, re, json, threading, operator
 
 from mod import Mod
 
@@ -225,4 +225,5 @@ def getAllMods(externalModsDirectory, steamModsDirectory, userdataModsDirectory,
         Mods.append(mod)
     for mod in t4.mods:
         Mods.append(mod)
+    Mods = sorted(Mods, key=operator.attrgetter('name'))
     return Mods
