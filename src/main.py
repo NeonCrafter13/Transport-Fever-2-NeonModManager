@@ -14,6 +14,10 @@ config.read("settings.ini")
 
 externalModsDirectory = os.path.normpath(config['DIRECTORY']['externalMods'])
 steamModsDirectory = os.path.normpath(config["DIRECTORY"]["steamMods"])
+userdataModsDirectory = os.path.normpath(config["DIRECTORY"]["userdatamods"])
+stagingAreamodsDirectory = os.path.normpath(config["DIRECTORY"]["stagingareamods"])
+
+
 
 app = QApplication(sys.argv)
 
@@ -29,8 +33,8 @@ class ErrorBox(QMessageBox):
 
 global Mods
 
-if os.path.isdir(externalModsDirectory) and os.path.isdir(steamModsDirectory):
-    Mods = mod_finder.getAllMods(externalModsDirectory, steamModsDirectory)
+if os.path.isdir(externalModsDirectory) and os.path.isdir(steamModsDirectory) and os.path.isdir(userdataModsDirectory) and os.path.isdir(stagingAreamodsDirectory):
+    Mods = mod_finder.getAllMods(externalModsDirectory, steamModsDirectory, userdataModsDirectory, stagingAreamodsDirectory)
 else:
     e = ErrorBox("Mod-Directories are incorrect")
 
