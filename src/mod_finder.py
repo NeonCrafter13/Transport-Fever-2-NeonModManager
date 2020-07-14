@@ -95,6 +95,30 @@ def getExternalMods(externalModsDirectory):
         Mods.append(getExternalMod(os.path.join(externalModsDirectory, folder)))
     return Mods
 
+def getUserdataMods(userdataModsDirectory):
+    folders = os.listdir(userdataModsDirectory)
+
+    try:
+        folders.remove("readme.txt")
+    except:
+        pass
+    Mods = []
+    for folder in folders:
+        Mods.append(getExternalMod(os.path.join(userdataModsDirectory, folder)))
+    return Mods
+
+def getStagingAreaMods(StagingAreaModsDirectory):
+    folders = os.listdir(StagingAreaModsDirectory)
+
+    try:
+        folders.remove("readme.txt")
+    except:
+        pass
+    Mods = []
+    for folder in folders:
+        Mods.append(getExternalMod(os.path.join(StagingAreaModsDirectory, folder)))
+    return Mods
+
 def getSteamMod(folder):
     mod_lua = open(os.path.join(folder, "mod.lua"), "r", encoding="utf-8")
     mod_lua_text = mod_lua.read()
@@ -185,10 +209,14 @@ def getSteamMods(steamModsDirectory):
         Mods.append(getSteamMod(os.path.join(steamModsDirectory, folder)))
     return Mods
 
-def getAllMods(externalModsDirectory, steamModsDirectory):
+def getAllMods(externalModsDirectory, steamModsDirectory, userdataModsDirectory, StagingAreaModsDirectory):
     Mods = []
     for mod in getExternalMods(externalModsDirectory):
         Mods.append(mod)
     for mod in getSteamMods(steamModsDirectory):
+        Mods.append(mod)
+    for mod in getUserdataMods(userdataModsDirectory):
+        Mods.append(mod)
+    for mod in getStagingAreaMods(StagingAreaModsDirectory):
         Mods.append(mod)
     return Mods
