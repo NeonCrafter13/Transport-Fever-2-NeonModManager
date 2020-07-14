@@ -92,7 +92,10 @@ def getExternalMods(externalModsDirectory):
         pass
     Mods = []
     for folder in folders:
-        Mods.append(getExternalMod(os.path.join(externalModsDirectory, folder)))
+        try:
+            Mods.append(getExternalMod(os.path.join(externalModsDirectory, folder)))
+        except:
+            continue
     return Mods
 
 def getUserdataMods(userdataModsDirectory):
@@ -104,7 +107,10 @@ def getUserdataMods(userdataModsDirectory):
         pass
     Mods = []
     for folder in folders:
-        Mods.append(getExternalMod(os.path.join(userdataModsDirectory, folder)))
+        try:
+            Mods.append(getExternalMod(os.path.join(userdataModsDirectory, folder)))
+        except:
+            continue
     return Mods
 
 def getStagingAreaMods(StagingAreaModsDirectory):
@@ -116,7 +122,10 @@ def getStagingAreaMods(StagingAreaModsDirectory):
         pass
     Mods = []
     for folder in folders:
-        Mods.append(getExternalMod(os.path.join(StagingAreaModsDirectory, folder)))
+        try:
+            Mods.append(getExternalMod(os.path.join(StagingAreaModsDirectory, folder)))
+        except:
+            continue
     return Mods
 
 def getSteamMod(folder):
@@ -206,7 +215,10 @@ def getSteamMods(steamModsDirectory):
         pass
     Mods = []
     for folder in folders:
-        Mods.append(getSteamMod(os.path.join(steamModsDirectory, folder)))
+        try:
+            Mods.append(getExternalMod(os.path.join(steamModsDirectory, folder)))
+        except:
+            continue
     return Mods
 
 def getAllMods(externalModsDirectory, steamModsDirectory, userdataModsDirectory, StagingAreaModsDirectory):
