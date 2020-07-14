@@ -9,7 +9,7 @@ def find_mod(Mods, Keyword):
     #Search
 
     for position, item in enumerate(items):
-        if item == Keyword:
+        if item.find(Keyword) != -1:
             return (Mods[position],position)
 
     return False
