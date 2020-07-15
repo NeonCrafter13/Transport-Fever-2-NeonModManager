@@ -29,6 +29,7 @@ try:
     steamModsDirectory = os.path.normpath(config["DIRECTORY"]["steamMods"])
     userdataModsDirectory = os.path.normpath(config["DIRECTORY"]["userdatamods"])
     stagingAreamodsDirectory = os.path.normpath(config["DIRECTORY"]["stagingareamods"])
+    sevenzip = os.path.normpath(config["DIRECTORY"]["7-zipInstallation"])
     import modinstaller
 
     global Mods
@@ -37,6 +38,8 @@ try:
         Mods = mod_finder.getAllMods(externalModsDirectory, steamModsDirectory, userdataModsDirectory, stagingAreamodsDirectory)
     else:
         e = ErrorBox("Mod-Directories are incorrect")
+    if not os.path.isdir(sevenzip):
+        e = ErrorBox("Sevenzip Path incorrect")
     configfound = True
 except:
     error = ErrorBox("Could not find settings.ini")
