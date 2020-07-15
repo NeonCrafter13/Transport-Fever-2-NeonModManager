@@ -87,7 +87,7 @@ class CompareMods(QWidget):
     def ListMods(self):
         self.onList = []
         for item in self.list:
-            result = search.find_mod(Mods, item["name"])
+            result = search.find_mod_compare(Mods, item["name"])
             if result:
                 self.InstalledV.addWidget(ModBox(*result))
                 self.onList.append(result[1])
@@ -271,6 +271,7 @@ class ModBox(QWidget):
         Layout = QHBoxLayout()
         Layout.addWidget(QLabel(Mod.name))
         Layout.addWidget(QLabel(str(Mod.minorVersion)))
+        Layout.addWidget(QLabel(Mod.source))
         """
         authorString = ""
         if Mod.authors == None:

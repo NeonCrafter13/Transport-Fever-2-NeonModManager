@@ -190,7 +190,7 @@ def getSteamMods(steamModsDirectory):
     Mods = []
     for folder in folders:
         try:
-            Mods.append(getExternalMod(os.path.join(steamModsDirectory, folder)))
+            Mods.append(getSteamMod(os.path.join(steamModsDirectory, folder)))
         except:
             continue
     return Mods

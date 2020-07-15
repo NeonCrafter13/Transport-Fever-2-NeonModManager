@@ -1,4 +1,4 @@
-def find_mod(Mods, Keyword):
+def find_mod_compare(Mods, Keyword):
     Keyword = Keyword.lower().replace(" ","")
     items = []
     for Mod in Mods:
@@ -9,7 +9,7 @@ def find_mod(Mods, Keyword):
     #Search
 
     for position, item in enumerate(items):
-        if item.find(Keyword) != -1:
+        if item == Keyword:
             return (Mods[position],position)
 
     return False
