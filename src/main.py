@@ -1,23 +1,13 @@
 # Entrypoint to the Aplication
 import configparser
 import os,sys, subprocess
-import mod_finder, modlist, modinstaller, search
+import mod_finder, modlist, search
 from mod import Mod
 from os.path import expanduser
 
-from PyQt5.QtWidgets import QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QApplication, QMainWindow, QAction, QGridLayout, QScrollArea, QLabel, QFileDialog, QLineEdit, QMessageBox
+from PyQt5.QtWidgets import QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QApplication, QMainWindow, QAction, QGridLayout, QScrollArea, QLabel, QFileDialog, QLineEdit, QMessageBox, QListWidget, QListWidgetItem, QAbstractItemView
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtCore import Qt
-
-config = configparser.ConfigParser()
-config.read("settings.ini")
-
-externalModsDirectory = os.path.normpath(config['DIRECTORY']['externalMods'])
-steamModsDirectory = os.path.normpath(config["DIRECTORY"]["steamMods"])
-userdataModsDirectory = os.path.normpath(config["DIRECTORY"]["userdatamods"])
-stagingAreamodsDirectory = os.path.normpath(config["DIRECTORY"]["stagingareamods"])
-
-
 
 app = QApplication(sys.argv)
 
@@ -31,12 +21,29 @@ class ErrorBox(QMessageBox):
         self.show()
 
 
-global Mods
+config = configparser.ConfigParser()
+config.read("settings.ini")
 
-if os.path.isdir(externalModsDirectory) and os.path.isdir(steamModsDirectory) and os.path.isdir(userdataModsDirectory) and os.path.isdir(stagingAreamodsDirectory):
-    Mods = mod_finder.getAllMods(externalModsDirectory, steamModsDirectory, userdataModsDirectory, stagingAreamodsDirectory)
-else:
-    e = ErrorBox("Mod-Directories are incorrect")
+try:
+    externalModsDirectory = os.path.normpath(config['DIRECTORY']['externalMods'])
+    steamModsDirectory = os.path.normpath(config["DIRECTORY"]["steamMods"])
+    userdataModsDirectory = os.path.normpath(config["DIRECTORY"]["userdatamods"])
+    stagingAreamodsDirectory = os.path.normpath(config["DIRECTORY"]["stagingareamods"])
+    sevenzip = os.path.normpath(config["DIRECTORY"]["7-zipInstallation"])
+    import modinstaller
+
+    global Mods
+
+    if os.path.isdir(externalModsDirectory) and os.path.isdir(steamModsDirectory) and os.path.isdir(userdataModsDirectory) and os.path.isdir(stagingAreamodsDirectory):
+        Mods = mod_finder.getAllMods(externalModsDirectory, steamModsDirectory, userdataModsDirectory, stagingAreamodsDirectory)
+    else:
+        e = ErrorBox("Mod-Directories are incorrect")
+    if not os.path.isdir(sevenzip):
+        e = ErrorBox("Sevenzip Path incorrect")
+    configfound = True
+except:
+    error = ErrorBox("Could not find settings.ini")
+    configfound = False
 
 class CompareMods(QWidget):
     def __init__(self, list):
@@ -87,7 +94,7 @@ class CompareMods(QWidget):
     def ListMods(self):
         self.onList = []
         for item in self.list:
-            result = search.find_mod(Mods, item["name"])
+            result = search.find_mod_compare(Mods, item["name"])
             if result:
                 self.InstalledV.addWidget(ModBox(*result))
                 self.onList.append(result[1])
@@ -152,10 +159,7 @@ class InstallModWindow(QWidget):
                 a = True
 
             if a:
-                global Mods
-                Mods = mod_finder.getAllMods(externalModsDirectory, steamModsDirectory)
-                w.reload()
-                self.setParent = None
+                self.error = ErrorBox("New Installed Mod will only be shown after restart")
         else:
             event.ignore()
 
@@ -165,14 +169,13 @@ class InstallModWindow(QWidget):
             self,
             "Install Mod",
             expanduser("~"),
-            "(*.rar,*.zip)"
+            "(*.rar *.zip *.7z)"
             )
 
         if f_dir[0] != "":
             modinstaller.install(f_dir[0])
-            global Mods
-            Mods = mod_finder.getAllMods(externalModsDirectory, steamModsDirectory)
-            w.reload()
+            self.error = ErrorBox("New Installed Mod will only be shown after restart")
+
 
             self.setParent = None
 
@@ -187,16 +190,14 @@ class InstallModWindow(QWidget):
 
         if f_dir != "":
             modinstaller.install(f_dir)
-            global Mods
-            Mods = mod_finder.getAllMods(externalModsDirectory, steamModsDirectory)
-            w.reload()
+            self.error = ErrorBox("New Installed Mod will only be shown after restart")
+
 
             self.setParent = None
 
 class RPanal(QWidget):
-    def __init__(self, Mod, id):
+    def __init__(self, Mod):
         super().__init__()
-        self.id = id
         self.Mod = Mod
         self.initMe()
 
@@ -258,9 +259,7 @@ class RPanal(QWidget):
         if not self.Mod.uninstall():
             self.error = ErrorBox("Mod couldn´t be uninstalled")
         else:
-            global Mods
-            Mods = mod_finder.getAllMods(externalModsDirectory, steamModsDirectory)
-            w.reload()
+            self.error = ErrorBox("Uninstalled Mods will be listed if Programm is not restarted")
 
 class ModBox(QWidget):
     def __init__(self, Mod, id):
@@ -272,6 +271,7 @@ class ModBox(QWidget):
         Layout = QHBoxLayout()
         Layout.addWidget(QLabel(Mod.name))
         Layout.addWidget(QLabel(str(Mod.minorVersion)))
+        Layout.addWidget(QLabel(Mod.source))
         """
         authorString = ""
         if Mod.authors == None:
@@ -306,12 +306,8 @@ class SearchBox(QWidget):
     def search(self):
         keyword = self.textbox.text()
 
-        result = search.find_mod(Mods, keyword)
+        self.parent.update_RPanal_With_Search(keyword)
 
-        if result:
-            self.parent.update_RPanal_With_Search(*result)
-        else:
-            self.error = ErrorBox("Could not find a Mod with matching name!")
 
 class MainWidget(QWidget):
     def __init__(self):
@@ -326,22 +322,18 @@ class MainWidget(QWidget):
         scroll = QScrollArea()
         self.h.addWidget(scroll)
         scroll.setWidgetResizable(True)
-        scrollcontent = QWidget(scroll)
+        self.scrollcontent = QListWidget(scroll)
 
-
-        mod_layout =  QVBoxLayout()
-        scrollcontent.setLayout(mod_layout)
-
-        i = -1
         for mod in Mods:
-            i = i + 1
-            a = ModBox(mod, i)
-            a.mouseReleaseEvent = lambda event, a=a: self.update_RPanal(event, a)
-            mod_layout.addWidget(a)
+            a = QListWidgetItem(mod.name)
+            a.mod = mod
+            self.scrollcontent.addItem(a)
 
-        scroll.setWidget(scrollcontent)
+        scroll.setWidget(self.scrollcontent)
 
-        self.mod_info = RPanal(Mods[0],0)
+        self.scrollcontent.itemSelectionChanged.connect(self.update_RPanal)
+
+        self.mod_info = RPanal(Mods[0])
         self.h.addWidget(self.mod_info)
         self.mod_info.show()
 
@@ -353,19 +345,24 @@ class MainWidget(QWidget):
         self.setLayout(self.v)
         # self.show()
 
-    def update_RPanal(self, event, a):
+    def update_RPanal(self):
         self.mod_info.setParent(None)
         self.mod_info.pixmap = None
-        self.mod_info = RPanal(Mods[a.id], a.id)
+        items = self.scrollcontent.selectedItems()
+        if not items: return
+        item = items[0]
+        self.mod_info = RPanal(item.mod)
         self.h.addWidget(self.mod_info)
         self.mod_info.show()
 
-    def update_RPanal_With_Search(self, Mod, id):
-        self.mod_info.setParent(None)
-        self.mod_info.pixmap = None
-        self.mod_info = RPanal(Mod, id)
-        self.h.addWidget(self.mod_info)
-        self.mod_info.show()
+    def update_RPanal_With_Search(self, keyword):
+        items = self.scrollcontent.findItems(keyword, Qt.MatchContains)
+        if not items:
+            self.error = ErrorBox("No Mod found with matching name")
+        else:
+            item = items[0]
+            item.setSelected(True)
+            self.scrollcontent.scrollToItem(item, QAbstractItemView.PositionAtTop)
 
 class Window(QMainWindow):
     def __init__(self):
@@ -461,12 +458,9 @@ class Window(QMainWindow):
             with open('settings.ini', 'w') as configfile:
                 config.write(configfile)
 
-    def reload(self):
-        self.mainwidget.setParent = None
-        self.mainwidget = MainWidget()
-        self.setCentralWidget = self.mainwidget
 
-if os.path.isdir(externalModsDirectory) and os.path.isdir(steamModsDirectory):
-    w = Window()
+if configfound:
+    if os.path.isdir(externalModsDirectory) and os.path.isdir(steamModsDirectory) and os.path.isdir(userdataModsDirectory) and os.path.isdir(stagingAreamodsDirectory):
+        w = Window()
 
 sys.exit(app.exec_())

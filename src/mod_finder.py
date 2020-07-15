@@ -1,6 +1,37 @@
-import os, re, json
+import os, re, json, threading, operator
 
 from mod import Mod
+
+def getName(folder, mod_lua_text):
+    x = re.search("name.*=.*_.*,", mod_lua_text)
+    if x:
+        y = re.search('".*"', x.group())
+        if y != None:
+            name = y.group()[1: len(y.group())-1]
+        else:
+            name = x.group()[10: len(x.group())-3]
+    else:
+        x = re.search("name.*=.*,", mod_lua_text)
+        y = re.search('".*"', x.group())
+        if y != None:
+            name = y.group()[1: len(y.group())-1]
+        else:
+            name = x.group()[9: len(x.group())-3]
+
+
+    try:
+        with open(os.path.join(folder, "strings.lua"), "r", encoding="utf-8") as strings_lua:
+            strings_lua_text = strings_lua.read()
+        x = re.search(f'{name}.*', strings_lua_text)
+        y = re.search('".*"', x.group()[len(name)+1:])
+        name = y.group()[1:len(y.group())-1]
+    except:
+        pass
+
+
+
+
+    return name
 
 def getExternalMod(folder):
 
@@ -21,36 +52,7 @@ def getExternalMod(folder):
         minorVersion = mod_json["minorVersion"]
 
     if not name:
-        x = re.search("name.*=.*_.*,", mod_lua_text)
-        if x:
-            y = re.search('".*"', x.group())
-            if y != None:
-                name = y.group()[1: len(y.group())-1]
-            else:
-                name = x.group()[10: len(x.group())-3]
-        else:
-            x = re.search("name.*=.*,", mod_lua_text)
-            y = re.search('".*"', x.group())
-            if y != None:
-                name = y.group()[1: len(y.group())-1]
-            else:
-                name = x.group()[9: len(x.group())-3]
-
-    if name == "mod_name":
-        with open(os.path.join(folder, "strings.lua"), "r", encoding="utf-8") as strings_lua:
-            strings_lua_text = strings_lua.read()
-        x = re.search('mod_name.*=.*,', strings_lua_text)
-        name = x.group()[14:len(x.group())-2]
-    elif name == "name":
-        with open(os.path.join(folder, "strings.lua"), "r", encoding="utf-8") as strings_lua:
-            strings_lua_text = strings_lua.read()
-        x = re.search('name.*=.*,', strings_lua_text)
-        name = x.group()[10:len(x.group())-2]
-    elif name == "title":
-        with open(os.path.join(folder, "strings.lua"), "r", encoding="utf-8") as strings_lua:
-            strings_lua_text = strings_lua.read()
-        x = re.search('title.*=.*,', strings_lua_text)
-        name = x.group()[9:len(x.group())-2]
+        name = getName(folder, mod_lua_text)
 
     if not minorVersion:
         x = re.search("minorVersion.*=.*,", mod_lua_text)
@@ -83,6 +85,7 @@ def getExternalMod(folder):
             options = False
 
     return Mod(name, minorVersion, source, image, options, folder, authors)
+
 def getExternalMods(externalModsDirectory):
     folders = os.listdir(externalModsDirectory)
 
@@ -146,36 +149,7 @@ def getSteamMod(folder):
         minorVersion = mod_json["minorVersion"]
 
     if not name:
-        x = re.search("name.*=.*_.*,", mod_lua_text)
-        if x:
-            y = re.search('".*"', x.group())
-            if y != None:
-                name = y.group()[1: len(y.group())-1]
-            else:
-                name = x.group()[10: len(x.group())-3]
-        else:
-            x = re.search("name.*=.*,", mod_lua_text)
-            y = re.search('".*"', x.group())
-            if y != None:
-                name = y.group()[1: len(y.group())-1]
-            else:
-                name = x.group()[9: len(x.group())-3]
-
-    if name == "mod_name":
-        with open(os.path.join(folder, "strings.lua"), "r", encoding="utf-8") as strings_lua:
-            strings_lua_text = strings_lua.read()
-        x = re.search('mod_name.*=.*,', strings_lua_text)
-        name = x.group()[14:len(x.group())-2]
-    elif name == "name":
-        with open(os.path.join(folder, "strings.lua"), "r", encoding="utf-8") as strings_lua:
-            strings_lua_text = strings_lua.read()
-        x = re.search('name.*=.*,', strings_lua_text)
-        name = x.group()[10:len(x.group())-2]
-    elif name == "title":
-        with open(os.path.join(folder, "strings.lua"), "r", encoding="utf-8") as strings_lua:
-            strings_lua_text = strings_lua.read()
-        x = re.search('title.*=.*,', strings_lua_text)
-        name = x.group()[9:len(x.group())-2]
+        name = getName(folder, mod_lua_text)
 
 
     if not minorVersion:
@@ -216,19 +190,40 @@ def getSteamMods(steamModsDirectory):
     Mods = []
     for folder in folders:
         try:
-            Mods.append(getExternalMod(os.path.join(steamModsDirectory, folder)))
+            Mods.append(getSteamMod(os.path.join(steamModsDirectory, folder)))
         except:
             continue
     return Mods
 
+class MyThread(threading.Thread):
+    def __init__(self, owntarget, var):
+        super().__init__()
+        self.mods = []
+        self.owntarget =  owntarget
+        self.var = var
+    def run(self):
+        self.mods = self.owntarget(self.var)
+
 def getAllMods(externalModsDirectory, steamModsDirectory, userdataModsDirectory, StagingAreaModsDirectory):
+    t1 = MyThread(getExternalMods, externalModsDirectory)
+    t2 = MyThread(getSteamMods, steamModsDirectory)
+    t3 = MyThread(getUserdataMods, userdataModsDirectory)
+    t4 = MyThread(getStagingAreaMods, StagingAreaModsDirectory)
+    t1.run()
+    t2.run()
+    t3.run()
+    t4.run()
+    while True:
+        if t1.is_alive() == False and t2.is_alive() == False and t3.is_alive() == False and t4.is_alive() == False:
+            break
     Mods = []
-    for mod in getExternalMods(externalModsDirectory):
+    for mod in t1.mods:
         Mods.append(mod)
-    for mod in getSteamMods(steamModsDirectory):
+    for mod in t2.mods:
         Mods.append(mod)
-    for mod in getUserdataMods(userdataModsDirectory):
+    for mod in t3.mods:
         Mods.append(mod)
-    for mod in getStagingAreaMods(StagingAreaModsDirectory):
+    for mod in t4.mods:
         Mods.append(mod)
+    Mods = sorted(Mods, key=operator.attrgetter('name'))
     return Mods

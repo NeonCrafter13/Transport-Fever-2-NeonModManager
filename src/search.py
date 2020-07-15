@@ -1,4 +1,4 @@
-def find_mod(Mods, Keyword):
+def find_mod_compare(Mods, Keyword):
     Keyword = Keyword.lower().replace(" ","")
     items = []
     for Mod in Mods:
