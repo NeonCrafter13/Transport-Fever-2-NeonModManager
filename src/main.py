@@ -1,23 +1,13 @@
 # Entrypoint to the Aplication
 import configparser
 import os,sys, subprocess
-import mod_finder, modlist, modinstaller, search
+import mod_finder, modlist, search
 from mod import Mod
 from os.path import expanduser
 
 from PyQt5.QtWidgets import QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QApplication, QMainWindow, QAction, QGridLayout, QScrollArea, QLabel, QFileDialog, QLineEdit, QMessageBox, QListWidget, QListWidgetItem, QAbstractItemView
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtCore import Qt
-
-config = configparser.ConfigParser()
-config.read("settings.ini")
-
-externalModsDirectory = os.path.normpath(config['DIRECTORY']['externalMods'])
-steamModsDirectory = os.path.normpath(config["DIRECTORY"]["steamMods"])
-userdataModsDirectory = os.path.normpath(config["DIRECTORY"]["userdatamods"])
-stagingAreamodsDirectory = os.path.normpath(config["DIRECTORY"]["stagingareamods"])
-
-
 
 app = QApplication(sys.argv)
 
@@ -31,12 +21,28 @@ class ErrorBox(QMessageBox):
         self.show()
 
 
-global Mods
+config = configparser.ConfigParser()
+config.read("settings.ini")
+configfound = True
 
-if os.path.isdir(externalModsDirectory) and os.path.isdir(steamModsDirectory) and os.path.isdir(userdataModsDirectory) and os.path.isdir(stagingAreamodsDirectory):
-    Mods = mod_finder.getAllMods(externalModsDirectory, steamModsDirectory, userdataModsDirectory, stagingAreamodsDirectory)
-else:
-    e = ErrorBox("Mod-Directories are incorrect")
+print(configfound)
+try:
+    externalModsDirectory = os.path.normpath(config['DIRECTORY']['externalMods'])
+    steamModsDirectory = os.path.normpath(config["DIRECTORY"]["steamMods"])
+    userdataModsDirectory = os.path.normpath(config["DIRECTORY"]["userdatamods"])
+    stagingAreamodsDirectory = os.path.normpath(config["DIRECTORY"]["stagingareamods"])
+    import modinstaller
+
+    global Mods
+
+    if os.path.isdir(externalModsDirectory) and os.path.isdir(steamModsDirectory) and os.path.isdir(userdataModsDirectory) and os.path.isdir(stagingAreamodsDirectory):
+        Mods = mod_finder.getAllMods(externalModsDirectory, steamModsDirectory, userdataModsDirectory, stagingAreamodsDirectory)
+    else:
+        e = ErrorBox("Mod-Directories are incorrect")
+    configfound = True
+except:
+    error = ErrorBox("Could not find settings.ini")
+    configfound = False
 
 class CompareMods(QWidget):
     def __init__(self, list):
@@ -464,7 +470,8 @@ class Window(QMainWindow):
         self.mainwidget = MainWidget()
         self.setCentralWidget = self.mainwidget
 
-if os.path.isdir(externalModsDirectory) and os.path.isdir(steamModsDirectory):
-    w = Window()
+if configfound:
+    if os.path.isdir(externalModsDirectory) and os.path.isdir(steamModsDirectory) and os.path.isdir(userdataModsDirectory) and os.path.isdir(stagingAreamodsDirectory):
+        w = Window()
 
 sys.exit(app.exec_())
