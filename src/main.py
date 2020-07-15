@@ -367,6 +367,9 @@ class MainWidget(QWidget):
 class Window(QMainWindow):
     def __init__(self):
         super().__init__()
+        with open("Aqua.qss", "r") as style:
+            style = style.read()
+        self.setStyleSheet(style)
         self.initMe()
 
     def initMe(self):
