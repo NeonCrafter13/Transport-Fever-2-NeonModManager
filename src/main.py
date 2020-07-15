@@ -11,9 +11,13 @@ from PyQt5.QtCore import Qt
 
 app = QApplication(sys.argv)
 
+with open("Aqua.qss", "r") as style:
+    style = style.read()
+
 class ErrorBox(QMessageBox):
     def __init__(self,error: str):
         super().__init__()
+        self.setStyleSheet(style)
         self.setIcon(QMessageBox.Critical)
         self.setText(error)
         self.setStandardButtons(QMessageBox.Close)
@@ -51,6 +55,7 @@ class CompareMods(QWidget):
         self.list = list
         self.setGeometry(50, 50, 500, 500)
         self.setWindowTitle("Compare Mods")
+        self.setStyleSheet(style)
         self.initMe()
 
     def initMe(self):
@@ -113,6 +118,7 @@ class InstallModWindow(QWidget):
         self.setAcceptDrops(True)
         self.setGeometry(50,50,500,500)
         self.setWindowTitle("Mod Installer")
+        self.setStyleSheet(style)
         self.initMe()
 
     def initMe(self):
@@ -367,8 +373,7 @@ class MainWidget(QWidget):
 class Window(QMainWindow):
     def __init__(self):
         super().__init__()
-        with open("Aqua.qss", "r") as style:
-            style = style.read()
+
         self.setStyleSheet(style)
         self.initMe()
 
