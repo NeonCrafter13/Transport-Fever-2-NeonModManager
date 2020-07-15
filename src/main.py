@@ -23,9 +23,7 @@ class ErrorBox(QMessageBox):
 
 config = configparser.ConfigParser()
 config.read("settings.ini")
-configfound = True
 
-print(configfound)
 try:
     externalModsDirectory = os.path.normpath(config['DIRECTORY']['externalMods'])
     steamModsDirectory = os.path.normpath(config["DIRECTORY"]["steamMods"])
@@ -158,10 +156,7 @@ class InstallModWindow(QWidget):
                 a = True
 
             if a:
-                global Mods
-                Mods = mod_finder.getAllMods(externalModsDirectory, steamModsDirectory)
-                w.reload()
-                self.setParent = None
+                self.error = ErrorBox("New Installed Mod will only be shown after restart")
         else:
             event.ignore()
 
@@ -171,14 +166,13 @@ class InstallModWindow(QWidget):
             self,
             "Install Mod",
             expanduser("~"),
-            "(*.rar,*.zip)"
+            "(*.rar *.zip *.7z)"
             )
 
         if f_dir[0] != "":
             modinstaller.install(f_dir[0])
-            global Mods
-            Mods = mod_finder.getAllMods(externalModsDirectory, steamModsDirectory)
-            w.reload()
+            self.error = ErrorBox("New Installed Mod will only be shown after restart")
+
 
             self.setParent = None
 
@@ -193,9 +187,8 @@ class InstallModWindow(QWidget):
 
         if f_dir != "":
             modinstaller.install(f_dir)
-            global Mods
-            Mods = mod_finder.getAllMods(externalModsDirectory, steamModsDirectory)
-            w.reload()
+            self.error = ErrorBox("New Installed Mod will only be shown after restart")
+
 
             self.setParent = None
 
@@ -263,9 +256,7 @@ class RPanal(QWidget):
         if not self.Mod.uninstall():
             self.error = ErrorBox("Mod couldn´t be uninstalled")
         else:
-            global Mods
-            Mods = mod_finder.getAllMods(externalModsDirectory, steamModsDirectory)
-            w.reload()
+            self.error = ErrorBox("Uninstalled Mods will be listed if Programm is not restarted")
 
 class ModBox(QWidget):
     def __init__(self, Mod, id):
@@ -330,10 +321,7 @@ class MainWidget(QWidget):
         scroll.setWidgetResizable(True)
         self.scrollcontent = QListWidget(scroll)
 
-
-        i = -1
         for mod in Mods:
-            i = i + 1
             a = QListWidgetItem(mod.name)
             a.mod = mod
             self.scrollcontent.addItem(a)
@@ -357,7 +345,9 @@ class MainWidget(QWidget):
     def update_RPanal(self):
         self.mod_info.setParent(None)
         self.mod_info.pixmap = None
-        item = self.scrollcontent.selectedItems()[0]
+        items = self.scrollcontent.selectedItems()
+        if not items: return
+        item = items[0]
         self.mod_info = RPanal(item.mod)
         self.h.addWidget(self.mod_info)
         self.mod_info.show()
@@ -465,10 +455,6 @@ class Window(QMainWindow):
             with open('settings.ini', 'w') as configfile:
                 config.write(configfile)
 
-    def reload(self):
-        self.mainwidget.setParent = None
-        self.mainwidget = MainWidget()
-        self.setCentralWidget = self.mainwidget
 
 if configfound:
     if os.path.isdir(externalModsDirectory) and os.path.isdir(steamModsDirectory) and os.path.isdir(userdataModsDirectory) and os.path.isdir(stagingAreamodsDirectory):

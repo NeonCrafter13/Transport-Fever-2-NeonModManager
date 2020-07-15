@@ -1,20 +1,15 @@
-import os, zipfile, configparser, rarfile
+import os, configparser, subprocess
 from distutils.dir_util import copy_tree
 
 config = configparser.ConfigParser()
 config.read("settings.ini")
 
 externalModsDirectory = os.path.normpath(config['DIRECTORY']['externalMods'])
+sevenZipinstallation = os.path.normpath(config["DIRECTORY"]["7-zipInstallation"])
 
 def install(link):
-    print(link)
-    if link.lower().endswith(('zip')):
-        ZipFile = zipfile.ZipFile(link, mode="r")
-        ZipFile.extractall(path=externalModsDirectory)
-        return True
-    if link.lower().endswith(('rar')):
-        RarFile = rarfile.RarFile(link, mode="r")
-        RarFile.extractall(path=externalModsDirectory)
+    if link.lower().endswith('zip') or link.lower().endswith('rar') or link.lower().endswith("7z"):
+        subprocess.Popen(f'"{ os.path.join(sevenZipinstallation, "7z.exe") }" x {link} -o"{externalModsDirectory}" -y')
         return True
     if os.path.isdir(link):
         # copy subdirectory example
