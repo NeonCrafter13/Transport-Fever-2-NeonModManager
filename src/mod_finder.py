@@ -1,4 +1,5 @@
-import os, re, json, threading, operator
+import concurrent.futures
+import os, re, json, operator
 
 from mod import Mod
 
@@ -195,35 +196,24 @@ def getSteamMods(steamModsDirectory):
             continue
     return Mods
 
-class MyThread(threading.Thread):
-    def __init__(self, owntarget, var):
-        super().__init__()
-        self.mods = []
-        self.owntarget =  owntarget
-        self.var = var
-    def run(self):
-        self.mods = self.owntarget(self.var)
-
 def getAllMods(externalModsDirectory, steamModsDirectory, userdataModsDirectory, StagingAreaModsDirectory):
-    t1 = MyThread(getExternalMods, externalModsDirectory)
-    t2 = MyThread(getSteamMods, steamModsDirectory)
-    t3 = MyThread(getUserdataMods, userdataModsDirectory)
-    t4 = MyThread(getStagingAreaMods, StagingAreaModsDirectory)
-    t1.run()
-    t2.run()
-    t3.run()
-    t4.run()
-    while True:
-        if t1.is_alive() == False and t2.is_alive() == False and t3.is_alive() == False and t4.is_alive() == False:
-            break
+    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
+        t1 = executor.submit(getExternalMods, externalModsDirectory)
+        t2 = executor.submit(getSteamMods, steamModsDirectory)
+        t3 = executor.submit(getUserdataMods, userdataModsDirectory)
+        t4 = executor.submit(getStagingAreaMods, StagingAreaModsDirectory)
+        externalmods = t1.result()
+        steammods = t2.result()
+        userdatamods = t3.result()
+        stagingareamods = t4.result()
     Mods = []
-    for mod in t1.mods:
+    for mod in externalmods:
         Mods.append(mod)
-    for mod in t2.mods:
+    for mod in steammods:
         Mods.append(mod)
-    for mod in t3.mods:
+    for mod in userdatamods:
         Mods.append(mod)
-    for mod in t4.mods:
+    for mod in stagingareamods:
         Mods.append(mod)
     Mods = sorted(Mods, key=operator.attrgetter('name'))
     return Mods
