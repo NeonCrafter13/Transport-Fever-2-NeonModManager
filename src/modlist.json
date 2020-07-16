@@ -1,1028 +1,1028 @@
 [
     {
+        "name": "(UEP_201)_Tankstelle_Serie",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "40-Tonner AT-Set",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Abellio Stadler FLIRT 3",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Aktiviere Unterstützung für Common API",
+        "source": "transportfever.net",
+        "authors": null
+    },
+    {
+        "name": "Alstom Coradia A TER",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Alstom Coradia Continental BR 1440",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Ammendorf waggons pack",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Angier Bridge Type-1",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Angier Bridge Type-2",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Angier Tunnel Type-1",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Angier Tunnel Type-2",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Angier Tunnel Type-3",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Angier Tunnel Type-4",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Animals asset",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Asset Expansion",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Assetsammlung von Schwarzfahrer",
+        "source": "other",
+        "authors": null
+    },
+    {
+        "name": "BR 145 vorderer Pantograph\"), description = _(\"option_br_145_vp_desc\"), image = \"res/textures/ui/models_small/vehicle/train/br_145_vp/br_145_db_cargo_vp@2x.tga",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "BVG H (U-Bahn Berlin)",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Bahnhof Dresden Neustadt",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Bahnstations Mod pack",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Bahnübergänge / level crossing",
+        "source": "transportfever.net",
+        "authors": null
+    },
+    {
+        "name": "Baureihe V 100.0-1 DR",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Besserer UG Bahnübergang",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "BethGon II - Burlington Northern",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Better roads",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Bimdzf",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Boeing 737-100 Lufthansa",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Boeing 777 Pack",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Bombardier Talent 2 DB-Regio",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Brücken- & Dammbau\\n  bridge & dam construction",
+        "source": "transportfever.net",
+        "authors": null
+    },
+    {
+        "name": "Brückenköpfe, Dammwände, Schallschutzwände, Mauern, Zäune",
+        "source": "transportfever.net",
+        "authors": null
+    },
+    {
+        "name": "Bus- und Tramhaltestelle DDR Stadt",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Bushaltestelle Waschbeton",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Bybdzf DB Wittenbergerkopf",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "C2 Inspiro",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "CB ! TpF1 buildings pack !",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "CB + TpF1 Era_C + TpF2 Era_B releveled auto construction",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "CB asset TpF1 Era_C",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "CB asset TpF2 Era_B",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "CB asset TpF2 Era_C",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Cargo Asset Set",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Compact Tunnel Entry",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Connum's German Traffic Assets",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Countryside",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "DB BR 147/187 (TRAXX 3)",
+        "source": "other",
+        "authors": null
+    },
+    {
+        "name": "DB Doppelstockwagen",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "DB Express Train Coaches modern, ex IC '79",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "DB Gleisset",
+        "source": "transportfever.net",
+        "authors": null
+    },
+    {
+        "name": "DMA Road Stations",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Depot + Asset Badischer Bahnhof Basel",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Duewag R-Wagen",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "ETR500 (2nd Gen) Frecciarossa & Eurostar Italy",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Early Light Signals for DRG/DB",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Early Light Signals for DRG/DB Timefix",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Eurodual Addon",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Fahrzeuge: kein Endjahr",
+        "source": "other",
+        "authors": null
+    },
+    {
+        "name": "Festungsbau, Mauern / fortification, wall",
+        "source": "transportfever.net",
+        "authors": null
+    },
+    {
+        "name": "Field Plopper",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Flixtrain Taurus",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Flixtrain Wagen ",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Flowers",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Forstwirtschaft\\nforestry",
+        "source": "transportfever.net",
+        "authors": null
+    },
+    {
+        "name": "Fueling Stations",
+        "source": "transportfever.net",
+        "authors": null
+    },
+    {
+        "name": "German V 90 | Class 290 / 291 / 294 / 295 / 296",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "German class 101",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Grafiti als Asset",
+        "source": "transportfever.net",
         "authors": [
             "Bluefox",
             "Siri",
             "mediziner",
             "Spyos",
             "ReCoKo"
-        ],
-        "name": "Grafiti als Asset",
-        "source": "transportfever.net"
+        ]
     },
     {
-        "authors": null,
-        "name": "Ks-Signalsystem",
-        "source": "other"
+        "name": "Güterwagen Drehgestell Set",
+        "source": "transportfever.net",
+        "authors": null
     },
     {
-        "authors": null,
-        "name": "Aktiviere Unterst\u00fctzung f\u00fcr Common API",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "Bahn\u00fcberg\u00e4nge / level crossing",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "Forstwirtschaft\\nforestry",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "Festungsbau, Mauern / fortification, wall",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "Industrial park\\nIndustriepark",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "Strassenpaket / road pack",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "Br\u00fccken- & Dammbau\\n  bridge & dam construction",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "G\u00fcterwagen Drehgestell Set",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "Tagnpps SBB",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "Taoos-y 894",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "Kleingarten-Assets",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "Wald und Baum",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "Personenassets",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "Unsichtbare Bruecke",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "Ks-Signalsystem_Bruecke",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "DB BR 147/187 (TRAXX 3)",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "Fueling Stations",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "ICE 4 of Deutsche Bahn",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "Signal Gantries DB",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "Interlocking Package",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "Br\u00fcckenk\u00f6pfe, Dammw\u00e4nde, Schallschutzw\u00e4nde, Mauern, Z\u00e4une",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "Assetsammlung von Schwarzfahrer",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "DB Gleisset",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "H\u00e4user aus dem Ruhrgebiet",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
         "name": "H/V 69-Signale (Basisset)",
-        "source": "other"
+        "source": "other",
+        "authors": null
     },
     {
-        "authors": null,
-        "name": "H/V 69-Signale (f\u00fcr Signalbr\u00fccken)",
-        "source": "other"
-    },
-    {
-        "authors": null,
         "name": "H/V 69-Signale (Erweiterung 1)",
-        "source": "other"
+        "source": "other",
+        "authors": null
     },
     {
-        "authors": null,
         "name": "H/V 69-Signale (Erweiterung 2)",
-        "source": "other"
+        "source": "other",
+        "authors": null
     },
     {
-        "authors": null,
         "name": "H/V 69-Signale (Erweiterung 3)",
-        "source": "other"
+        "source": "other",
+        "authors": null
     },
     {
-        "authors": null,
-        "name": "LIDL",
-        "source": "other"
+        "name": "H/V 69-Signale (für Signalbrücken)",
+        "source": "other",
+        "authors": null
     },
     {
-        "authors": null,
-        "name": "Kirchenpaket",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "Residential Assets",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "Stromtrasse",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "Stromtrasse - Deutsche Oberleitung - Adapter",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "Spacky_Damm_Glei\u00df",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "MISSION01",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "MISSION02",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "MISSION03",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "MISSION04",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "MISSION05",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "MISSION06",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "MISSION07",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "MISSION08",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "MISSION09",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "MISSION10",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "MISSION11",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "MISSION12",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "MISSION13",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "MISSION14",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "MISSION15",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "MISSION16",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "MISSION17",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "MISSION18",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "No costs",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "Sandkastenmodus",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "Fahrzeuge: kein Endjahr",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "Vienna Fever: Br\u00fccken und Bogen",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "Early Light Signals for DRG/DB",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "Early Light Signals for DRG/DB Timefix",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "Baureihe V 100.0-1 DR",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "Train End Indicator DE/AT",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "L\u00e4ndliche Bushaltestellen",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "name",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "Shader Enhancement",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "Bimdzf",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "UIC-Z-Wagen-DB",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "Marc's Stra\u00dfen- und Trampaket",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "Stadtbushaltestellen",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "Town buildings: no end year",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "TRAIN SOUND MOD 1.71",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "TPF2-Addon-Gleis_-_Deutsche Oberleitung",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "Angier Tunnel Type-1",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "Angier Tunnel Type-2",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "Angier Tunnel Type-3",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "Angier Tunnel Type-4",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "Asset Expansion",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "Ship Expansion",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "TGV_Duplex",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "C2 Inspiro",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "Cargo Asset Set",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "asset car",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "CB asset TpF2 Era_C",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "Kraftwerk-Set",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "Animals asset",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "TGV PSE: Atlantique",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "\u0414\u043e\u043c \u0441\u0435\u0440\u0438\u0438 II-18",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "Angier Bridge Type-1",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "madhatter_bridges_1",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "Field Plopper",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "Duewag R-Wagen",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "Bybdzf DB Wittenbergerkopf",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "TGV: Thalys",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "TPF2-Addon-Script_-_verbesserte Stra\u00dfen",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "Siemens Avenio T Munich",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "TRA E1000 Tze-chiang Limited Express",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "Stoag Niederflurbus",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "(UEP_201)_Tankstelle_Serie",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "CB asset TpF1 Era_C",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "Better roads",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "Boeing 737-100 Lufthansa",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "CB asset TpF2 Era_B",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "CB + TpF1 Era_C + TpF2 Era_B releveled auto construction",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "CB ! TpF1 buildings pack !",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "ETR500 (2nd Gen) Frecciarossa & Eurostar Italy",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "assets for park",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "VTG Tank Car Fleet",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "DB Doppelstockwagen",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "Besserer UG Bahn\u00fcbergang",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "German class 101",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "Placerholder_Info_Name",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "BR 145 vorderer Pantograph\"), description = _(\"option_br_145_vp_desc\"), image = \"res/textures/ui/models_small/vehicle/train/br_145_vp/br_145_db_cargo_vp@2x.tga",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "UK Generic station Modules",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "Transitional Era Autoparts Boxcar",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "Spacky_Besuchermagnet_1",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "Traxx 1 vorderer Pantograph\"), description = _(\"option_traxx_1_vp_desc\"), image = \"res/textures/ui/models_small/vehicle/train/traxx_1_vp/br_185_captrain_2_vp@2x.tga",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "Bus- und Tramhaltestelle DDR Stadt",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "Bushaltestelle Waschbeton",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "Flowers",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "Traxx 2 vorderer Pantograph\"), description = _(\"option_traxx_2_vp_desc\"), image = \"res/textures/ui/models_small/vehicle/train/traxx_2_br_185_vp/br_185_2_captrain_vp@2x.tga",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "Countryside",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "S-Bahnen BR 423/422/430",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "Stadler KISS der ersten Generation",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
         "name": "Habbiillnss",
-        "source": "transportfever.net"
+        "source": "Steam",
+        "authors": null
     },
     {
-        "authors": null,
-        "name": "NL Modular Station",
-        "source": "other"
+        "name": "Häuser aus dem Ruhrgebiet",
+        "source": "transportfever.net",
+        "authors": null
     },
     {
-        "authors": null,
-        "name": "Z\u00e4une",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "Siemens ES64U",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "\u00d6BB 1016 / 1116 / 1216",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "info_zacns_name",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "TPF2-Triebwagen_-_ICE 1 Gen. | InterCityExpress",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "40-Tonner AT-Set",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "Angier Bridge Type-2",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "Connum's German Traffic Assets",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "NS SGMm sprinter",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "Stadler Variobahn Munich",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "Parallelism",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "Signaltafeln der deutschen Bahnen",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "ext.roads - footpaths standalone",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "\u00d6BB 1012, 1014, 1163",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
         "name": "IC2000 mit Re 460",
-        "source": "transportfever.net"
+        "source": "Steam",
+        "authors": null
     },
     {
-        "authors": null,
-        "name": "Morning",
-        "source": "other"
+        "name": "ICE 4 of Deutsche Bahn",
+        "source": "transportfever.net",
+        "authors": null
     },
     {
-        "authors": null,
-        "name": "Modular Station Roof",
-        "source": "other"
+        "name": "Industrial park\\nIndustriepark",
+        "source": "transportfever.net",
+        "authors": null
     },
     {
-        "authors": null,
-        "name": "Script-Mod all rc available by majuen [YouTube Channel]",
-        "source": "other"
+        "name": "Interlocking Package",
+        "source": "transportfever.net",
+        "authors": null
     },
     {
-        "authors": null,
-        "name": "Moderner Deutscher beschrankter Bahn\u00fcbergang",
-        "source": "other"
+        "name": "Kirchenpaket",
+        "source": "transportfever.net",
+        "authors": null
     },
     {
-        "authors": null,
-        "name": "BethGon II - Burlington Northern",
-        "source": "transportfever.net"
+        "name": "Kleingarten-Assets",
+        "source": "other",
+        "authors": null
     },
     {
-        "authors": null,
-        "name": "Depot + Asset Badischer Bahnhof Basel",
-        "source": "transportfever.net"
+        "name": "Kraftwerk-Set",
+        "source": "Steam",
+        "authors": null
     },
     {
-        "authors": null,
-        "name": "Modernes Depot",
-        "source": "transportfever.net"
+        "name": "Ks-Signalsystem",
+        "source": "other",
+        "authors": null
     },
     {
-        "authors": null,
-        "name": "Bombardier Talent 2 DB-Regio",
-        "source": "transportfever.net"
+        "name": "Ks-Signalsystem_Bruecke",
+        "source": "other",
+        "authors": null
     },
     {
-        "authors": null,
-        "name": "Ammendorf waggons pack",
-        "source": "other"
+        "name": "Köf III DB",
+        "source": "Steam",
+        "authors": null
     },
     {
-        "authors": null,
-        "name": "MAN F2000",
-        "source": "other"
+        "name": "LIDL",
+        "source": "other",
+        "authors": null
     },
     {
-        "authors": null,
-        "name": "Plaxton Pointer 2 Alexander Dennis Dart SLF",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "USSR & CIS Railroad",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "DB Express Train Coaches modern, ex IC '79",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "K\u00f6f III DB",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "\u00d6BB \u00b4Modularwagen`",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "\u00d6BB Inlandsreisezugwagen \u00b4Lange Schlieren\u00b4",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "Setra S 431 DT Euro V",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "Thunersee",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "Modular Station Roof (Modern)",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "name",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "German V 90 | Class 290 / 291 / 294 / 295 / 296",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "\u00d6BB Doppelstockwagen",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "Seamon_re460_016_name",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "Alstom Coradia Continental BR 1440",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "Ventabren Railway Viaduct",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "Solaris Urbino III MVG Repaint",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "Mercedes-Benz Tourismo M",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "U-Bahnhof",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "Stadler Smile (SBB RABe 501 Giruno)",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "Alstom Coradia A TER",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "Compact Tunnel Entry",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "Bahnstations Mod pack",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "asset car with colors",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "Terrain textures for natural water surfaces",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "\u00d6BB 5047/5147",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "Terrain Fever",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "NL VDL Citea LLE-120",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "roughly made elevated station",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "\u0414\u043e\u043c\u0430 201-\u0439 \u0441\u0435\u0440\u0438\u0438.",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "\u0422\u0438\u043f\u043e\u0432\u044b\u0435 \u0443\u043d\u0438\u0432\u0435\u0440\u043c\u0430\u0433\u0438. \u0421\u0435\u0440\u0438\u044f 2-07.",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "\u0414\u043e\u043c \u0441\u0435\u0440\u0438\u0438 1-335",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "BVG H (U-Bahn Berlin)",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "Mercedes-Benz Citaro C2",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "Mercedes-Benz Citaro C2 (G)",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "Ortseingangsschild",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "Abellio Stadler FLIRT 3",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "extended NL overpass (addon)",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "retaining wall asset",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "assets for construction site",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "Spielplatz",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "Shipping containers",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "TTX double stack well cars",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "Bahnhof Dresden Neustadt",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "UK NSE Modular Station",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "Eurodual Addon",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "Boeing 777 Pack",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "kein Endjahr",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
-        "name": "DMA Road Stations",
-        "source": "other"
-    },
-    {
-        "authors": null,
-        "name": "Sgns(s) 60",
-        "source": "transportfever.net"
-    },
-    {
-        "authors": null,
         "name": "London Underground 1992 stock",
-        "source": "transportfever.net"
+        "source": "Steam",
+        "authors": null
     },
     {
-        "authors": null,
-        "name": "Flixtrain Taurus",
-        "source": "transportfever.net"
+        "name": "Ländliche Bushaltestellen",
+        "source": "Steam",
+        "authors": null
     },
     {
-        "authors": null,
-        "name": "Flixtrain Wagen ",
-        "source": "transportfever.net"
+        "name": "MAN F2000",
+        "source": "Steam",
+        "authors": null
     },
     {
-        "authors": null,
+        "name": "MISSION01",
+        "source": "other",
+        "authors": null
+    },
+    {
+        "name": "MISSION02",
+        "source": "other",
+        "authors": null
+    },
+    {
+        "name": "MISSION03",
+        "source": "other",
+        "authors": null
+    },
+    {
+        "name": "MISSION04",
+        "source": "other",
+        "authors": null
+    },
+    {
+        "name": "MISSION05",
+        "source": "other",
+        "authors": null
+    },
+    {
+        "name": "MISSION06",
+        "source": "other",
+        "authors": null
+    },
+    {
+        "name": "MISSION07",
+        "source": "other",
+        "authors": null
+    },
+    {
+        "name": "MISSION08",
+        "source": "other",
+        "authors": null
+    },
+    {
+        "name": "MISSION09",
+        "source": "other",
+        "authors": null
+    },
+    {
+        "name": "MISSION10",
+        "source": "other",
+        "authors": null
+    },
+    {
+        "name": "MISSION11",
+        "source": "other",
+        "authors": null
+    },
+    {
+        "name": "MISSION12",
+        "source": "other",
+        "authors": null
+    },
+    {
+        "name": "MISSION13",
+        "source": "other",
+        "authors": null
+    },
+    {
+        "name": "MISSION14",
+        "source": "other",
+        "authors": null
+    },
+    {
+        "name": "MISSION15",
+        "source": "other",
+        "authors": null
+    },
+    {
+        "name": "MISSION16",
+        "source": "other",
+        "authors": null
+    },
+    {
+        "name": "MISSION17",
+        "source": "other",
+        "authors": null
+    },
+    {
+        "name": "MISSION18",
+        "source": "other",
+        "authors": null
+    },
+    {
+        "name": "Marc's Straßen- und Trampaket",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Mercedes-Benz Citaro C2",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Mercedes-Benz Citaro C2 (G)",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Mercedes-Benz Tourismo M",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Moderner Deutscher beschrankter Bahnübergang",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Modernes Depot",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Modular Station Roof",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Modular Station Roof (Modern)",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Morning",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "NL Modular Station",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "NL VDL Citea LLE-120",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "NS SGMm sprinter",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "No costs",
+        "source": "other",
+        "authors": null
+    },
+    {
+        "name": "Ortseingangsschild",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Parallelism",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Personenassets",
+        "source": "transportfever.net",
+        "authors": null
+    },
+    {
+        "name": "Placerholder_Info_Name",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Plaxton Pointer 2 Alexander Dennis Dart SLF",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Residential Assets",
+        "source": "transportfever.net",
+        "authors": null
+    },
+    {
+        "name": "S-Bahnen BR 423/422/430",
+        "source": "Steam",
+        "authors": null
+    },
+    {
         "name": "Samms 489",
-        "source": "transportfever.net"
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Sandkastenmodus",
+        "source": "other",
+        "authors": null
+    },
+    {
+        "name": "Script-Mod all rc available by majuen [YouTube Channel]",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Seamon_re460_016_name",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Setra S 431 DT Euro V",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Sgns(s) 60",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Shader Enhancement",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Ship Expansion",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Shipping containers",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Siemens Avenio T Munich",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Siemens ES64U",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Signal Gantries DB",
+        "source": "other",
+        "authors": null
+    },
+    {
+        "name": "Signaltafeln der deutschen Bahnen",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Solaris Urbino III MVG Repaint",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Spacky_Besuchermagnet_1",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Spacky_Damm_Gleiß",
+        "source": "other",
+        "authors": null
+    },
+    {
+        "name": "Spielplatz",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Stadler KISS der ersten Generation",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Stadler Smile (SBB RABe 501 Giruno)",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Stadler Variobahn Munich",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Stadtbushaltestellen",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Stoag Niederflurbus",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Strassenpaket / road pack",
+        "source": "transportfever.net",
+        "authors": null
+    },
+    {
+        "name": "Stromtrasse",
+        "source": "other",
+        "authors": null
+    },
+    {
+        "name": "Stromtrasse - Deutsche Oberleitung - Adapter",
+        "source": "other",
+        "authors": null
+    },
+    {
+        "name": "TGV PSE: Atlantique",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "TGV: Thalys",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "TGV_Duplex",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "TPF2-Addon-Gleis_-_Deutsche Oberleitung",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "TPF2-Addon-Script_-_verbesserte Straßen",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "TPF2-Triebwagen_-_ICE 1 Gen. | InterCityExpress",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "TRA E1000 Tze-chiang Limited Express",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "TRAIN SOUND MOD 1.71",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "TTX double stack well cars",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Tagnpps SBB",
+        "source": "transportfever.net",
+        "authors": null
+    },
+    {
+        "name": "Taoos-y 894",
+        "source": "transportfever.net",
+        "authors": null
+    },
+    {
+        "name": "Terrain Fever",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Terrain textures for natural water surfaces",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Thunersee",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Town buildings: no end year",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Train End Indicator DE/AT",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Transitional Era Autoparts Boxcar",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Traxx 1 vorderer Pantograph\"), description = _(\"option_traxx_1_vp_desc\"), image = \"res/textures/ui/models_small/vehicle/train/traxx_1_vp/br_185_captrain_2_vp@2x.tga",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Traxx 2 vorderer Pantograph\"), description = _(\"option_traxx_2_vp_desc\"), image = \"res/textures/ui/models_small/vehicle/train/traxx_2_br_185_vp/br_185_2_captrain_vp@2x.tga",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "U-Bahnhof",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "UIC-Z-Wagen-DB",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "UK Generic station Modules",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "UK NSE Modular Station",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "USSR & CIS Railroad",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Unsichtbare Bruecke",
+        "source": "other",
+        "authors": null
+    },
+    {
+        "name": "VTG Tank Car Fleet",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Ventabren Railway Viaduct",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Vienna Fever: Brücken und Bogen",
+        "source": "transportfever.net",
+        "authors": null
+    },
+    {
+        "name": "Wald und Baum",
+        "source": "transportfever.net",
+        "authors": null
+    },
+    {
+        "name": "Zäune",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "asset car",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "asset car with colors",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "assets for construction site",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "assets for park",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "ext.roads - footpaths standalone",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "extended NL overpass (addon)",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "info_zacns_name",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "kein Endjahr",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "madhatter_bridges_1",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "name",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "name",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "retaining wall asset",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "roughly made elevated station",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "ÖBB 1012, 1014, 1163",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "ÖBB 1016 / 1116 / 1216",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "ÖBB 5047/5147",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "ÖBB Doppelstockwagen",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "ÖBB Inlandsreisezugwagen ´Lange Schlieren´",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "ÖBB ´Modularwagen`",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Дом серии 1-335",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Дом серии II-18",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Дома 201-й серии.",
+        "source": "Steam",
+        "authors": null
+    },
+    {
+        "name": "Типовые универмаги. Серия 2-07.",
+        "source": "Steam",
+        "authors": null
     }
 ]

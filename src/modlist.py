@@ -5,12 +5,12 @@ def export_modlist(mods):
     for mod in mods:
         mod_json = {"name": mod.name, "source": mod.source, "authors": mod.authors}
         mods_json.append(mod_json)
-    json_file = open("modlist.json", "w")
-    json_file.write(json.dumps(mods_json, indent=4, sort_keys=True))
+    with open('modlist.json', 'w', encoding='utf-8') as json_file:
+        json.dump(mods_json, json_file, ensure_ascii=False, indent=4)
 
 def import_modlist(mods):
     try:
-        with open("modlist.json", "r") as json_file:
+        with open("modlist.json", "r", encoding="utf-8") as json_file:
             modlist = json.loads(json_file.read())
         return modlist
     except:
