@@ -11,8 +11,6 @@ from PyQt5.QtCore import Qt
 
 app = QApplication(sys.argv)
 
-with open("Aqua.qss", "r") as style:
-    style = style.read()
 
 class ErrorBox(QMessageBox):
     def __init__(self,error: str):
@@ -27,6 +25,20 @@ class ErrorBox(QMessageBox):
 
 config = configparser.ConfigParser()
 config.read("settings.ini")
+
+try:
+    Width = int(config["GRAPHICS"]["imagesize"])
+except:
+    Width = 384
+try:
+    style = config["GRAPHICS"]["imagesize"]
+    if style:
+        with open("Aqua.qss", "r") as style:
+            style = style.read()
+    else:
+        style = ""
+except:
+    style = ""
 
 try:
     externalModsDirectory = os.path.normpath(config['DIRECTORY']['externalMods'])
@@ -214,7 +226,6 @@ class RPanal(QWidget):
         #Name
         Layout.addWidget(QLabel(str(Mod.name)))
 
-        Width = 384
 
         # Image
         if Mod.image:
