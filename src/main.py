@@ -33,7 +33,7 @@ except:
 try:
     style = config["GRAPHICS"]["imagesize"]
     if style:
-        with open("Aqua.qss", "r") as style:
+        with open("Aqua.css", "r") as style:
             style = style.read()
     else:
         style = ""
