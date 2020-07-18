@@ -1,6 +1,13 @@
-import os, re, json, threading, operator
+import concurrent.futures
+import os, re, json, operator
 
 from mod import Mod
+
+def execute_without_error(func, arg):
+    #try:
+    return func(arg)
+    #except:
+    #    return None
 
 def getName(folder, mod_lua_text):
     x = re.search("name.*=.*_.*,", mod_lua_text)
@@ -94,11 +101,16 @@ def getExternalMods(externalModsDirectory):
     except:
         pass
     Mods = []
-    for folder in folders:
-        try:
-            Mods.append(getExternalMod(os.path.join(externalModsDirectory, folder)))
-        except:
-            continue
+    with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
+        treads = []
+        for folder in folders:
+            treads.append(executor.submit(execute_without_error, getExternalMod, os.path.join(externalModsDirectory, folder)))
+
+
+        for thread in treads:
+            result = thread.result()
+            if result:
+                Mods.append(result)
     return Mods
 
 def getUserdataMods(userdataModsDirectory):
@@ -109,11 +121,16 @@ def getUserdataMods(userdataModsDirectory):
     except:
         pass
     Mods = []
-    for folder in folders:
-        try:
-            Mods.append(getExternalMod(os.path.join(userdataModsDirectory, folder)))
-        except:
-            continue
+    with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
+        treads = []
+        for folder in folders:
+            treads.append(executor.submit(execute_without_error, getExternalMod, os.path.join(userdataModsDirectory, folder)))
+
+
+        for thread in treads:
+            result = thread.result()
+            if result:
+                Mods.append(result)
     return Mods
 
 def getStagingAreaMods(StagingAreaModsDirectory):
@@ -124,11 +141,16 @@ def getStagingAreaMods(StagingAreaModsDirectory):
     except:
         pass
     Mods = []
-    for folder in folders:
-        try:
-            Mods.append(getExternalMod(os.path.join(StagingAreaModsDirectory, folder)))
-        except:
-            continue
+    with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
+        threads = []
+        for folder in folders:
+            threads.append(executor.submit(execute_without_error, getExternalMod, os.path.join(StagingAreaModsDirectory, folder)))
+
+
+        for thread in threads:
+            result = thread.result()
+            if result:
+                Mods.append(result)
     return Mods
 
 def getSteamMod(folder):
@@ -188,42 +210,37 @@ def getSteamMods(steamModsDirectory):
     except:
         pass
     Mods = []
-    for folder in folders:
-        try:
-            Mods.append(getSteamMod(os.path.join(steamModsDirectory, folder)))
-        except:
-            continue
+
+    with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
+        treads = []
+        for folder in folders:
+            treads.append(executor.submit(execute_without_error, getSteamMod, os.path.join(steamModsDirectory, folder)))
+
+
+        for thread in treads:
+            result = thread.result()
+            if result:
+                Mods.append(result)
     return Mods
 
-class MyThread(threading.Thread):
-    def __init__(self, owntarget, var):
-        super().__init__()
-        self.mods = []
-        self.owntarget =  owntarget
-        self.var = var
-    def run(self):
-        self.mods = self.owntarget(self.var)
-
 def getAllMods(externalModsDirectory, steamModsDirectory, userdataModsDirectory, StagingAreaModsDirectory):
-    t1 = MyThread(getExternalMods, externalModsDirectory)
-    t2 = MyThread(getSteamMods, steamModsDirectory)
-    t3 = MyThread(getUserdataMods, userdataModsDirectory)
-    t4 = MyThread(getStagingAreaMods, StagingAreaModsDirectory)
-    t1.run()
-    t2.run()
-    t3.run()
-    t4.run()
-    while True:
-        if t1.is_alive() == False and t2.is_alive() == False and t3.is_alive() == False and t4.is_alive() == False:
-            break
+    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
+        t1 = executor.submit(getExternalMods, externalModsDirectory)
+        t2 = executor.submit(getSteamMods, steamModsDirectory)
+        t3 = executor.submit(getUserdataMods, userdataModsDirectory)
+        t4 = executor.submit(getStagingAreaMods, StagingAreaModsDirectory)
+        externalmods = t1.result()
+        steammods = t2.result()
+        userdatamods = t3.result()
+        stagingareamods = t4.result()
     Mods = []
-    for mod in t1.mods:
+    for mod in externalmods:
         Mods.append(mod)
-    for mod in t2.mods:
+    for mod in steammods:
         Mods.append(mod)
-    for mod in t3.mods:
+    for mod in userdatamods:
         Mods.append(mod)
-    for mod in t4.mods:
+    for mod in stagingareamods:
         Mods.append(mod)
     Mods = sorted(Mods, key=operator.attrgetter('name'))
     return Mods
