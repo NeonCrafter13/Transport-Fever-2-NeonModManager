@@ -3,11 +3,11 @@ import os, re, json, operator
 
 from mod import Mod
 
-def execute_without_error(function, *args):
-    try:
-        lambda function, *args:function(*args)
-    except:
-        return None
+def execute_without_error(func, arg):
+    #try:
+    return func(arg)
+    #except:
+    #    return None
 
 def getName(folder, mod_lua_text):
     x = re.search("name.*=.*_.*,", mod_lua_text)
@@ -101,10 +101,10 @@ def getExternalMods(externalModsDirectory):
     except:
         pass
     Mods = []
-    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
         treads = []
         for folder in folders:
-            treads.append(executor.submit(execute_without_error, (getExternalMod,folder)))
+            treads.append(executor.submit(execute_without_error, getExternalMod, os.path.join(externalModsDirectory, folder)))
 
 
         for thread in treads:
@@ -121,10 +121,10 @@ def getUserdataMods(userdataModsDirectory):
     except:
         pass
     Mods = []
-    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
         treads = []
         for folder in folders:
-            treads.append(executor.submit(execute_without_error, (getExternalMod,folder)))
+            treads.append(executor.submit(execute_without_error, getExternalMod, os.path.join(userdataModsDirectory, folder)))
 
 
         for thread in treads:
@@ -141,13 +141,13 @@ def getStagingAreaMods(StagingAreaModsDirectory):
     except:
         pass
     Mods = []
-    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
-        treads = []
+    with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
+        threads = []
         for folder in folders:
-            treads.append(executor.submit(execute_without_error, (getExternalMod,folder)))
+            threads.append(executor.submit(execute_without_error, getExternalMod, os.path.join(StagingAreaModsDirectory, folder)))
 
 
-        for thread in treads:
+        for thread in threads:
             result = thread.result()
             if result:
                 Mods.append(result)
@@ -211,10 +211,10 @@ def getSteamMods(steamModsDirectory):
         pass
     Mods = []
 
-    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
         treads = []
         for folder in folders:
-            treads.append(executor.submit(execute_without_error, (getSteamMods,folder)))
+            treads.append(executor.submit(execute_without_error, getSteamMod, os.path.join(steamModsDirectory, folder)))
 
 
         for thread in treads:
