@@ -31,8 +31,8 @@ try:
 except:
     Width = 384
 try:
-    style = config["GRAPHICS"]["imagesize"]
-    if style:
+    style = config["GRAPHICS"]["modernstyle"]
+    if style.lower().replace(" ", "") == "true":
         with open("Aqua.css", "r") as style:
             style = style.read()
     else:
