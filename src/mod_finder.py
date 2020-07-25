@@ -4,10 +4,10 @@ import os, re, json, operator
 from mod import Mod
 
 def execute_without_error(func, arg):
-    #try:
-    return func(arg)
-    #except:
-    #    return None
+    try:
+        return func(arg)
+    except:
+        return None
 
 def getName(folder, mod_lua_text):
     x = re.search("name.*=.*_.*,", mod_lua_text)
@@ -106,12 +106,12 @@ def getExternalMods(externalModsDirectory):
         for folder in folders:
             treads.append(executor.submit(execute_without_error, getExternalMod, os.path.join(externalModsDirectory, folder)))
 
-
         for thread in treads:
             result = thread.result()
             if result:
                 Mods.append(result)
     return Mods
+
 
 def getUserdataMods(userdataModsDirectory):
     folders = os.listdir(userdataModsDirectory)
