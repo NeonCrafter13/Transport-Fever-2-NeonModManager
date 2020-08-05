@@ -42,7 +42,7 @@ If your Mod is not detected correct create a File called Mod.json in your Mod as
 ## Installation
 
 :de:
-Um für Windows den NeonModManager zu installieren lädst du dir auf Github die Windows Version runter(https://github.com/NeonCrafter13/Transport-Fever-2-NeonModManager/releases/tag/v1.6).
+Um für Windows den NeonModManager zu installieren lädst du dir auf Github die Windows Version runter(https://github.com/NeonCrafter13/Transport-Fever-2-NeonModManager/releases/tag/v1.6.1).
 Ihr müsst außerdem 7-zip installieren um dieses Programm zu verwenden.
 In der settings.ini Datei(umbennent die example_settings.ini) befinden sich die Pfade zu den Mods, bei "externalmods" sollte der Dateipfad zum Mod-Verzeichnis stehen, wo die Mods von z.B transportfever.net installiert sind.
 Bei "steammods" sollte ein Link zu den Steam-Mod-Verzeichnis liegen.
@@ -53,7 +53,7 @@ Wenn ihr fertig seit führt die Main.exe aus.
 Erklärung in Videoform: https://youtu.be/MfPp4Gdmft4
 
 :uk:
-For installation under Windows download the Windows realease via Github.(https://github.com/NeonCrafter13/Transport-Fever-2-NeonModManager/releases/tag/v1.6).
+For installation under Windows download the Windows realease via Github.(https://github.com/NeonCrafter13/Transport-Fever-2-NeonModManager/releases/tag/v1.6.1).
 You also need to install 7-zip.
 In the settings.ini File(rename example_settings.ini) are Paths to the Mods´ folders , at "externalmods" should be the Path to the Mod-Directory, where the Mods are from for Example transportfever.net.
 At "steammods" should be a Path to the Steam-Mod-Directory.
