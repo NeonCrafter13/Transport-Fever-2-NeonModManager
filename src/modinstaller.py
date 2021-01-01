@@ -13,8 +13,7 @@ def install(link):
 
     if platform == "linux":
         if link.lower().endswith('zip') or link.lower().endswith('rar') or link.lower().endswith("7z"):
-            subprocess.Popen(
-                "7z", " x ", link, " -o ", userdataModsDirectory, " -y")
+            subprocess.Popen(["7z", "x", link, f"-o{userdataModsDirectory}", "-y"])
             return True
         if os.path.isdir(link):
             _, b = os.path.split(link)
