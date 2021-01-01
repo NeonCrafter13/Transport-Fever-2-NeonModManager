@@ -1,7 +1,10 @@
 # Entrypoint to the Aplication
 import configparser
 import os,sys, subprocess
-import mod_finder, modlist, search
+import mod_finder
+import modlist
+import search
+import images
 from mod import Mod
 from os.path import expanduser
 
@@ -117,7 +120,8 @@ class CompareMods(QWidget):
                 self.onList.append(result[1])
             else:
                 #Create Mod Instance
-                mod = Mod(item["name"], None, item["source"], False, False, False, item["authors"])
+                mod = Mod(item["name"], None, item["source"], False,
+                          False, False, item["authors"], None)
                 self.NotInstalledV.addWidget(ModBox(mod, None))
 
         for i in range(len(Mods)):
@@ -214,9 +218,9 @@ class InstallModWindow(QWidget):
             self.setParent = None
 
 class RPanal(QWidget):
-    def __init__(self, Mod):
+    def __init__(self, mod):
         super().__init__()
-        self.Mod = Mod
+        self.Mod: Mod = mod
         self.initMe()
 
     def initMe(self):
@@ -256,6 +260,20 @@ class RPanal(QWidget):
 
         # hasSettings
         Layout.addWidget(QLabel(f"hasOptions: {str(Mod.options)}"))
+
+        # Category Image
+        if Mod.category_image is not None:
+            try:
+                images.invert_image(Mod.category_image)
+                succes = True
+            except:
+                succes = False
+            if succes:
+                Image = QLabel()
+                pixmap = QPixmap("Image_negative.jpg")
+                Image.setPixmap(pixmap)
+                Image.setToolTip("Category")
+                Layout.addWidget(Image)
 
         # Open in Explorer Button
         Open = QPushButton("Open in Expolorer")

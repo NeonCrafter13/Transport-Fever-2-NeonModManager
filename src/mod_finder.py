@@ -40,6 +40,16 @@ def getName(folder, mod_lua_text):
 
     return name
 
+def get_Category(folder):
+    try:
+        s = os.listdir(os.path.join(folder, "res", "textures", "ui", "construction", "categories"))
+    except:
+        return None
+    if s == []:
+        return None
+    else:
+        return os.path.join(folder, "res", "textures", "ui", "construction", "categories", s[0])
+
 def getExternalMod(folder):
 
     mod_lua = open(os.path.join(folder, "mod.lua"), "r", encoding="utf-8")
@@ -91,7 +101,9 @@ def getExternalMod(folder):
         except:
             options = False
 
-    return Mod(name, minorVersion, source, image, options, folder, authors)
+    category_image = get_Category(folder)
+
+    return Mod(name, minorVersion, source, image, options, folder, authors, category_image)
 
 def getExternalMods(externalModsDirectory):
     folders = os.listdir(externalModsDirectory)
@@ -200,7 +212,9 @@ def getSteamMod(folder):
         except:
             options = False
 
-    return Mod(name, minorVersion, source, image, options, folder, authors)
+    category_image = get_Category(folder)
+
+    return Mod(name, minorVersion, source, image, options, folder, authors, category_image)
 
 def getSteamMods(steamModsDirectory):
     folders = os.listdir(steamModsDirectory)
