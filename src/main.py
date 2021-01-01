@@ -24,7 +24,7 @@ class ErrorBox(QMessageBox):
 
 
 config = configparser.ConfigParser()
-config.read("settings.ini")
+a = config.read(os.path.abspath("settings.ini"))
 
 try:
     Width = int(config["GRAPHICS"]["imagesize"])
@@ -270,7 +270,10 @@ class RPanal(QWidget):
         self.setLayout(Layout)
 
     def open(self):
-        subprocess.Popen(r'explorer /open,"'+ self.Mod.location +'"')
+        if sys.platform == "linux":
+            self.e = ErrorBox("At the moment not supported on Linux")
+        elif sys.platform == "win32":
+            subprocess.Popen(r'explorer /open,"'+ self.Mod.location +'"')
 
     def uninstall(self):
         if not self.Mod.uninstall():
