@@ -1,7 +1,12 @@
+#! /usr/bin/env python3
+
 # Entrypoint to the Aplication
 import configparser
 import os,sys, subprocess
-import mod_finder, modlist, search
+import mod_finder
+import modlist
+import search
+import images
 from mod import Mod
 from os.path import expanduser
 
@@ -11,6 +16,8 @@ from PyQt5.QtCore import Qt
 
 app = QApplication(sys.argv)
 
+if False:  # Change this to True if you are building the .deb file.
+    os.chdir("/usr/share/Tpf2NeonModManager")
 
 class ErrorBox(QMessageBox):
     def __init__(self,error: str):
@@ -24,7 +31,7 @@ class ErrorBox(QMessageBox):
 
 
 config = configparser.ConfigParser()
-config.read("settings.ini")
+a = config.read(os.path.abspath("settings.ini"))
 
 try:
     Width = int(config["GRAPHICS"]["imagesize"])
@@ -117,7 +124,8 @@ class CompareMods(QWidget):
                 self.onList.append(result[1])
             else:
                 #Create Mod Instance
-                mod = Mod(item["name"], None, item["source"], False, False, False, item["authors"])
+                mod = Mod(item["name"], None, item["source"], False,
+                          False, False, item["authors"], None)
                 self.NotInstalledV.addWidget(ModBox(mod, None))
 
         for i in range(len(Mods)):
@@ -214,9 +222,9 @@ class InstallModWindow(QWidget):
             self.setParent = None
 
 class RPanal(QWidget):
-    def __init__(self, Mod):
+    def __init__(self, mod):
         super().__init__()
-        self.Mod = Mod
+        self.Mod: Mod = mod
         self.initMe()
 
     def initMe(self):
@@ -257,6 +265,20 @@ class RPanal(QWidget):
         # hasSettings
         Layout.addWidget(QLabel(f"hasOptions: {str(Mod.options)}"))
 
+        # Category Image
+        if Mod.category_image is not None:
+            try:
+                images.invert_image(Mod.category_image)
+                succes = True
+            except:
+                succes = False
+            if succes:
+                Image = QLabel()
+                pixmap = QPixmap("Image_negative.jpg")
+                Image.setPixmap(pixmap)
+                Image.setToolTip("Category")
+                Layout.addWidget(Image)
+
         # Open in Explorer Button
         Open = QPushButton("Open in Expolorer")
         Open.clicked.connect(self.open)
@@ -270,7 +292,10 @@ class RPanal(QWidget):
         self.setLayout(Layout)
 
     def open(self):
-        subprocess.Popen(r'explorer /open,"'+ self.Mod.location +'"')
+        if sys.platform == "linux":
+            self.e = ErrorBox("At the moment not supported on Linux")
+        elif sys.platform == "win32":
+            subprocess.Popen(r'explorer /open,"'+ self.Mod.location +'"')
 
     def uninstall(self):
         if not self.Mod.uninstall():

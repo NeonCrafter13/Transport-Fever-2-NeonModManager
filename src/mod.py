@@ -1,7 +1,7 @@
 import shutil
 
 class Mod():
-    def __init__(self, name, minorVersion, source, image, options, location, authors):
+    def __init__(self, name, minorVersion, source, image, options, location, authors, category_image):
         self.name = name
         self.minorVersion = minorVersion
         self.source = source
@@ -9,6 +9,7 @@ class Mod():
         self.options = options
         self.location = location
         self.authors = authors
+        self.category_image = category_image
 
     def uninstall(self):
         try:
