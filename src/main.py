@@ -1,3 +1,5 @@
+#! /usr/bin/env python3
+
 # Entrypoint to the Aplication
 import configparser
 import os,sys, subprocess
@@ -14,6 +16,8 @@ from PyQt5.QtCore import Qt
 
 app = QApplication(sys.argv)
 
+if False:  # Change this to True if you are building the .deb file.
+    os.chdir("/usr/share/Tpf2NeonModManager")
 
 class ErrorBox(QMessageBox):
     def __init__(self,error: str):
