@@ -293,7 +293,17 @@ class RPanal(QWidget):
 
     def open(self):
         if sys.platform == "linux":
-            self.e = ErrorBox("At the moment not supported on Linux")
+            commands = ["xdg-open", "gnome-open", "nautilus"]
+            fail = True
+            for i in commands:
+                try:
+                    subprocess.Popen([i, self.Mod.location])
+                    fail = False
+                    break
+                except FileNotFoundError as e:
+                    continue
+            if fail is True:
+                self.e = ErrorBox("Your file explorer is at the moment not supported!")
         elif sys.platform == "win32":
             subprocess.Popen(r'explorer /open,"'+ self.Mod.location +'"')
 
