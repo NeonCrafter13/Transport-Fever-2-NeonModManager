@@ -6,10 +6,10 @@ def find_mod_compare(Mods, Keyword):
         name = name.lower().replace(" ","")
         items.append(name)
 
-    #Search
+    # Search
 
     for position, item in enumerate(items):
         if item == Keyword:
-            return (Mods[position],position)
+            return (Mods[position], position)
 
     return False

@@ -2,7 +2,9 @@
 
 # Entrypoint to the Aplication
 import configparser
-import os,sys, subprocess
+import os
+import sys
+import subprocess
 import mod_finder
 import modlist
 import search
@@ -10,7 +12,24 @@ import images
 from mod import Mod
 from os.path import expanduser
 
-from PyQt5.QtWidgets import QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QApplication, QMainWindow, QAction, QGridLayout, QScrollArea, QLabel, QFileDialog, QLineEdit, QMessageBox, QListWidget, QListWidgetItem, QAbstractItemView
+from PyQt5.QtWidgets import (
+    QWidget,
+    QPushButton,
+    QHBoxLayout,
+    QVBoxLayout,
+    QApplication,
+    QMainWindow,
+    QAction,
+    QGridLayout,
+    QScrollArea,
+    QLabel,
+    QFileDialog,
+    QLineEdit,
+    QMessageBox,
+    QListWidget,
+    QListWidgetItem,
+    QAbstractItemView
+)
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtCore import Qt
 
@@ -20,7 +39,7 @@ if False:  # Change this to True if you are building the .deb file.
     os.chdir("/usr/share/Tpf2NeonModManager")
 
 class ErrorBox(QMessageBox):
-    def __init__(self,error: str):
+    def __init__(self, error: str):
         super().__init__()
         self.setStyleSheet(style)
         self.setIcon(QMessageBox.Critical)
@@ -35,7 +54,7 @@ a = config.read(os.path.abspath("settings.ini"))
 
 try:
     Width = int(config["GRAPHICS"]["imagesize"])
-except:
+except KeyError:
     Width = 384
 try:
     style = config["GRAPHICS"]["modernstyle"]
@@ -44,7 +63,7 @@ try:
             style = style.read()
     else:
         style = ""
-except:
+except KeyError:
     style = ""
 
 try:
@@ -55,10 +74,11 @@ try:
     sevenzip = os.path.normpath(config["DIRECTORY"]["7-zipInstallation"])
     import modinstaller
 
-    global Mods
+    global mods
 
     if os.path.isdir(externalModsDirectory) and os.path.isdir(steamModsDirectory) and os.path.isdir(userdataModsDirectory) and os.path.isdir(stagingAreamodsDirectory):
-        Mods = mod_finder.getAllMods(externalModsDirectory, steamModsDirectory, userdataModsDirectory, stagingAreamodsDirectory)
+        mods = mod_finder.getAllMods(
+            externalModsDirectory, steamModsDirectory, userdataModsDirectory, stagingAreamodsDirectory)
     else:
         e = ErrorBox("Mod-Directories are incorrect")
     if not os.path.isdir(sevenzip):
@@ -118,25 +138,25 @@ class CompareMods(QWidget):
     def ListMods(self):
         self.onList = []
         for item in self.list:
-            result = search.find_mod_compare(Mods, item["name"])
+            result = search.find_mod_compare(mods, item["name"])
             if result:
                 self.InstalledV.addWidget(ModBox(*result))
                 self.onList.append(result[1])
             else:
-                #Create Mod Instance
+                # Create Mod Instance
                 mod = Mod(item["name"], None, item["source"], False,
                           False, False, item["authors"], None)
                 self.NotInstalledV.addWidget(ModBox(mod, None))
 
-        for i in range(len(Mods)):
-            if not i in self.onList:
-                self.unusedV.addWidget(ModBox(Mods[i],i))
+        for i in range(len(mods)):
+            if i not in self.onList:
+                self.unusedV.addWidget(ModBox(mods[i], i))
 
 class InstallModWindow(QWidget):
     def __init__(self):
         super().__init__()
         self.setAcceptDrops(True)
-        self.setGeometry(50,50,500,500)
+        self.setGeometry(50, 50, 500, 500)
         self.setWindowTitle("Mod Installer")
         self.setStyleSheet(style)
         self.initMe()
@@ -191,54 +211,51 @@ class InstallModWindow(QWidget):
 
     def openFile(self):
         fd = QFileDialog()
-        f_dir =fd.getOpenFileName(
+        f_dir = fd.getOpenFileName(
             self,
             "Install Mod",
             expanduser("~"),
             "(*.rar *.zip *.7z)"
-            )
+        )
 
         if f_dir[0] != "":
             modinstaller.install(f_dir[0])
             self.error = ErrorBox("New Installed Mod will only be shown after restart")
 
-
             self.setParent = None
 
     def openFolder(self):
         fd = QFileDialog()
-        f_dir =fd.getExistingDirectory(
+        f_dir = fd.getExistingDirectory(
             self,
             "Install Mod",
             expanduser("~"),
             fd.ShowDirsOnly
-            )
+        )
 
         if f_dir != "":
             modinstaller.install(f_dir)
             self.error = ErrorBox("New Installed Mod will only be shown after restart")
 
-
-            self.setParent = None
+        self.setParent = None
 
 class RPanal(QWidget):
     def __init__(self, mod):
         super().__init__()
-        self.Mod: Mod = mod
+        self.mod: Mod = mod
         self.initMe()
 
     def initMe(self):
-        Mod = self.Mod
+        mod = self.mod
         Layout = QVBoxLayout()
 
-        #Name
-        Layout.addWidget(QLabel(str(Mod.name)))
-
+        # Name
+        Layout.addWidget(QLabel(str(mod.name)))
 
         # Image
-        if Mod.image:
+        if mod.image:
             Image = QLabel()
-            pixmap = QPixmap(Mod.image)
+            pixmap = QPixmap(mod.image)
             pixmap = pixmap.scaledToWidth(Width)
             Image.setPixmap(pixmap)
             Layout.addWidget(Image)
@@ -249,26 +266,26 @@ class RPanal(QWidget):
             Image.setPixmap(pixmap)
             Layout.addWidget(Image)
 
-        #Authors
+        # Authors
         separator = ', '
-        if Mod.authors:
-            Layout.addWidget(QLabel(f"Authors: {separator.join(Mod.authors)}"))
+        if mod.authors:
+            Layout.addWidget(QLabel(f"Authors: {separator.join(mod.authors)}"))
         else:
-            Layout.addWidget(QLabel(f"Authors: not detected"))
+            Layout.addWidget(QLabel("Authors: not detected"))
 
         # source
-        Layout.addWidget(QLabel(f"source: {str(Mod.source)}"))
+        Layout.addWidget(QLabel(f"source: {str(mod.source)}"))
 
         # minorVersion
-        Layout.addWidget(QLabel(f"minorVersion: {str(Mod.minorVersion)}"))
+        Layout.addWidget(QLabel(f"minorVersion: {str(mod.minorVersion)}"))
 
         # hasSettings
-        Layout.addWidget(QLabel(f"hasOptions: {str(Mod.options)}"))
+        Layout.addWidget(QLabel(f"hasOptions: {str(mod.options)}"))
 
         # Category Image
-        if Mod.category_image is not None:
+        if mod.category_image is not None:
             try:
-                images.invert_image(Mod.category_image)
+                images.invert_image(mod.category_image)
                 succes = True
             except:
                 succes = False
@@ -297,7 +314,7 @@ class RPanal(QWidget):
             fail = True
             for i in commands:
                 try:
-                    subprocess.Popen([i, self.Mod.location])
+                    subprocess.Popen([i, self.mod.location])
                     fail = False
                     break
                 except FileNotFoundError as e:
@@ -305,25 +322,25 @@ class RPanal(QWidget):
             if fail is True:
                 self.e = ErrorBox("Your file explorer is at the moment not supported!")
         elif sys.platform == "win32":
-            subprocess.Popen(r'explorer /open,"'+ self.Mod.location +'"')
+            subprocess.Popen(r'explorer /open,"' + self.mod.location + '"')
 
     def uninstall(self):
-        if not self.Mod.uninstall():
+        if not self.mod.uninstall():
             self.error = ErrorBox("Mod couldn´t be uninstalled")
         else:
             self.error = ErrorBox("Uninstalled Mods will be listed if Programm is not restarted")
 
 class ModBox(QWidget):
-    def __init__(self, Mod, id):
+    def __init__(self, mod, id):
         super().__init__()
         self.id = id
-        self.initMe(Mod)
+        self.initMe(mod)
 
-    def initMe(self, Mod):
+    def initMe(self, mod):
         Layout = QHBoxLayout()
-        Layout.addWidget(QLabel(Mod.name))
-        Layout.addWidget(QLabel(str(Mod.minorVersion)))
-        Layout.addWidget(QLabel(Mod.source))
+        Layout.addWidget(QLabel(mod.name))
+        Layout.addWidget(QLabel(str(mod.minorVersion)))
+        Layout.addWidget(QLabel(mod.source))
         """
         authorString = ""
         if Mod.authors == None:
@@ -353,8 +370,6 @@ class SearchBox(QWidget):
 
         self.setLayout(self.h)
 
-
-
     def search(self):
         keyword = self.textbox.text()
 
@@ -376,7 +391,7 @@ class MainWidget(QWidget):
         scroll.setWidgetResizable(True)
         self.scrollcontent = QListWidget(scroll)
 
-        for mod in Mods:
+        for mod in mods:
             a = QListWidgetItem(mod.name)
             a.mod = mod
             self.scrollcontent.addItem(a)
@@ -385,7 +400,7 @@ class MainWidget(QWidget):
 
         self.scrollcontent.itemSelectionChanged.connect(self.update_RPanal)
 
-        self.mod_info = RPanal(Mods[0])
+        self.mod_info = RPanal(mods[0])
         self.h.addWidget(self.mod_info)
         self.mod_info.show()
 
@@ -401,7 +416,8 @@ class MainWidget(QWidget):
         self.mod_info.setParent(None)
         self.mod_info.pixmap = None
         items = self.scrollcontent.selectedItems()
-        if not items: return
+        if not items:
+            return
         item = items[0]
         self.mod_info = RPanal(item.mod)
         self.h.addWidget(self.mod_info)
@@ -425,12 +441,12 @@ class Window(QMainWindow):
 
     def initMe(self):
 
-        ExportModlist = QAction("export modlist",self)
+        ExportModlist = QAction("export modlist", self)
         ExportModlist.setShortcut("Ctrl+E")
         ExportModlist.setStatusTip("export modlist")
         ExportModlist.triggered.connect(self.export_modlist)
 
-        ImportModlist = QAction("Compare modlist",self)
+        ImportModlist = QAction("Compare modlist", self)
         ImportModlist.setShortcut("Ctrl+O")
         ImportModlist.setStatusTip("Compare modlist")
         ImportModlist.triggered.connect(self.compare_modlist)
@@ -458,7 +474,7 @@ class Window(QMainWindow):
         settings.addAction(steamMods)
         settings.addAction(externalMods)
 
-        self.setGeometry(50,50,500,500)
+        self.setGeometry(50, 50, 500, 500)
         self.setWindowTitle("Tpf2 NeonModManager")
 
         self.setWindowIcon(QIcon("images/icon.png"))
@@ -469,10 +485,10 @@ class Window(QMainWindow):
         self.show()
 
     def export_modlist(self):
-        modlist.export_modlist(Mods)
+        modlist.export_modlist(mods)
 
     def compare_modlist(self):
-        list = modlist.import_modlist(Mods)
+        list = modlist.import_modlist(mods)
         if list:
             self.compare = CompareMods(list)
         else:
@@ -484,12 +500,12 @@ class Window(QMainWindow):
 
     def setSteamMods(self):
         fd = QFileDialog()
-        f_dir =fd.getExistingDirectory(
+        f_dir = fd.getExistingDirectory(
             self,
             "Open steammods folder",
             expanduser("~"),
             fd.ShowDirsOnly
-            )
+        )
 
         if f_dir != "":
             config.set('DIRECTORY', 'steamMods', f_dir)
@@ -499,12 +515,12 @@ class Window(QMainWindow):
 
     def setExternalMods(self):
         fd = QFileDialog()
-        f_dir =fd.getExistingDirectory(
+        f_dir = fd.getExistingDirectory(
             self,
             "Open externalmods folder",
             expanduser("~"),
             fd.ShowDirsOnly
-            )
+        )
 
         if f_dir != "":
             config.set('DIRECTORY', 'externalMods', f_dir)

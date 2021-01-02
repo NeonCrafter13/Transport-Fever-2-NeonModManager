@@ -1,4 +1,6 @@
-import os, configparser, subprocess
+import os
+import configparser
+import subprocess
 from distutils.dir_util import copy_tree
 from sys import platform
 
