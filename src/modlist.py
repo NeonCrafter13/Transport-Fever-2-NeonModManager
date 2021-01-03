@@ -13,5 +13,5 @@ def import_modlist(mods):
         with open("modlist.json", "r", encoding="utf-8") as json_file:
             modlist = json.loads(json_file.read())
         return modlist
-    except:
+    except FileNotFoundError:
         return False

@@ -1,5 +1,8 @@
 import concurrent.futures
-import os, re, json, operator
+import os
+import re
+import json
+import operator
 
 from mod import Mod
 
@@ -13,30 +16,26 @@ def getName(folder, mod_lua_text):
     x = re.search("name.*=.*_.*,", mod_lua_text)
     if x:
         y = re.search('".*"', x.group())
-        if y != None:
-            name = y.group()[1: len(y.group())-1]
+        if y is not None:
+            name = y.group()[1: len(y.group()) - 1]
         else:
-            name = x.group()[10: len(x.group())-3]
+            name = x.group()[10: len(x.group()) - 3]
     else:
         x = re.search("name.*=.*,", mod_lua_text)
         y = re.search('".*"', x.group())
-        if y != None:
-            name = y.group()[1: len(y.group())-1]
+        if y is not None:
+            name = y.group()[1: len(y.group()) - 1]
         else:
-            name = x.group()[9: len(x.group())-3]
-
+            name = x.group()[9: len(x.group()) - 3]
 
     try:
         with open(os.path.join(folder, "strings.lua"), "r", encoding="utf-8") as strings_lua:
             strings_lua_text = strings_lua.read()
         x = re.search(f'{name}.*', strings_lua_text)
-        y = re.search('".*"', x.group()[len(name)+1:])
-        name = y.group()[1:len(y.group())-1]
-    except:
+        y = re.search('".*"', x.group()[len(name) + 1:])
+        name = y.group()[1:len(y.group()) - 1]
+    except FileNotFoundError:
         pass
-
-
-
 
     return name
 
@@ -59,7 +58,7 @@ def getExternalMod(folder):
     minorVersion = None
     try:
         mod_json = open(os.path.join(folder, "mod.json"), "r", encoding="utf-8")
-    except:
+    except FileNotFoundError:
         mod_json = None
 
     if mod_json:
@@ -74,7 +73,7 @@ def getExternalMod(folder):
     if not minorVersion:
         x = re.search("minorVersion.*=.*,", mod_lua_text)
         if x:
-            x = x.group()[11: len(x.group())-1]
+            x = x.group()[11: len(x.group()) - 1]
             minorVersion = int(re.findall("[0-9]", x)[0])
         else:
             minorVersion = None
@@ -86,9 +85,9 @@ def getExternalMod(folder):
         source = "other"
 
     try:
-        image = open(os.path.join(folder,"workshop_preview.jpg"), "r")
-        image = os.path.join(folder,"workshop_preview.jpg")
-    except:
+        image = open(os.path.join(folder, "workshop_preview.jpg"), "r")
+        image = os.path.join(folder, "workshop_preview.jpg")
+    except FileNotFoundError:
         image = None
 
     x = re.search("options.*=.*{", mod_lua_text)
@@ -96,9 +95,9 @@ def getExternalMod(folder):
         options = True
     else:
         try:
-            open(os.path.join(folder,"settings.lua"), "r")
+            open(os.path.join(folder, "settings.lua"), "r")
             options = True
-        except:
+        except FileNotFoundError:
             options = False
 
     category_image = get_Category(folder)
@@ -114,11 +113,13 @@ def getExternalMods(externalModsDirectory):
         pass
     Mods = []
     with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
-        treads = []
+        threads = []
         for folder in folders:
-            treads.append(executor.submit(execute_without_error, getExternalMod, os.path.join(externalModsDirectory, folder)))
+            threads.append(executor.submit(execute_without_error,
+                                           getExternalMod,
+                                           os.path.join(externalModsDirectory, folder)))
 
-        for thread in treads:
+        for thread in threads:
             result = thread.result()
             if result:
                 Mods.append(result)
@@ -134,12 +135,13 @@ def getUserdataMods(userdataModsDirectory):
         pass
     Mods = []
     with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
-        treads = []
+        threads = []
         for folder in folders:
-            treads.append(executor.submit(execute_without_error, getExternalMod, os.path.join(userdataModsDirectory, folder)))
+            threads.append(executor.submit(execute_without_error,
+                                           getExternalMod,
+                                           os.path.join(userdataModsDirectory, folder)))
 
-
-        for thread in treads:
+        for thread in threads:
             result = thread.result()
             if result:
                 Mods.append(result)
@@ -156,8 +158,9 @@ def getStagingAreaMods(StagingAreaModsDirectory):
     with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
         threads = []
         for folder in folders:
-            threads.append(executor.submit(execute_without_error, getExternalMod, os.path.join(StagingAreaModsDirectory, folder)))
-
+            threads.append(executor.submit(execute_without_error,
+                                           getExternalMod,
+                                           os.path.join(StagingAreaModsDirectory, folder)))
 
         for thread in threads:
             result = thread.result()
@@ -173,7 +176,7 @@ def getSteamMod(folder):
     minorVersion = None
     try:
         mod_json = open(os.path.join(folder, "mod.json"), "r", encoding="utf-8")
-    except:
+    except FileNotFoundError:
         mod_json = None
 
     if mod_json:
@@ -185,11 +188,10 @@ def getSteamMod(folder):
     if not name:
         name = getName(folder, mod_lua_text)
 
-
     if not minorVersion:
         x = re.search("minorVersion.*=.*,", mod_lua_text)
         if x:
-            x = x.group()[11: len(x.group())-1]
+            x = x.group()[11: len(x.group()) - 1]
             minorVersion = int(re.findall("[0-9]", x)[0])
         else:
             minorVersion = None
@@ -197,9 +199,9 @@ def getSteamMod(folder):
     source = "Steam"
 
     try:
-        image = open(os.path.join(folder,"workshop_preview.jpg"), "r")
-        image = os.path.join(folder,"workshop_preview.jpg")
-    except:
+        image = open(os.path.join(folder, "workshop_preview.jpg"), "r")
+        image = os.path.join(folder, "workshop_preview.jpg")
+    except FileNotFoundError:
         image = None
 
     x = re.search("options.*=.*{", mod_lua_text)
@@ -207,9 +209,9 @@ def getSteamMod(folder):
         options = True
     else:
         try:
-            open(os.path.join(folder,"settings.lua"), "r")
+            open(os.path.join(folder, "settings.lua"), "r")
             options = True
-        except:
+        except FileNotFoundError:
             options = False
 
     category_image = get_Category(folder)
@@ -226,12 +228,12 @@ def getSteamMods(steamModsDirectory):
     Mods = []
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
-        treads = []
+        threads = []
         for folder in folders:
-            treads.append(executor.submit(execute_without_error, getSteamMod, os.path.join(steamModsDirectory, folder)))
+            threads.append(executor.submit(execute_without_error,
+                                           getSteamMod, os.path.join(steamModsDirectory, folder)))
 
-
-        for thread in treads:
+        for thread in threads:
             result = thread.result()
             if result:
                 Mods.append(result)

@@ -4,4 +4,5 @@ Encoding=UTF-8
 Name=Tpf2-NeonModManager
 Comment=A little ModManager written in Python. See more info at https://github.com/NeonCrafter13/Transport-Fever-2-NeonModManager.
 Exec=/usr/share/Tpf2NeonModManager/main
+Icon=/usr/share/Tpf2NeonModManager/images/Icon.png
 Terminal=false
