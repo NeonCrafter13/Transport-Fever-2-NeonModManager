@@ -20,7 +20,7 @@
             "search.py": "/usr/share/Tpf2NeonModManager/search.py",
             "images.py": "/usr/share/Tpf2NeonModManager/images.py",
             "mod.py": "/usr/share/Tpf2NeonModManager/mod.py",
-            "images": "/usr/share/Tpf2NeonModManager/images",
+            "images": "/usr/share/Tpf2NeonModManager/",
             "Aqua.css": "/usr/share/Tpf2NeonModManager/Aqua.css",
             "example_settings.ini": "/usr/share/Tpf2NeonModManager/example_settings.ini",
             "modlist.json": "/usr/share/Tpf2NeonModManager/modlist.json",
