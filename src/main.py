@@ -38,6 +38,14 @@ app = QApplication(sys.argv)
 if False:  # Change this to True if you are building the .deb file.
     os.chdir("/usr/share/Tpf2NeonModManager")
 
+setting_up = False
+configfound = False
+
+if not os.path.isfile("settings.ini"):
+    import setup
+    setup = setup.Stetup_Window()
+    setting_up = True
+
 class ErrorBox(QMessageBox):
     def __init__(self, error: str):
         super().__init__()
@@ -48,45 +56,45 @@ class ErrorBox(QMessageBox):
         self.setWindowTitle("ERROR")
         self.show()
 
+if not setting_up:
+    config = configparser.ConfigParser()
+    a = config.read(os.path.abspath("settings.ini"))
 
-config = configparser.ConfigParser()
-a = config.read(os.path.abspath("settings.ini"))
-
-try:
-    Width = int(config["GRAPHICS"]["imagesize"])
-except KeyError:
-    Width = 384
-try:
-    style = config["GRAPHICS"]["modernstyle"]
-    if style.lower().replace(" ", "") == "true":
-        with open("Aqua.css", "r") as style:
-            style = style.read()
-    else:
+    try:
+        Width = int(config["GRAPHICS"]["imagesize"])
+    except KeyError:
+        Width = 384
+    try:
+        style = config["GRAPHICS"]["modernstyle"]
+        if style.lower().replace(" ", "") == "true":
+            with open("Aqua.css", "r") as style:
+                style = style.read()
+        else:
+            style = ""
+    except KeyError:
         style = ""
-except KeyError:
-    style = ""
 
-try:
-    externalModsDirectory = os.path.normpath(config['DIRECTORY']['externalMods'])
-    steamModsDirectory = os.path.normpath(config["DIRECTORY"]["steamMods"])
-    userdataModsDirectory = os.path.normpath(config["DIRECTORY"]["userdatamods"])
-    stagingAreamodsDirectory = os.path.normpath(config["DIRECTORY"]["stagingareamods"])
-    sevenzip = os.path.normpath(config["DIRECTORY"]["7-zipInstallation"])
-    import modinstaller
+    try:
+        externalModsDirectory = os.path.normpath(config['DIRECTORY']['externalMods'])
+        steamModsDirectory = os.path.normpath(config["DIRECTORY"]["steamMods"])
+        userdataModsDirectory = os.path.normpath(config["DIRECTORY"]["userdatamods"])
+        stagingAreamodsDirectory = os.path.normpath(config["DIRECTORY"]["stagingareamods"])
+        sevenzip = os.path.normpath(config["DIRECTORY"]["7-zipInstallation"])
+        import modinstaller
 
-    global mods
+        global mods
 
-    if os.path.isdir(externalModsDirectory) and os.path.isdir(steamModsDirectory) and os.path.isdir(userdataModsDirectory) and os.path.isdir(stagingAreamodsDirectory):
-        mods = mod_finder.getAllMods(
-            externalModsDirectory, steamModsDirectory, userdataModsDirectory, stagingAreamodsDirectory)
-    else:
-        e = ErrorBox("Mod-Directories are incorrect")
-    if not os.path.isdir(sevenzip):
-        e = ErrorBox("Sevenzip Path incorrect")
-    configfound = True
-except:
-    error = ErrorBox("Could not find settings.ini")
-    configfound = False
+        if os.path.isdir(externalModsDirectory) and os.path.isdir(steamModsDirectory) and os.path.isdir(userdataModsDirectory) and os.path.isdir(stagingAreamodsDirectory):
+            mods = mod_finder.getAllMods(
+                externalModsDirectory, steamModsDirectory, userdataModsDirectory, stagingAreamodsDirectory)
+        else:
+            e = ErrorBox("Mod-Directories are incorrect")
+        if not os.path.isdir(sevenzip):
+            e = ErrorBox("Sevenzip Path incorrect")
+        configfound = True
+    except:
+        error = ErrorBox("Could not find settings.ini")
+        configfound = False
 
 class CompareMods(QWidget):
     def __init__(self, list):
@@ -529,7 +537,7 @@ class Window(QMainWindow):
                 config.write(configfile)
 
 
-if configfound:
+if configfound and (not setting_up):
     if os.path.isdir(externalModsDirectory) and os.path.isdir(steamModsDirectory) and os.path.isdir(userdataModsDirectory) and os.path.isdir(stagingAreamodsDirectory):
         w = Window()
 
