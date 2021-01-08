@@ -136,7 +136,7 @@ class First(Install_Window):
 class Second(Install_Window):
     def __init__(self) -> None:
         super().__init__()
-        self.build_gui
+        self.build_gui()
 
     def build_gui(self):
         self.content.addWidget(QLabel("Setup succesfull click on Continue to close the app."))
