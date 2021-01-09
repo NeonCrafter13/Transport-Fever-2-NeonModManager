@@ -25,6 +25,7 @@
             "Aqua.css": "/usr/share/Tpf2NeonModManager/Aqua.css",
             "example_settings.ini": "/usr/share/Tpf2NeonModManager/example_settings.ini",
             "modlist.json": "/usr/share/Tpf2NeonModManager/modlist.json",
+            "setup.py": "/usr/share/Tpf2NeonModManager/setup.py",
             "Tpf2-NeonModManager.desktop": "/usr/share/applications/Tpf2-NeonModManager.desktop"
         }
     },
