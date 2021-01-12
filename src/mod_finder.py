@@ -12,7 +12,7 @@ def execute_without_error(func, arg):
     except:
         return None
 
-def getName(folder, mod_lua_text):
+def getName(folder, mod_lua_text: str):
     x = re.search("name.*=.*_.*,", mod_lua_text)
     if x:
         y = re.search('".*"', x.group())
@@ -28,15 +28,22 @@ def getName(folder, mod_lua_text):
         else:
             name = x.group()[9: len(x.group()) - 3]
 
-    try:
+    if os.path.isfile(os.path.join(folder, "strings.lua")):
         with open(os.path.join(folder, "strings.lua"), "r", encoding="utf-8") as strings_lua:
             strings_lua_text = strings_lua.read()
-        x = re.search(f'{name}.*', strings_lua_text)
-        y = re.search('".*"', x.group()[len(name) + 1:])
-        name = y.group()[1:len(y.group()) - 1]
-    except FileNotFoundError:
-        pass
+        lang = "de"
+        x = strings_lua_text.split(f"{lang} =")
 
+        try:
+            x = re.search(f'{name}.*', x[1])
+        except IndexError:
+            return name
+        except re.error:
+            return name
+        if x is not None:
+            y = re.search('".*"', x.group()[len(name) + 1:])
+            if y is not None:
+                name = y.group()[1:len(y.group()) - 1]
     return name
 
 def get_Category(folder):
