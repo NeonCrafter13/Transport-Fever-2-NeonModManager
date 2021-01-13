@@ -6,13 +6,13 @@ import operator
 
 from mod import Mod
 
-def execute_without_error(func, arg):
+def execute_without_error(func, *arg):
     try:
-        return func(arg)
+        return func(*arg)
     except:
         return None
 
-def getName(folder, mod_lua_text: str):
+def getName(folder, mod_lua_text: str, language: str) -> str:
     x = re.search("name.*=.*_.*,", mod_lua_text)
     if x:
         y = re.search('".*"', x.group())
@@ -31,8 +31,7 @@ def getName(folder, mod_lua_text: str):
     if os.path.isfile(os.path.join(folder, "strings.lua")):
         with open(os.path.join(folder, "strings.lua"), "r", encoding="utf-8") as strings_lua:
             strings_lua_text = strings_lua.read()
-        lang = "de"
-        x = strings_lua_text.split(f"{lang} =")
+        x = strings_lua_text.split(f"{language} =")
 
         try:
             x = re.search(f'{name}.*', x[1])
@@ -56,7 +55,7 @@ def get_Category(folder):
     else:
         return os.path.join(folder, "res", "textures", "ui", "construction", "categories", s[0])
 
-def getExternalMod(folder):
+def getExternalMod(folder, language: str):
 
     mod_lua = open(os.path.join(folder, "mod.lua"), "r", encoding="utf-8")
     mod_lua_text = mod_lua.read()
@@ -75,7 +74,7 @@ def getExternalMod(folder):
         minorVersion = mod_json["minorVersion"]
 
     if not name:
-        name = getName(folder, mod_lua_text)
+        name = getName(folder, mod_lua_text, language)
 
     if not minorVersion:
         x = re.search("minorVersion.*=.*,", mod_lua_text)
@@ -111,8 +110,8 @@ def getExternalMod(folder):
 
     return Mod(name, minorVersion, source, image, options, folder, authors, category_image)
 
-def getExternalMods(externalModsDirectory):
-    folders = os.listdir(externalModsDirectory)
+def getMods(directory, language):
+    folders = os.listdir(directory)
 
     try:
         folders.remove("readme.txt")
@@ -122,9 +121,12 @@ def getExternalMods(externalModsDirectory):
     with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
         threads = []
         for folder in folders:
-            threads.append(executor.submit(execute_without_error,
-                                           getExternalMod,
-                                           os.path.join(externalModsDirectory, folder)))
+            threads.append(executor.submit(
+                execute_without_error,
+                getExternalMod,
+                os.path.join(directory, folder),
+                language
+            ))
 
         for thread in threads:
             result = thread.result()
@@ -132,50 +134,7 @@ def getExternalMods(externalModsDirectory):
                 Mods.append(result)
     return Mods
 
-
-def getUserdataMods(userdataModsDirectory):
-    folders = os.listdir(userdataModsDirectory)
-
-    try:
-        folders.remove("readme.txt")
-    except:
-        pass
-    Mods = []
-    with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
-        threads = []
-        for folder in folders:
-            threads.append(executor.submit(execute_without_error,
-                                           getExternalMod,
-                                           os.path.join(userdataModsDirectory, folder)))
-
-        for thread in threads:
-            result = thread.result()
-            if result:
-                Mods.append(result)
-    return Mods
-
-def getStagingAreaMods(StagingAreaModsDirectory):
-    folders = os.listdir(StagingAreaModsDirectory)
-
-    try:
-        folders.remove("readme.txt")
-    except:
-        pass
-    Mods = []
-    with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
-        threads = []
-        for folder in folders:
-            threads.append(executor.submit(execute_without_error,
-                                           getExternalMod,
-                                           os.path.join(StagingAreaModsDirectory, folder)))
-
-        for thread in threads:
-            result = thread.result()
-            if result:
-                Mods.append(result)
-    return Mods
-
-def getSteamMod(folder):
+def getSteamMod(folder, language: str):
     mod_lua = open(os.path.join(folder, "mod.lua"), "r", encoding="utf-8")
     mod_lua_text = mod_lua.read()
     authors = None
@@ -193,7 +152,7 @@ def getSteamMod(folder):
         minorVersion = mod_json["minorVersion"]
 
     if not name:
-        name = getName(folder, mod_lua_text)
+        name = getName(folder, mod_lua_text, language)
 
     if not minorVersion:
         x = re.search("minorVersion.*=.*,", mod_lua_text)
@@ -225,7 +184,7 @@ def getSteamMod(folder):
 
     return Mod(name, minorVersion, source, image, options, folder, authors, category_image)
 
-def getSteamMods(steamModsDirectory):
+def getSteamMods(steamModsDirectory, language):
     folders = os.listdir(steamModsDirectory)
 
     try:
@@ -238,7 +197,7 @@ def getSteamMods(steamModsDirectory):
         threads = []
         for folder in folders:
             threads.append(executor.submit(execute_without_error,
-                                           getSteamMod, os.path.join(steamModsDirectory, folder)))
+                                           getSteamMod, os.path.join(steamModsDirectory, folder), language))
 
         for thread in threads:
             result = thread.result()
@@ -246,12 +205,12 @@ def getSteamMods(steamModsDirectory):
                 Mods.append(result)
     return Mods
 
-def getAllMods(externalModsDirectory, steamModsDirectory, userdataModsDirectory, StagingAreaModsDirectory):
+def getAllMods(externalModsDirectory, steamModsDirectory, userdataModsDirectory, StagingAreaModsDirectory, language):
     with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
-        t1 = executor.submit(getExternalMods, externalModsDirectory)
-        t2 = executor.submit(getSteamMods, steamModsDirectory)
-        t3 = executor.submit(getUserdataMods, userdataModsDirectory)
-        t4 = executor.submit(getStagingAreaMods, StagingAreaModsDirectory)
+        t1 = executor.submit(getMods, externalModsDirectory, language)
+        t2 = executor.submit(getSteamMods, steamModsDirectory, language)
+        t3 = executor.submit(getMods, userdataModsDirectory, language)
+        t4 = executor.submit(getMods, StagingAreaModsDirectory, language)
         externalmods = t1.result()
         steammods = t2.result()
         userdatamods = t3.result()

@@ -1,9 +1,10 @@
+import os
 import sys
 from os.path import expanduser
 from PyQt5.QtCore import QCoreApplication, QObject, pyqtSignal
-from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QIcon, QIntValidator
 from PyQt5.QtWidgets import (
-    QFileDialog, QHBoxLayout, QLabel, QLineEdit, QMainWindow, QPushButton, QVBoxLayout, QWidget
+    QCheckBox, QFileDialog, QHBoxLayout, QLabel, QLineEdit, QMainWindow, QPushButton, QVBoxLayout, QWidget
 )
 import configparser
 
@@ -128,6 +129,9 @@ class First(Install_Window):
         config.set("GRAPHICS", "modernstyle", "True")
         config.set("GRAPHICS", "imagesize", "384")
 
+        config.add_section("LANGUAGE")
+        config.set("LANGUAGE", "language", "en")
+
         with open('settings.ini', 'w') as configfile:
             config.write(configfile)
 
@@ -169,3 +173,116 @@ class Stetup_Window(QMainWindow):
         self.mainwidget = Second()
         self.setCentralWidget(self.mainwidget)
         self.show()
+
+class FormEntry(QWidget):
+    def __init__(self, label: str, entry) -> None:
+        super().__init__()
+        self.h = QHBoxLayout(self)
+
+        self.h.addWidget(QLabel(label))
+        self.data = entry
+        self.h.addWidget(self.data)
+
+        self.setLayout(self.h)
+
+class Settings(Install_Window):
+    def __init__(self) -> None:
+        super().__init__()
+        self.continue_btn.setText("Apply")
+        self.continue_btn.setToolTip("will close the application")
+
+        config.read("settings.ini")
+
+        self.commonmodsdir = os.path.normpath(
+            config['DIRECTORY']['externalMods'])
+        self.steammodsdir = os.path.normpath(
+            config["DIRECTORY"]["steamMods"])
+        self.userdatamodsdir = os.path.normpath(
+            config["DIRECTORY"]["userdatamods"])
+        self.stagingareadir = os.path.normpath(
+            config["DIRECTORY"]["stagingareamods"])
+
+        self.modernstylebf = config["GRAPHICS"]["modernstyle"]
+        self.imagesizebf = config["GRAPHICS"]["imagesize"]
+        self.languagebf = config["LANGUAGE"]["language"]
+
+        self.continue_btn.setToolTip("will close the app you will need to restart it")
+        self.fill_content()
+
+    def fill_content(self):
+        # Steam Mods
+        self.steam = PathEnty(
+            "Set Steam Mods",
+            "Example: /steamapps/workshop/content/1066780",
+            "Open Steam Mods Folder"
+        )
+        self.steam.label.setText(self.steammodsdir)
+        self.content.addWidget(self.steam)
+
+        # Common Mods in settings.ini external
+        self.common = PathEnty(
+            "Set Common Mods",
+            "Example: /steamapps/common/Transport Fever 2/mods",
+            "open Common Mods Folder"
+        )
+        self.common.label.setText(self.commonmodsdir)
+        self.content.addWidget(self.common)
+
+        # Userdata Mods
+        self.userdata = PathEnty(
+            "Set Userdata Mods",
+            "Example: /userdata/436684792/1066780/local/mods",
+            "open userdata Mods Folder"
+        )
+        self.userdata.label.setText(self.userdatamodsdir)
+        self.content.addWidget(self.userdata)
+
+        # Stagingarea Mods
+        self.stagingarea = PathEnty(
+            "Set Stagingarea",
+            "Example: /userdata/436684792/1066780/local/staging_area",
+            "open staging_area Folder"
+        )
+        self.stagingarea.label.setText(self.stagingareadir)
+        self.content.addWidget(self.stagingarea)
+
+        self.language = FormEntry("language", QLineEdit())
+        self.language.data.setText(self.languagebf)
+        self.content.addWidget(self.language)
+
+        self.modernstyle = FormEntry("modernstyle", QCheckBox())
+        t = QCheckBox()
+        if self.modernstylebf == "True":
+            self.modernstyle.data.setChecked(True)
+        elif self.modernstylebf == "False":
+            self.modernstyle.data.setChecked(False)
+        self.content.addWidget(self.modernstyle)
+
+        self.imagesize = FormEntry("imagesize", QLineEdit())
+        self.imagesize.data.setValidator(QIntValidator())
+        self.imagesize.data.setText(self.imagesizebf.replace(" ", ""))
+        self.content.addWidget(self.imagesize)
+
+        # Connect Signal
+        sig.submit.connect(self.submit)
+
+        self.show()
+
+    def submit(self, *arg):
+        config.set('DIRECTORY', 'externalmods', self.common.label.text())
+        config.set('DIRECTORY', 'steammods', self.steam.label.text())
+        config.set('DIRECTORY', 'userdatamods', self.userdata.label.text())
+        config.set('DIRECTORY', 'stagingareamods', self.stagingarea.label.text())
+
+        t = QCheckBox()
+
+        config.set("GRAPHICS", "modernstyle", str(self.modernstyle.data.isChecked()))
+        config.set("GRAPHICS", "imagesize", self.imagesize.data.text())
+
+        config.set("LANGUAGE", "language", self.language.data.text())
+
+        with open('settings.ini', 'w') as configfile:
+            config.write(configfile)
+
+        # Quit App
+        QCoreApplication.quit()
