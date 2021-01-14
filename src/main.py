@@ -84,9 +84,11 @@ if not setting_up:
 
         global mods
 
+        language = config["LANGUAGE"]["language"]
+
         if os.path.isdir(externalModsDirectory) and os.path.isdir(steamModsDirectory) and os.path.isdir(userdataModsDirectory) and os.path.isdir(stagingAreamodsDirectory):
             mods = mod_finder.getAllMods(
-                externalModsDirectory, steamModsDirectory, userdataModsDirectory, stagingAreamodsDirectory)
+                externalModsDirectory, steamModsDirectory, userdataModsDirectory, stagingAreamodsDirectory, language)
         else:
             e = ErrorBox("Mod-Directories are incorrect")
         if not os.path.isdir(sevenzip):
@@ -473,17 +475,12 @@ class Window(QMainWindow):
         mod.addAction(ImportModlist)
         mod.addAction(InstallMod)
 
-        steamMods = QAction("Set Steammods location", self)
-        steamMods.setStatusTip("Set Steammods location")
-        steamMods.triggered.connect(self.setSteamMods)
-
-        externalMods = QAction("Set externalmods location", self)
-        externalMods.setStatusTip("Set externalmods location")
-        externalMods.triggered.connect(self.setExternalMods)
+        open_settings = QAction("Open Settings", self)
+        open_settings.setStatusTip("Open Settings")
+        open_settings.triggered.connect(self.open_Settings)
 
         settings = menubar.addMenu("Settings")
-        settings.addAction(steamMods)
-        settings.addAction(externalMods)
+        settings.addAction(open_settings)
 
         self.setGeometry(50, 50, 500, 500)
         self.setWindowTitle("Tpf2 NeonModManager")
@@ -509,35 +506,9 @@ class Window(QMainWindow):
         self.installPopup = InstallModWindow()
         self.installPopup.show()
 
-    def setSteamMods(self):
-        fd = QFileDialog()
-        f_dir = fd.getExistingDirectory(
-            self,
-            "Open steammods folder",
-            expanduser("~"),
-            fd.ShowDirsOnly
-        )
-
-        if f_dir != "":
-            config.set('DIRECTORY', 'steamMods', f_dir)
-            # Writing our configuration file to 'example.ini'
-            with open('settings.ini', 'w') as configfile:
-                config.write(configfile)
-
-    def setExternalMods(self):
-        fd = QFileDialog()
-        f_dir = fd.getExistingDirectory(
-            self,
-            "Open externalmods folder",
-            expanduser("~"),
-            fd.ShowDirsOnly
-        )
-
-        if f_dir != "":
-            config.set('DIRECTORY', 'externalMods', f_dir)
-            # Writing our configuration file to 'example.ini'
-            with open('settings.ini', 'w') as configfile:
-                config.write(configfile)
+    def open_Settings(self):
+        import setup
+        self.settings = setup.Settings()
 
 
 if configfound and (not setting_up):
