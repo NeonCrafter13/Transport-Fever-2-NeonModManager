@@ -95,6 +95,9 @@ if not setting_up:
     except:
         error = ErrorBox("Could not find settings.ini")
         configfound = False
+        import setup
+        setup = setup.Stetup_Window()
+        setting_up = True
 
 class CompareMods(QWidget):
     def __init__(self, list):
