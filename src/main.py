@@ -13,7 +13,7 @@ from mod import Mod
 from os.path import expanduser
 
 from PyQt5.QtWidgets import (
-    QWidget,
+    QStatusBar, QWidget,
     QPushButton,
     QHBoxLayout,
     QVBoxLayout,
@@ -31,7 +31,7 @@ from PyQt5.QtWidgets import (
     QAbstractItemView
 )
 from PyQt5.QtGui import QIcon, QPixmap
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QObject, Qt, pyqtSignal
 
 app = QApplication(sys.argv)
 
@@ -55,6 +55,11 @@ class ErrorBox(QMessageBox):
         self.setStandardButtons(QMessageBox.Close)
         self.setWindowTitle("ERROR")
         self.show()
+
+class Signals(QObject):
+    status_bar_message = pyqtSignal(str)
+
+sig = Signals()
 
 if not setting_up:
     config = configparser.ConfigParser()
@@ -214,13 +219,16 @@ class InstallModWindow(QWidget):
                     links.append(os.path.normpath(url.toLocalFile()))
             a = False
             for link in links:
+                sig.status_bar_message.emit("Installing Mod")
                 modinstaller.install(link)
                 a = True
 
             if a:
-                self.error = ErrorBox("New Installed Mod will only be shown after restart")
+                sig.status_bar_message.emit(
+                    "New Installed Mod will only be shown after restart")
         else:
             event.ignore()
+        self.close()
 
     def openFile(self):
         fd = QFileDialog()
@@ -232,10 +240,11 @@ class InstallModWindow(QWidget):
         )
 
         if f_dir[0] != "":
+            sig.status_bar_message.emit("Installing Mod")
             modinstaller.install(f_dir[0])
-            self.error = ErrorBox("New Installed Mod will only be shown after restart")
-
-            self.setParent = None
+            sig.status_bar_message.emit(
+                "New Installed Mod will only be shown after restart")
+        self.close()
 
     def openFolder(self):
         fd = QFileDialog()
@@ -247,10 +256,11 @@ class InstallModWindow(QWidget):
         )
 
         if f_dir != "":
+            sig.status_bar_message.emit("Installing Mod")
             modinstaller.install(f_dir)
-            self.error = ErrorBox("New Installed Mod will only be shown after restart")
-
-        self.setParent = None
+            sig.status_bar_message.emit(
+                "New Installed Mod will only be shown after restart")
+        self.close()
 
 class RPanal(QWidget):
     def __init__(self, mod):
@@ -450,9 +460,14 @@ class Window(QMainWindow):
         super().__init__()
 
         self.setStyleSheet(style)
+        sig.status_bar_message.connect(self.set_status_bar_info)
         self.initMe()
 
     def initMe(self):
+
+        self.state = QStatusBar(self)  # Create Statusbar
+
+        self.setStatusBar(self.state)
 
         ExportModlist = QAction("export modlist", self)
         ExportModlist.setShortcut("Ctrl+E")
@@ -492,15 +507,49 @@ class Window(QMainWindow):
 
         self.show()
 
+    def set_status_bar_info(self, e):  # Set text of the statusbar
+        self.state.showMessage(e)
+
     def export_modlist(self):
-        modlist.export_modlist(mods)
+
+        sig.status_bar_message.emit("Chosing folder for modlist.csv")
+
+        fd = QFileDialog()
+        f_dir = fd.getExistingDirectory(
+            self,
+            "Chose Folder for modlist.csv",
+            expanduser("~"),
+            fd.ShowDirsOnly
+        )
+        if f_dir == "":
+            return
+
+        sig.status_bar_message.emit("Exporting modlist")
+        modlist.export_modlist(mods, f_dir)
+        sig.status_bar_message.emit("Modlist exportet")
 
     def compare_modlist(self):
-        list = modlist.import_modlist(mods)
+
+        sig.status_bar_message.emit("Chose your modlist.csv")
+
+        fd = QFileDialog()
+        f_dir = fd.getOpenFileName(
+            self,
+            "Chose your modlist.csv",
+            expanduser("~"),
+            "csv (*.csv)"
+        )
+        if f_dir[0] == "":
+            return
+
+        sig.status_bar_message.emit("Starting import of modlist.csv")
+        list = modlist.import_modlist(mods, f_dir[0])
         if list:
             self.compare = CompareMods(list)
+            sig.status_bar_message.emit("modlist imported")
         else:
             self.error = ErrorBox("Couldn´t find the Modlist")
+            sig.status_bar_message.emit("Couldn´t find the Modlist")
 
     def install_mod(self):
         self.installPopup = InstallModWindow()

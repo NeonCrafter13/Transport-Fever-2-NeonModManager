@@ -189,7 +189,7 @@ class Settings(Install_Window):
     def __init__(self) -> None:
         super().__init__()
         self.setWindowTitle("Settings")
-        self.continue_btn.setText("Apply")
+        self.continue_btn.setText("Apply and close")
         self.continue_btn.setToolTip("will close the application")
 
         config.read("settings.ini")
