@@ -3,6 +3,7 @@
 # Entrypoint to the Aplication
 import configparser
 import os
+import shutil
 import sys
 import subprocess
 import mod_finder
@@ -43,7 +44,7 @@ configfound = False
 
 if not os.path.isfile("settings.ini"):
     import setup
-    setup = setup.Stetup_Window()
+    setup = setup.Setup_Window()
     setting_up = True
 
 class ErrorBox(QMessageBox):
@@ -96,14 +97,19 @@ if not setting_up:
                 externalModsDirectory, steamModsDirectory, userdataModsDirectory, stagingAreamodsDirectory, language)
         else:
             e = ErrorBox("Mod-Directories are incorrect")
-        if not os.path.isdir(sevenzip):
-            e = ErrorBox("Sevenzip Path incorrect")
+
+        if sys.platform == "win32":
+            if not os.path.isdir(sevenzip):
+                e = ErrorBox("The configured 7-zip path is invalid.")
+        elif sys.platform in ("linux", "darwin"):
+            if shutil.which('7z') is None:
+                e = ErrorBox("7-zip is not installed.")
         configfound = True
     except:
         error = ErrorBox("Could not find settings.ini")
         configfound = False
         import setup
-        setup = setup.Stetup_Window()
+        setup = setup.Setup_Window()
         setting_up = True
 
 class CompareMods(QWidget):
@@ -346,6 +352,8 @@ class RPanal(QWidget):
                 self.e = ErrorBox("Your file explorer is at the moment not supported!")
         elif sys.platform == "win32":
             subprocess.Popen(r'explorer /open,"' + self.mod.location + '"')
+        elif sys.platform == 'darwin':
+            subprocess.Popen(['open', self.mod.location])
 
     def uninstall(self):
         if not self.mod.uninstall():
