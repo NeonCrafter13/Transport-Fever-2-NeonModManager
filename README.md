@@ -23,7 +23,7 @@ Falls eure Mod nicht richtig erkannt wird könnt ihr dass beheben in dem ihr ein
 https://github.com/NeonCrafter13/Transport-Fever-2-NeonModManager/blob/v1.3/example/mod.json und diesen in eure Mod packt.
 
 :uk:
-### What you can do with this Apllication:
+### What you can do with this Application:
 
 List all installed Mods,
 Search your installed Mods,
@@ -31,7 +31,7 @@ Open a Mod in Explorer,
 Uninstall a Mod,
 export modlists,
 compare modlists with installed mods.
-To run this apllication you need 7-Zip.
+To run this application you need 7-Zip.
 
 
 
@@ -54,10 +54,10 @@ Ihr werdet Eingabe-Felder sehen in diese gebt ihr den dazu gehörigen Pfad ein, 
 
 :uk:
 ### Windows
-For installation under Windows download the Windows realease via Github.https://github.com/NeonCrafter13/Transport-Fever-2-NeonModManager/releases/latest).
+For installation under Windows download the Windows release via GitHub.https://github.com/NeonCrafter13/Transport-Fever-2-NeonModManager/releases/latest).
 You also need to install 7-zip.
 Extract the zip file and start main.exe.
-You will see entry in which you can type the path to the correct folder, or you click on the button on the right of the entry for opening the directory. When you did this for all entrys click on `Continue`. After that click on `Continue`. Restart the Program afterwards.
+You will see a field in which you can type the path to the correct folder, or you click on the button on the right of the field to navigate to the directory. When you have done this for all the fields, click `Continue`. After that click on `Continue`. Restart the Program afterwards.
 
 ### Linux Debian based Systems
 Go to the last release(https://github.com/NeonCrafter13/Transport-Fever-2-NeonModManager/releases/latest) and download the .deb file. Click on the file and hit install. You will be requiered to type in you're Password.

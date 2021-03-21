@@ -7,6 +7,7 @@ from PyQt5.QtWidgets import (
     QCheckBox, QFileDialog, QHBoxLayout, QLabel, QLineEdit, QMainWindow, QPushButton, QVBoxLayout, QWidget
 )
 import configparser
+from freezeutils import find_data_file as f
 
 
 class Signals(QObject):
@@ -38,7 +39,7 @@ class Install_Window(QWidget):
         sig.submit.emit()
 
 
-class PathEnty(QWidget):
+class PathEntry(QWidget):
     def __init__(self, labeltext: str, tooltip: str, opentitle: str) -> None:
         super().__init__()
         self.labeltext = labeltext
@@ -81,7 +82,7 @@ class First(Install_Window):
 
     def fill_content(self):
         # Steam Mods
-        self.steam = PathEnty(
+        self.steam = PathEntry(
             "Set Steam Mods",
             "Example: /steamapps/workshop/content/1066780",
             "Open Steam Mods Folder"
@@ -89,7 +90,7 @@ class First(Install_Window):
         self.content.addWidget(self.steam)
 
         # Common Mods in settings.ini external
-        self.common = PathEnty(
+        self.common = PathEntry(
             "Set Common Mods",
             "Example: /steamapps/common/Transport Fever 2/mods",
             "open Common Mods Folder"
@@ -97,7 +98,7 @@ class First(Install_Window):
         self.content.addWidget(self.common)
 
         # Userdata Mods
-        self.userdata = PathEnty(
+        self.userdata = PathEntry(
             "Set Userdata Mods",
             "Example: /userdata/436684792/1066780/local/mods",
             "open userdata Mods Folder"
@@ -105,7 +106,7 @@ class First(Install_Window):
         self.content.addWidget(self.userdata)
 
         # Stagingarea Mods
-        self.stagingarea = PathEnty(
+        self.stagingarea = PathEntry(
             "Set Stagingarea",
             "Example: /userdata/436684792/1066780/local/staging_area",
             "open staging_area Folder"
@@ -114,7 +115,7 @@ class First(Install_Window):
 
         # 7-Zip installation
         if sys.platform == "win32":
-            self.sevenzip = PathEnty(
+            self.sevenzip = PathEntry(
                 "Set 7-Zip Installation",
                 r"Example: C:\Program Files\7-Zip",
                 "open 7-zip installation folder"
@@ -144,7 +145,7 @@ class First(Install_Window):
         config.add_section("LANGUAGE")
         config.set("LANGUAGE", "language", "en")
 
-        with open('settings.ini', 'w') as configfile:
+        with open(f('settings.ini'), 'w') as configfile:
             config.write(configfile)
 
         sig.next_page.emit()
@@ -156,7 +157,7 @@ class Second(Install_Window):
         self.build_gui()
 
     def build_gui(self):
-        self.content.addWidget(QLabel("Setup succesfull click on Continue to close the app."))
+        self.content.addWidget(QLabel("Setup successful click on Continue to close the app."))
         self.content.addWidget(
             QLabel("Restart the app afterwards"))
 
@@ -208,7 +209,7 @@ class Settings(Install_Window):
         self.continue_btn.setText("Apply and close")
         self.continue_btn.setToolTip("will close the application")
 
-        config.read("settings.ini")
+        config.read(f("settings.ini"))
 
         self.commonmodsdir = os.path.normpath(
             config['DIRECTORY']['externalMods'])
@@ -228,7 +229,7 @@ class Settings(Install_Window):
 
     def fill_content(self):
         # Steam Mods
-        self.steam = PathEnty(
+        self.steam = PathEntry(
             "Set Steam Mods",
             "Example: /steamapps/workshop/content/1066780",
             "Open Steam Mods Folder"
@@ -237,7 +238,7 @@ class Settings(Install_Window):
         self.content.addWidget(self.steam)
 
         # Common Mods in settings.ini external
-        self.common = PathEnty(
+        self.common = PathEntry(
             "Set Common Mods",
             "Example: /steamapps/common/Transport Fever 2/mods",
             "open Common Mods Folder"
@@ -246,7 +247,7 @@ class Settings(Install_Window):
         self.content.addWidget(self.common)
 
         # Userdata Mods
-        self.userdata = PathEnty(
+        self.userdata = PathEntry(
             "Set Userdata Mods",
             "Example: /userdata/436684792/1066780/local/mods",
             "open userdata Mods Folder"
@@ -255,7 +256,7 @@ class Settings(Install_Window):
         self.content.addWidget(self.userdata)
 
         # Stagingarea Mods
-        self.stagingarea = PathEnty(
+        self.stagingarea = PathEntry(
             "Set Stagingarea",
             "Example: /userdata/436684792/1066780/local/staging_area",
             "open staging_area Folder"
@@ -298,7 +299,7 @@ class Settings(Install_Window):
 
         config.set("LANGUAGE", "language", self.language.data.text())
 
-        with open('settings.ini', 'w') as configfile:
+        with open(f('settings.ini'), 'w') as configfile:
             config.write(configfile)
 
         # Quit App
