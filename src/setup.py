@@ -8,13 +8,16 @@ from PyQt5.QtWidgets import (
 )
 import configparser
 
+
 class Signals(QObject):
     submit = pyqtSignal()
     next_page = pyqtSignal()
 
+
 sig = Signals()
 
 config = configparser.ConfigParser()
+
 
 class Install_Window(QWidget):
     def __init__(self) -> None:
@@ -34,22 +37,29 @@ class Install_Window(QWidget):
     def next_page(self, *arg):
         sig.submit.emit()
 
+
 class PathEnty(QWidget):
-    def __init__(self, buttontext: str, tooltip: str, opentitle: str) -> None:
+    def __init__(self, labeltext: str, tooltip: str, opentitle: str) -> None:
         super().__init__()
-        self.buttontext = buttontext
+        self.labeltext = labeltext
         self.btntooltip = tooltip
         self.opentitle = opentitle
         self.build_gui()
 
     def build_gui(self):
         self.h = QHBoxLayout()
-        btn = QPushButton(self.buttontext)
-        btn.setToolTip(self.btntooltip)
-        btn.clicked.connect(self.setPath)
-        self.label = QLineEdit()
+        self.label = QLabel(self.labeltext)
+        self.text = QLineEdit()
+
+        self.btn = QPushButton("⚯")
+        self.btn.clicked.connect(self.setPath)
+
+        self.text.setToolTip(self.btntooltip)
+        self.btn.setToolTip(self.btntooltip)
+
         self.h.addWidget(self.label)
-        self.h.addWidget(btn)
+        self.h.addWidget(self.text)
+        self.h.addWidget(self.btn)
         self.setLayout(self.h)
 
     def setPath(self, *arg):
@@ -61,7 +71,7 @@ class PathEnty(QWidget):
             fd.ShowDirsOnly
         )
         if f_dir != "":
-            self.label.setText(f_dir)
+            self.text.setText(f_dir)
 
 
 class First(Install_Window):
@@ -116,14 +126,16 @@ class First(Install_Window):
 
     def submit(self):
         config.add_section('DIRECTORY')
-        config.set('DIRECTORY', 'externalmods', self.common.label.text())
-        config.set('DIRECTORY', 'steammods', self.steam.label.text())
-        config.set('DIRECTORY', 'userdatamods', self.userdata.label.text())
-        config.set('DIRECTORY', 'stagingareamods', self.stagingarea.label.text())
+        config.set('DIRECTORY', 'externalmods', self.common.text.text())
+        config.set('DIRECTORY', 'steammods', self.steam.text.text())
+        config.set('DIRECTORY', 'userdatamods', self.userdata.text.text())
+        config.set('DIRECTORY', 'stagingareamods', self.stagingarea.text.text())
         if sys.platform == "win32":
-            config.set('DIRECTORY', '7-zipInstallation', self.sevenzip.label.text())
+            config.set('DIRECTORY', '7-zipInstallation', self.sevenzip.text.text())
         elif sys.platform == "linux":
             config.set('DIRECTORY', '7-zipInstallation', "/usr")
+        elif sys.platform == "darwin":
+            config.set('DIRECTORY', '7-zipInstallation', "/usr/local/bin")
 
         config.add_section("GRAPHICS")
         config.set("GRAPHICS", "modernstyle", "True")
@@ -136,6 +148,7 @@ class First(Install_Window):
             config.write(configfile)
 
         sig.next_page.emit()
+
 
 class Second(Install_Window):
     def __init__(self) -> None:
@@ -152,7 +165,8 @@ class Second(Install_Window):
     def exit(self):
         QCoreApplication.quit()
 
-class Stetup_Window(QMainWindow):
+
+class Setup_Window(QMainWindow):
     def __init__(self) -> None:
         super().__init__()
         self.initMe()
@@ -174,6 +188,7 @@ class Stetup_Window(QMainWindow):
         self.setCentralWidget(self.mainwidget)
         self.show()
 
+
 class FormEntry(QWidget):
     def __init__(self, label: str, entry) -> None:
         super().__init__()
@@ -184,6 +199,7 @@ class FormEntry(QWidget):
         self.h.addWidget(self.data)
 
         self.setLayout(self.h)
+
 
 class Settings(Install_Window):
     def __init__(self) -> None:
@@ -217,7 +233,7 @@ class Settings(Install_Window):
             "Example: /steamapps/workshop/content/1066780",
             "Open Steam Mods Folder"
         )
-        self.steam.label.setText(self.steammodsdir)
+        self.steam.text.setText(self.steammodsdir)
         self.content.addWidget(self.steam)
 
         # Common Mods in settings.ini external
@@ -226,7 +242,7 @@ class Settings(Install_Window):
             "Example: /steamapps/common/Transport Fever 2/mods",
             "open Common Mods Folder"
         )
-        self.common.label.setText(self.commonmodsdir)
+        self.common.text.setText(self.commonmodsdir)
         self.content.addWidget(self.common)
 
         # Userdata Mods
@@ -235,7 +251,7 @@ class Settings(Install_Window):
             "Example: /userdata/436684792/1066780/local/mods",
             "open userdata Mods Folder"
         )
-        self.userdata.label.setText(self.userdatamodsdir)
+        self.userdata.text.setText(self.userdatamodsdir)
         self.content.addWidget(self.userdata)
 
         # Stagingarea Mods
@@ -244,7 +260,7 @@ class Settings(Install_Window):
             "Example: /userdata/436684792/1066780/local/staging_area",
             "open staging_area Folder"
         )
-        self.stagingarea.label.setText(self.stagingareadir)
+        self.stagingarea.text.setText(self.stagingareadir)
         self.content.addWidget(self.stagingarea)
 
         self.language = FormEntry("language", QLineEdit())
@@ -270,10 +286,10 @@ class Settings(Install_Window):
         self.show()
 
     def submit(self, *arg):
-        config.set('DIRECTORY', 'externalmods', self.common.label.text())
-        config.set('DIRECTORY', 'steammods', self.steam.label.text())
-        config.set('DIRECTORY', 'userdatamods', self.userdata.label.text())
-        config.set('DIRECTORY', 'stagingareamods', self.stagingarea.label.text())
+        config.set('DIRECTORY', 'externalmods', self.common.text.text())
+        config.set('DIRECTORY', 'steammods', self.steam.text.text())
+        config.set('DIRECTORY', 'userdatamods', self.userdata.text.text())
+        config.set('DIRECTORY', 'stagingareamods', self.stagingarea.text.text())
 
         t = QCheckBox()
 
