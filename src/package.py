@@ -27,7 +27,7 @@ if sys.platform == "win32":
 
 setup(
     name="Tpf2 NeonModManager",
-    version="1.11a1",
+    version="1.11",
     description="A little ModManager written in Python. See more info at https://github.com/NeonCrafter13/Transport-Fever-2-NeonModManager.",
     options={'build_exe': build_exe_options, 'bdist_mac': build_mac_options},
     executables=[Executable("main.py", base=base, target_name='NeonModManager')]
