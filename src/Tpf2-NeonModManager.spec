@@ -1,6 +1,6 @@
 Summary: A Mod Manager for Transport-Fever 2
 Name: Tpf2-NeonModManager
-Version: 1.8.1
+Version: 1.11
 Release: 1
 License: GPLv3
 URL: https://github.com/NeonCrafter13/Transport-Fever-2-NeonModManager

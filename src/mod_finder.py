@@ -165,8 +165,8 @@ def getSteamMod(folder, language: str):
     source = "Steam"
 
     try:
-        image = open(os.path.join(folder, "workshop_preview.jpg"), "r")
-        image = os.path.join(folder, "workshop_preview.jpg")
+        with open(os.path.join(folder, "workshop_preview.jpg"), "r"):
+            image = os.path.join(folder, "workshop_preview.jpg")
     except FileNotFoundError:
         image = None
 

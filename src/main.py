@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 
-# Entrypoint to the Aplication
+# Entrypoint to the Application
 import configparser
 import os
 import shutil
@@ -12,6 +12,7 @@ import search
 import images
 from mod import Mod
 from os.path import expanduser
+from freezeutils import find_data_file as f
 
 from PyQt5.QtWidgets import (
     QStatusBar, QWidget,
@@ -42,10 +43,12 @@ if False:  # Change this to True if you are building the .deb file.
 setting_up = False
 configfound = False
 
-if not os.path.isfile("settings.ini"):
+if not os.path.isfile(f("settings.ini")):
     import setup
+
     setup = setup.Setup_Window()
     setting_up = True
+
 
 class ErrorBox(QMessageBox):
     def __init__(self, error: str):
@@ -57,14 +60,16 @@ class ErrorBox(QMessageBox):
         self.setWindowTitle("ERROR")
         self.show()
 
+
 class Signals(QObject):
     status_bar_message = pyqtSignal(str)
+
 
 sig = Signals()
 
 if not setting_up:
     config = configparser.ConfigParser()
-    a = config.read(os.path.abspath("settings.ini"))
+    a = config.read(os.path.abspath(f("settings.ini")))
 
     try:
         Width = int(config["GRAPHICS"]["imagesize"])
@@ -73,7 +78,7 @@ if not setting_up:
     try:
         style = config["GRAPHICS"]["modernstyle"]
         if style.lower().replace(" ", "") == "true":
-            with open("Aqua.css", "r") as style:
+            with open(f("Aqua.css"), "r") as style:
                 style = style.read()
         else:
             style = ""
@@ -84,22 +89,24 @@ if not setting_up:
         externalModsDirectory = os.path.normpath(config['DIRECTORY']['externalMods'])
         steamModsDirectory = os.path.normpath(config["DIRECTORY"]["steamMods"])
         userdataModsDirectory = os.path.normpath(config["DIRECTORY"]["userdatamods"])
-        stagingAreamodsDirectory = os.path.normpath(config["DIRECTORY"]["stagingareamods"])
-        sevenzip = os.path.normpath(config["DIRECTORY"]["7-zipInstallation"])
+        stagingAreaModsDirectory = os.path.normpath(config["DIRECTORY"]["stagingareamods"])
+        sevenZip = os.path.normpath(config["DIRECTORY"]["7-zipInstallation"])
         import modinstaller
 
         global mods
 
         language = config["LANGUAGE"]["language"]
 
-        if os.path.isdir(externalModsDirectory) and os.path.isdir(steamModsDirectory) and os.path.isdir(userdataModsDirectory) and os.path.isdir(stagingAreamodsDirectory):
+        if os.path.isdir(externalModsDirectory) and os.path.isdir(steamModsDirectory) and os.path.isdir(
+                userdataModsDirectory) and os.path.isdir(stagingAreaModsDirectory):
             mods = mod_finder.getAllMods(
-                externalModsDirectory, steamModsDirectory, userdataModsDirectory, stagingAreamodsDirectory, language)
+                externalModsDirectory, steamModsDirectory, userdataModsDirectory, stagingAreaModsDirectory, language)
         else:
+            os.remove(f('settings.ini'))
             e = ErrorBox("Mod-Directories are incorrect")
-
         if sys.platform == "win32":
-            if not os.path.isdir(sevenzip):
+            if not os.path.isdir(sevenZip):
+                os.remove(f('settings.ini'))
                 e = ErrorBox("The configured 7-zip path is invalid.")
         elif sys.platform in ("linux", "darwin"):
             if shutil.which('7z') is None:
@@ -109,8 +116,10 @@ if not setting_up:
         error = ErrorBox("Could not find settings.ini")
         configfound = False
         import setup
+
         setup = setup.Setup_Window()
         setting_up = True
+
 
 class CompareMods(QWidget):
     def __init__(self, list):
@@ -149,7 +158,7 @@ class CompareMods(QWidget):
 
         TV.addLayout(self.InstalledV)
 
-        UnusedLabel = QLabel("Installed Mods that aren´t one the list:")
+        UnusedLabel = QLabel("Installed Mods that aren't on the list:")
         UnusedLabel.setStyleSheet("color: #ff6f00; background-color: #a0a0a0;")
         TV.addWidget(UnusedLabel)
 
@@ -175,6 +184,7 @@ class CompareMods(QWidget):
         for i in range(len(mods)):
             if i not in self.onList:
                 self.unusedV.addWidget(ModBox(mods[i], i))
+
 
 class InstallModWindow(QWidget):
     def __init__(self):
@@ -268,7 +278,8 @@ class InstallModWindow(QWidget):
                 "New Installed Mod will only be shown after restart")
         self.close()
 
-class RPanal(QWidget):
+
+class RPanel(QWidget):
     def __init__(self, mod):
         super().__init__()
         self.mod: Mod = mod
@@ -282,18 +293,16 @@ class RPanal(QWidget):
         Layout.addWidget(QLabel(str(mod.name)))
 
         # Image
+        Image = QLabel()
+
         if mod.image:
-            Image = QLabel()
             pixmap = QPixmap(mod.image)
-            pixmap = pixmap.scaledToWidth(Width)
-            Image.setPixmap(pixmap)
-            Layout.addWidget(Image)
         else:
-            Image = QLabel()
-            pixmap = QPixmap("images/no_image.png")
-            pixmap = pixmap.scaledToWidth(Width)
-            Image.setPixmap(pixmap)
-            Layout.addWidget(Image)
+            pixmap = QPixmap(f("images/no_image.png"))
+
+        pixmap = pixmap.scaledToWidth(Width, mode=Qt.SmoothTransformation)
+        Image.setPixmap(pixmap)
+        Layout.addWidget(Image)
 
         # Authors
         separator = ', '
@@ -315,18 +324,18 @@ class RPanal(QWidget):
         if mod.category_image is not None:
             try:
                 images.invert_image(mod.category_image)
-                succes = True
+                success = True
             except:
-                succes = False
-            if succes:
+                success = False
+            if success:
                 Image = QLabel()
-                pixmap = QPixmap("Image_negative.jpg")
+                pixmap = QPixmap(f("Image_negative.jpg"))
                 Image.setPixmap(pixmap)
                 Image.setToolTip("Category")
                 Layout.addWidget(Image)
 
         # Open in Explorer Button
-        Open = QPushButton("Open in Expolorer")
+        Open = QPushButton("Open in Explorer")
         Open.clicked.connect(self.open)
         Layout.addWidget(Open)
 
@@ -357,9 +366,10 @@ class RPanal(QWidget):
 
     def uninstall(self):
         if not self.mod.uninstall():
-            self.error = ErrorBox("Mod couldn´t be uninstalled")
+            self.error = ErrorBox("Mod couldn't be uninstalled")
         else:
-            self.error = ErrorBox("Uninstalled Mods will be listed if Programm is not restarted")
+            self.error = ErrorBox("Uninstalled Mods will be listed if Program is not restarted")
+
 
 class ModBox(QWidget):
     def __init__(self, mod, id):
@@ -382,6 +392,7 @@ class ModBox(QWidget):
             Layout.addWidget(QLabel(authorString))
         """
         self.setLayout(Layout)
+
 
 class SearchBox(QWidget):
     def __init__(self, parent):
@@ -429,9 +440,9 @@ class MainWidget(QWidget):
 
         scroll.setWidget(self.scrollcontent)
 
-        self.scrollcontent.itemSelectionChanged.connect(self.update_RPanal)
+        self.scrollcontent.itemSelectionChanged.connect(self.update_RPanel)
 
-        self.mod_info = RPanal(mods[0])
+        self.mod_info = RPanel(mods[0])
         self.h.addWidget(self.mod_info)
         self.mod_info.show()
 
@@ -443,18 +454,18 @@ class MainWidget(QWidget):
         self.setLayout(self.v)
         # self.show()
 
-    def update_RPanal(self):
+    def update_RPanel(self):
         self.mod_info.setParent(None)
         self.mod_info.pixmap = None
         items = self.scrollcontent.selectedItems()
         if not items:
             return
         item = items[0]
-        self.mod_info = RPanal(item.mod)
+        self.mod_info = RPanel(item.mod)
         self.h.addWidget(self.mod_info)
         self.mod_info.show()
 
-    def update_RPanal_With_Search(self, keyword):
+    def update_RPanel_With_Search(self, keyword):
         items = self.scrollcontent.findItems(keyword, Qt.MatchContains)
         if not items:
             self.error = ErrorBox("No Mod found with matching name")
@@ -462,6 +473,7 @@ class MainWidget(QWidget):
             item = items[0]
             item.setSelected(True)
             self.scrollcontent.scrollToItem(item, QAbstractItemView.PositionAtTop)
+
 
 class Window(QMainWindow):
     def __init__(self):
@@ -508,7 +520,7 @@ class Window(QMainWindow):
         self.setGeometry(50, 50, 500, 500)
         self.setWindowTitle("Tpf2 NeonModManager")
 
-        self.setWindowIcon(QIcon("images/icon.png"))
+        self.setWindowIcon(QIcon(f("images/icon.png")))
 
         self.mainwidget = MainWidget()
         self.setCentralWidget(self.mainwidget)
@@ -520,7 +532,7 @@ class Window(QMainWindow):
 
     def export_modlist(self):
 
-        sig.status_bar_message.emit("Chosing folder for modlist.csv")
+        sig.status_bar_message.emit("Choosing folder for modlist.csv")
 
         fd = QFileDialog()
         f_dir = fd.getExistingDirectory(
@@ -534,7 +546,7 @@ class Window(QMainWindow):
 
         sig.status_bar_message.emit("Exporting modlist")
         modlist.export_modlist(mods, f_dir)
-        sig.status_bar_message.emit("Modlist exportet")
+        sig.status_bar_message.emit("Modlist exported")
 
     def compare_modlist(self):
 
@@ -556,8 +568,8 @@ class Window(QMainWindow):
             self.compare = CompareMods(list)
             sig.status_bar_message.emit("modlist imported")
         else:
-            self.error = ErrorBox("Couldn´t find the Modlist")
-            sig.status_bar_message.emit("Couldn´t find the Modlist")
+            self.error = ErrorBox("Couldn't find the Modlist")
+            sig.status_bar_message.emit("Couldn't find the Modlist")
 
     def install_mod(self):
         self.installPopup = InstallModWindow()
@@ -569,7 +581,8 @@ class Window(QMainWindow):
 
 
 if configfound and (not setting_up):
-    if os.path.isdir(externalModsDirectory) and os.path.isdir(steamModsDirectory) and os.path.isdir(userdataModsDirectory) and os.path.isdir(stagingAreamodsDirectory):
+    if os.path.isdir(externalModsDirectory) and os.path.isdir(steamModsDirectory) and os.path.isdir(
+            userdataModsDirectory) and os.path.isdir(stagingAreaModsDirectory):
         w = Window()
 
 sys.exit(app.exec_())
