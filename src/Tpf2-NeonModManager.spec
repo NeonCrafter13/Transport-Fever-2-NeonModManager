@@ -33,6 +33,7 @@ cp /home/mm/Transport-Fever-2-NeonModManager/src/modlist.json $RPM_BUILD_ROOT/us
 cp /home/mm/Transport-Fever-2-NeonModManager/src/setup.py $RPM_BUILD_ROOT/usr/share/Tpf2NeonModManager/setup.py
 cp /home/mm/Transport-Fever-2-NeonModManager/src/images/* $RPM_BUILD_ROOT/usr/share/Tpf2NeonModManager/images
 cp /home/mm/Transport-Fever-2-NeonModManager/src/Tpf2-NeonModManager.desktop $RPM_BUILD_ROOT/usr/share/applications/Tpf2-NeonModManager.desktop
+cp /home/mm/Transport-Fever-2-NeonModManager/src/freezeutils.py $RPM_BUILD_ROOT/usr/share/Tpf2NeonModManager/freezeutils.py
 
 exit 
 
