@@ -415,7 +415,7 @@ class SearchBox(QWidget):
     def search(self):
         keyword = self.textbox.text()
 
-        self.parent.update_RPanal_With_Search(keyword)
+        self.parent.update_RPanel_With_Search(keyword)
 
 
 class MainWidget(QWidget):
