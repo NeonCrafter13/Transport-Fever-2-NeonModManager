@@ -6,14 +6,9 @@ import os
 import shutil
 import sys
 import subprocess
-import mod_finder
-import modlist
-import search
-import images
-from mod import Mod
 from os.path import expanduser
-from freezeutils import find_data_file as f
 
+from freezeutils import find_data_file as f
 from PyQt5.QtWidgets import (
     QStatusBar, QWidget,
     QPushButton,
@@ -32,8 +27,14 @@ from PyQt5.QtWidgets import (
     QListWidgetItem,
     QAbstractItemView
 )
-from PyQt5.QtGui import QIcon, QPixmap
-from PyQt5.QtCore import QObject, Qt, pyqtSignal
+from PyQt5.QtGui import QIcon, QPixmap, QKeyEvent
+from PyQt5.QtCore import QObject, Qt, pyqtSignal 
+
+import mod_finder
+import modlist
+import search
+import images
+from mod import Mod
 
 app = QApplication(sys.argv)
 
@@ -72,9 +73,10 @@ if not setting_up:
     a = config.read(os.path.abspath(f("settings.ini")))
 
     try:
-        Width = int(config["GRAPHICS"]["imagesize"])
+        image_width = int(config["GRAPHICS"]["imagesize"])
     except KeyError:
-        Width = 384
+        image_width = 384
+
     try:
         style = config["GRAPHICS"]["modernstyle"]
         if style.lower().replace(" ", "") == "true":
@@ -86,26 +88,27 @@ if not setting_up:
         style = ""
 
     try:
-        externalModsDirectory = os.path.normpath(config['DIRECTORY']['externalMods'])
-        steamModsDirectory = os.path.normpath(config["DIRECTORY"]["steamMods"])
-        userdataModsDirectory = os.path.normpath(config["DIRECTORY"]["userdatamods"])
-        stagingAreaModsDirectory = os.path.normpath(config["DIRECTORY"]["stagingareamods"])
-        sevenZip = os.path.normpath(config["DIRECTORY"]["7-zipInstallation"])
+        extern_mods_dir = os.path.normpath(config['DIRECTORY']['externalMods'])
+        steam_mods_dir = os.path.normpath(config["DIRECTORY"]["steamMods"])
+        userdata_mods_dir = os.path.normpath(config["DIRECTORY"]["userdatamods"])
+        stagingarea_mods_dir = os.path.normpath(config["DIRECTORY"]["stagingareamods"])
+        sevenzip_dir = os.path.normpath(config["DIRECTORY"]["7-zipInstallation"])
         import modinstaller
 
         global mods
 
         language = config["LANGUAGE"]["language"]
 
-        if os.path.isdir(externalModsDirectory) and os.path.isdir(steamModsDirectory) and os.path.isdir(
-                userdataModsDirectory) and os.path.isdir(stagingAreaModsDirectory):
+        if os.path.isdir(extern_mods_dir) and os.path.isdir(steam_mods_dir) and os.path.isdir(
+                userdata_mods_dir) and os.path.isdir(stagingarea_mods_dir):
             mods = mod_finder.getAllMods(
-                externalModsDirectory, steamModsDirectory, userdataModsDirectory, stagingAreaModsDirectory, language)
+                extern_mods_dir, steam_mods_dir, userdata_mods_dir, stagingarea_mods_dir, language)
         else:
             os.remove(f('settings.ini'))
             e = ErrorBox("Mod-Directories are incorrect")
+
         if sys.platform == "win32":
-            if not os.path.isdir(sevenZip):
+            if not os.path.isdir(sevenzip_dir):
                 os.remove(f('settings.ini'))
                 e = ErrorBox("The configured 7-zip path is invalid.")
         elif sys.platform in ("linux", "darwin"):
@@ -139,7 +142,7 @@ class CompareMods(QWidget):
 
         scroll.setWidget(scrollcontent)
 
-        TV = QVBoxLayout()
+        TV = QVBoxLayout()  # View that is being scrolled through
         scrollcontent.setLayout(TV)
 
         self.NotInstalledV = QVBoxLayout()
@@ -196,19 +199,19 @@ class InstallModWindow(QWidget):
         self.initMe()
 
     def initMe(self):
-        Layout = QVBoxLayout()
+        layout = QVBoxLayout()
 
-        Layout.addWidget(QLabel("Drop your Mod in here"))
+        layout.addWidget(QLabel("Drop your Mod in here"))
 
         btn1 = QPushButton("Select a file here")
         btn1.clicked.connect(self.openFile)
-        Layout.addWidget(btn1)
+        layout.addWidget(btn1)
 
         btn2 = QPushButton("Select a folder here")
         btn2.clicked.connect(self.openFolder)
-        Layout.addWidget(btn2)
+        layout.addWidget(btn2)
 
-        self.setLayout(Layout)
+        self.setLayout(layout)
 
     def dragEnterEvent(self, event):
         if event.mimeData().hasUrls:
@@ -287,38 +290,38 @@ class RPanel(QWidget):
 
     def initMe(self):
         mod = self.mod
-        Layout = QVBoxLayout()
+        layout = QVBoxLayout()
 
         # Name
-        Layout.addWidget(QLabel(str(mod.name)))
+        layout.addWidget(QLabel(str(mod.name)))
 
         # Image
-        Image = QLabel()
+        image = QLabel()
 
         if mod.image:
             pixmap = QPixmap(mod.image)
         else:
             pixmap = QPixmap(f("images/no_image.png"))
 
-        pixmap = pixmap.scaledToWidth(Width, mode=Qt.SmoothTransformation)
-        Image.setPixmap(pixmap)
-        Layout.addWidget(Image)
+        pixmap = pixmap.scaledToWidth(image_width, mode=Qt.SmoothTransformation)
+        image.setPixmap(pixmap)
+        layout.addWidget(image)
 
         # Authors
         separator = ', '
         if mod.authors:
-            Layout.addWidget(QLabel(f"Authors: {separator.join(mod.authors)}"))
+            layout.addWidget(QLabel(f"Authors: {separator.join(mod.authors)}"))
         else:
-            Layout.addWidget(QLabel("Authors: not detected"))
+            layout.addWidget(QLabel("Authors: not detected"))
 
         # source
-        Layout.addWidget(QLabel(f"source: {str(mod.source)}"))
+        layout.addWidget(QLabel(f"source: {str(mod.source)}"))
 
         # minorVersion
-        Layout.addWidget(QLabel(f"minorVersion: {str(mod.minorVersion)}"))
+        layout.addWidget(QLabel(f"minorVersion: {str(mod.minorVersion)}"))
 
         # hasSettings
-        Layout.addWidget(QLabel(f"hasOptions: {str(mod.options)}"))
+        layout.addWidget(QLabel(f"hasOptions: {str(mod.options)}"))
 
         # Category Image
         if mod.category_image is not None:
@@ -328,23 +331,23 @@ class RPanel(QWidget):
             except:
                 success = False
             if success:
-                Image = QLabel()
+                image = QLabel()
                 pixmap = QPixmap(f("Image_negative.jpg"))
-                Image.setPixmap(pixmap)
-                Image.setToolTip("Category")
-                Layout.addWidget(Image)
+                image.setPixmap(pixmap)
+                image.setToolTip("Category")
+                layout.addWidget(image)
 
         # Open in Explorer Button
-        Open = QPushButton("Open in Explorer")
-        Open.clicked.connect(self.open)
-        Layout.addWidget(Open)
+        open_btn = QPushButton("Open in Explorer")
+        open_btn.clicked.connect(self.open)
+        layout.addWidget(open_btn)
 
         # Uninstall
-        Uninstall = QPushButton("Uninstall Mod")
-        Uninstall.clicked.connect(self.uninstall)
-        Layout.addWidget(Uninstall)
+        uninstall_btn = QPushButton("Uninstall Mod")
+        uninstall_btn.clicked.connect(self.uninstall)
+        layout.addWidget(uninstall_btn)
 
-        self.setLayout(Layout)
+        self.setLayout(layout)
 
     def open(self):
         if sys.platform == "linux":
@@ -378,10 +381,10 @@ class ModBox(QWidget):
         self.initMe(mod)
 
     def initMe(self, mod):
-        Layout = QHBoxLayout()
-        Layout.addWidget(QLabel(mod.name))
-        Layout.addWidget(QLabel(str(mod.minorVersion)))
-        Layout.addWidget(QLabel(mod.source))
+        layout = QHBoxLayout()
+        layout.addWidget(QLabel(mod.name))
+        layout.addWidget(QLabel(str(mod.minorVersion)))
+        layout.addWidget(QLabel(mod.source))
         """
         authorString = ""
         if Mod.authors == None:
@@ -391,7 +394,7 @@ class ModBox(QWidget):
                 authorString = authorString + author + ", "
             Layout.addWidget(QLabel(authorString))
         """
-        self.setLayout(Layout)
+        self.setLayout(layout)
 
 
 class SearchBox(QWidget):
@@ -411,6 +414,12 @@ class SearchBox(QWidget):
         self.button.clicked.connect(self.search)
 
         self.setLayout(self.h)
+
+    def keyPressEvent(self, event: QKeyEvent) -> None:
+        if event.key() == Qt.Key_Return:
+            self.search()
+            return
+        return super().keyPressEvent(event)
 
     def search(self):
         keyword = self.textbox.text()
@@ -581,8 +590,8 @@ class Window(QMainWindow):
 
 
 if configfound and (not setting_up):
-    if os.path.isdir(externalModsDirectory) and os.path.isdir(steamModsDirectory) and os.path.isdir(
-            userdataModsDirectory) and os.path.isdir(stagingAreaModsDirectory):
+    if os.path.isdir(extern_mods_dir) and os.path.isdir(steam_mods_dir) and os.path.isdir(
+            userdata_mods_dir) and os.path.isdir(stagingarea_mods_dir):
         w = Window()
 
 sys.exit(app.exec_())
