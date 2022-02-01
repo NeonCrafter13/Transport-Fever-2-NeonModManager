@@ -10,12 +10,14 @@ def export_modlist(mods, dir: str):
             writer.writerow([mod.name, mod.source, mod.authors])
 
 
-def import_modlist(mods, file_path: str):
+def import_modlist(file_path: str):
     try:
         with open(file_path, "r", encoding="utf-8") as file:
             modlist = list(csv.DictReader(file))
+        """    
         for i in modlist:
             print(i)
+        """
         return modlist
     except FileNotFoundError:
         return False

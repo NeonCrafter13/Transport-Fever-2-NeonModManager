@@ -1,7 +1,6 @@
 #! /usr/bin/env python3
 
 # Entrypoint to the Application
-import configparser
 import os
 import shutil
 import sys
@@ -34,103 +33,38 @@ import mod_finder
 import modlist
 import search
 import images
+import modinstaller
 from mod import Mod
+from settings import Settings
 
 app = QApplication(sys.argv)
 
 if False:  # Change this to True if you are building the .deb file.
     os.chdir("/usr/share/Tpf2NeonModManager")
 
-setting_up = False
-configfound = False
-
-if not os.path.isfile(f("settings.ini")):
-    import setup
-
-    setup = setup.Setup_Window()
-    setting_up = True
-
-
 class ErrorBox(QMessageBox):
     def __init__(self, error: str):
         super().__init__()
-        self.setStyleSheet(style)
         self.setIcon(QMessageBox.Critical)
         self.setText(error)
         self.setStandardButtons(QMessageBox.Close)
         self.setWindowTitle("ERROR")
         self.show()
 
-
 class Signals(QObject):
     status_bar_message = pyqtSignal(str)
 
-
 sig = Signals()
 
-if not setting_up:
-    config = configparser.ConfigParser()
-    a = config.read(os.path.abspath(f("settings.ini")))
-
-    try:
-        image_width = int(config["GRAPHICS"]["imagesize"])
-    except KeyError:
-        image_width = 384
-
-    try:
-        style = config["GRAPHICS"]["modernstyle"]
-        if style.lower().replace(" ", "") == "true":
-            with open(f("Aqua.css"), "r") as style:
-                style = style.read()
-        else:
-            style = ""
-    except KeyError:
-        style = ""
-
-    try:
-        extern_mods_dir = os.path.normpath(config['DIRECTORY']['externalMods'])
-        steam_mods_dir = os.path.normpath(config["DIRECTORY"]["steamMods"])
-        userdata_mods_dir = os.path.normpath(config["DIRECTORY"]["userdatamods"])
-        stagingarea_mods_dir = os.path.normpath(config["DIRECTORY"]["stagingareamods"])
-        sevenzip_dir = os.path.normpath(config["DIRECTORY"]["7-zipInstallation"])
-        import modinstaller
-
-        global mods
-
-        language = config["LANGUAGE"]["language"]
-
-        if os.path.isdir(extern_mods_dir) and os.path.isdir(steam_mods_dir) and os.path.isdir(
-                userdata_mods_dir) and os.path.isdir(stagingarea_mods_dir):
-            mods = mod_finder.getAllMods(
-                extern_mods_dir, steam_mods_dir, userdata_mods_dir, stagingarea_mods_dir, language)
-        else:
-            os.remove(f('settings.ini'))
-            e = ErrorBox("Mod-Directories are incorrect")
-
-        if sys.platform == "win32":
-            if not os.path.isdir(sevenzip_dir):
-                os.remove(f('settings.ini'))
-                e = ErrorBox("The configured 7-zip path is invalid.")
-        elif sys.platform in ("linux", "darwin"):
-            if shutil.which('7z') is None:
-                e = ErrorBox("7-zip is not installed.")
-        configfound = True
-    except:
-        error = ErrorBox("Could not find settings.ini")
-        configfound = False
-        import setup
-
-        setup = setup.Setup_Window()
-        setting_up = True
-
-
 class CompareMods(QWidget):
-    def __init__(self, list):
+    def __init__(self, list, settings):
         super().__init__()
         self.list = list
         self.setGeometry(50, 50, 500, 500)
         self.setWindowTitle("Compare Mods")
-        self.setStyleSheet(style)
+        self.setStyleSheet(settings.style)
+        self.mods = mod_finder.getAllMods(
+            settings.extern_mods_dir, settings.steam_mods_dir, settings.userdata_mods_dir, settings.stagingarea_mods_dir, settings.language)
         self.initMe()
 
     def initMe(self):
@@ -174,7 +108,7 @@ class CompareMods(QWidget):
     def ListMods(self):
         self.onList = []
         for item in self.list:
-            result = search.find_mod_compare(mods, item["name"])
+            result = search.find_mod_compare(self.mods, item["name"])
             if result:
                 self.InstalledV.addWidget(ModBox(*result))
                 self.onList.append(result[1])
@@ -184,18 +118,19 @@ class CompareMods(QWidget):
                           False, False, item["authors"], None)
                 self.NotInstalledV.addWidget(ModBox(mod, None))
 
-        for i in range(len(mods)):
+        for i in range(len(self.mods)):
             if i not in self.onList:
-                self.unusedV.addWidget(ModBox(mods[i], i))
+                self.unusedV.addWidget(ModBox(self.mods[i], i))
 
 
 class InstallModWindow(QWidget):
-    def __init__(self):
+    def __init__(self, settings):
         super().__init__()
+        self.settings: Settings = settings
         self.setAcceptDrops(True)
         self.setGeometry(50, 50, 500, 500)
         self.setWindowTitle("Mod Installer")
-        self.setStyleSheet(style)
+        self.setStyleSheet(self.settings.style)
         self.initMe()
 
     def initMe(self):
@@ -239,7 +174,7 @@ class InstallModWindow(QWidget):
             a = False
             for link in links:
                 sig.status_bar_message.emit("Installing Mod")
-                modinstaller.install(link)
+                modinstaller.install(link, self.settings.userdata_mods_dir, self.settings.sevenzip_dir)
                 a = True
 
             if a:
@@ -260,7 +195,7 @@ class InstallModWindow(QWidget):
 
         if f_dir[0] != "":
             sig.status_bar_message.emit("Installing Mod")
-            modinstaller.install(f_dir[0])
+            modinstaller.install(f_dir[0], self.settings.userdata_mods_dir, self.settings.sevenzip_dir)
             sig.status_bar_message.emit(
                 "New Installed Mod will only be shown after restart")
         self.close()
@@ -276,16 +211,17 @@ class InstallModWindow(QWidget):
 
         if f_dir != "":
             sig.status_bar_message.emit("Installing Mod")
-            modinstaller.install(f_dir)
+            modinstaller.install(f_dir, self.settings.userdata_mods_dir, self.settings.sevenzip_dir)
             sig.status_bar_message.emit(
                 "New Installed Mod will only be shown after restart")
         self.close()
 
 
 class RPanel(QWidget):
-    def __init__(self, mod):
+    def __init__(self, mod, settings):
         super().__init__()
         self.mod: Mod = mod
+        self.settings: Settings = settings
         self.initMe()
 
     def initMe(self):
@@ -303,7 +239,7 @@ class RPanel(QWidget):
         else:
             pixmap = QPixmap(f("images/no_image.png"))
 
-        pixmap = pixmap.scaledToWidth(image_width, mode=Qt.SmoothTransformation)
+        pixmap = pixmap.scaledToWidth(self.settings.image_width, mode=Qt.SmoothTransformation)
         image.setPixmap(pixmap)
         layout.addWidget(image)
 
@@ -428,8 +364,12 @@ class SearchBox(QWidget):
 
 
 class MainWidget(QWidget):
-    def __init__(self):
+    def __init__(self, settings):
         super().__init__()
+        self.settings: Settings = settings
+        self.mods = mod_finder.getAllMods(
+            settings.extern_mods_dir, settings.steam_mods_dir, settings.userdata_mods_dir, settings.stagingarea_mods_dir, settings.language)
+
         self.initMe()
 
     def initMe(self):
@@ -442,7 +382,7 @@ class MainWidget(QWidget):
         scroll.setWidgetResizable(True)
         self.scrollcontent = QListWidget(scroll)
 
-        for mod in mods:
+        for mod in self.mods:
             a = QListWidgetItem(mod.name)
             a.mod = mod
             self.scrollcontent.addItem(a)
@@ -451,7 +391,7 @@ class MainWidget(QWidget):
 
         self.scrollcontent.itemSelectionChanged.connect(self.update_RPanel)
 
-        self.mod_info = RPanel(mods[0])
+        self.mod_info = RPanel(self.mods[0], self.settings)
         self.h.addWidget(self.mod_info)
         self.mod_info.show()
 
@@ -470,7 +410,7 @@ class MainWidget(QWidget):
         if not items:
             return
         item = items[0]
-        self.mod_info = RPanel(item.mod)
+        self.mod_info = RPanel(item.mod, self.settings)
         self.h.addWidget(self.mod_info)
         self.mod_info.show()
 
@@ -485,11 +425,13 @@ class MainWidget(QWidget):
 
 
 class Window(QMainWindow):
-    def __init__(self):
+    def __init__(self, settings):
         super().__init__()
+        self.settings = settings
 
-        self.setStyleSheet(style)
+        self.setStyleSheet(settings.style)
         sig.status_bar_message.connect(self.set_status_bar_info)
+
         self.initMe()
 
     def initMe(self):
@@ -531,7 +473,7 @@ class Window(QMainWindow):
 
         self.setWindowIcon(QIcon(f("images/icon.png")))
 
-        self.mainwidget = MainWidget()
+        self.mainwidget = MainWidget(self.settings)
         self.setCentralWidget(self.mainwidget)
 
         self.show()
@@ -554,6 +496,13 @@ class Window(QMainWindow):
             return
 
         sig.status_bar_message.emit("Exporting modlist")
+        mods = mod_finder.getAllMods(
+            self.settings.extern_mods_dir,
+            self.settings.steam_mods_dir,
+            self.settings.userdata_mods_dir,
+            self.settings.stagingarea_mods_dir,
+            self.settings.language
+        )
         modlist.export_modlist(mods, f_dir)
         sig.status_bar_message.emit("Modlist exported")
 
@@ -572,16 +521,16 @@ class Window(QMainWindow):
             return
 
         sig.status_bar_message.emit("Starting import of modlist.csv")
-        list = modlist.import_modlist(mods, f_dir[0])
+        list = modlist.import_modlist(f_dir[0])
         if list:
-            self.compare = CompareMods(list)
+            self.compare = CompareMods(list, self.settings)
             sig.status_bar_message.emit("modlist imported")
         else:
             self.error = ErrorBox("Couldn't find the Modlist")
             sig.status_bar_message.emit("Couldn't find the Modlist")
 
     def install_mod(self):
-        self.installPopup = InstallModWindow()
+        self.installPopup = InstallModWindow(self.settings)
         self.installPopup.show()
 
     def open_Settings(self):
@@ -589,9 +538,44 @@ class Window(QMainWindow):
         self.settings = setup.Settings()
 
 
-if configfound and (not setting_up):
-    if os.path.isdir(extern_mods_dir) and os.path.isdir(steam_mods_dir) and os.path.isdir(
-            userdata_mods_dir) and os.path.isdir(stagingarea_mods_dir):
-        w = Window()
+def main():
+    setting_up = False
+    configfound = False
 
-sys.exit(app.exec_())
+    if not os.path.isfile(f("settings.ini")):
+        setting_up = True
+
+    if not setting_up:
+        settings = Settings()
+        if settings.load():
+
+            if not (os.path.isdir(settings.extern_mods_dir) and os.path.isdir(settings.steam_mods_dir) and os.path.isdir(
+                    settings.userdata_mods_dir) and os.path.isdir(settings.stagingarea_mods_dir)):
+                os.remove(f('settings.ini'))
+                e = ErrorBox("Mod-Directories are incorrect")
+                setting_up = True
+
+            if sys.platform == "win32":
+                if not os.path.isdir(settings.sevenzip_dir):
+                    os.remove(f('settings.ini'))
+                    e = ErrorBox("The configured 7-zip path is invalid.")
+            elif sys.platform in ("linux", "darwin"):
+                if shutil.which('7z') is None:
+                    e = ErrorBox("7-zip is not installed.")
+            configfound = True
+        else:
+            error = ErrorBox("Could not find settings.ini")
+            configfound = False
+            setting_up = True
+
+    if setting_up:
+        import setup
+
+        setup = setup.Setup_Window()
+
+    if configfound and (not setting_up):
+        w = Window(settings)
+
+    sys.exit(app.exec_())
+
+main()
