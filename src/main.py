@@ -27,7 +27,7 @@ from PyQt5.QtWidgets import (
     QAbstractItemView
 )
 from PyQt5.QtGui import QIcon, QPixmap, QKeyEvent
-from PyQt5.QtCore import QObject, Qt, pyqtSignal 
+from PyQt5.QtCore import QObject, Qt, pyqtSignal
 
 import mod_finder
 import modlist
@@ -53,6 +53,7 @@ class ErrorBox(QMessageBox):
 
 class Signals(QObject):
     status_bar_message = pyqtSignal(str)
+    reload_mods = pyqtSignal()
 
 sig = Signals()
 
@@ -179,7 +180,8 @@ class InstallModWindow(QWidget):
 
             if a:
                 sig.status_bar_message.emit(
-                    "New Installed Mod will only be shown after restart")
+                    "Mod Installed")
+                sig.reload_mods.emit()
         else:
             event.ignore()
         self.close()
@@ -197,7 +199,8 @@ class InstallModWindow(QWidget):
             sig.status_bar_message.emit("Installing Mod")
             modinstaller.install(f_dir[0], self.settings.userdata_mods_dir, self.settings.sevenzip_dir)
             sig.status_bar_message.emit(
-                "New Installed Mod will only be shown after restart")
+                "Mod Installed")
+            sig.reload_mods.emit()
         self.close()
 
     def openFolder(self):
@@ -213,7 +216,8 @@ class InstallModWindow(QWidget):
             sig.status_bar_message.emit("Installing Mod")
             modinstaller.install(f_dir, self.settings.userdata_mods_dir, self.settings.sevenzip_dir)
             sig.status_bar_message.emit(
-                "New Installed Mod will only be shown after restart")
+                "Mod Installed")
+            sig.reload_mods.emit()
         self.close()
 
 
@@ -307,8 +311,8 @@ class RPanel(QWidget):
         if not self.mod.uninstall():
             self.error = ErrorBox("Mod couldn't be uninstalled")
         else:
-            self.error = ErrorBox("Uninstalled Mods will be listed if Program is not restarted")
-
+            sig.status_bar_message.emit("Mod uninstalled")
+            sig.reload_mods.emit()
 
 class ModBox(QWidget):
     def __init__(self, mod, id):
@@ -370,7 +374,31 @@ class MainWidget(QWidget):
         self.mods = mod_finder.getAllMods(
             settings.extern_mods_dir, settings.steam_mods_dir, settings.userdata_mods_dir, settings.stagingarea_mods_dir, settings.language)
 
+        sig.reload_mods.connect(self.reload_mods)
+
         self.initMe()
+
+    def reload_mods(self):
+        self.scrollcontent.clear()
+
+        self.mods = mod_finder.getAllMods(
+            self.settings.extern_mods_dir,
+            self.settings.steam_mods_dir,
+            self.settings.userdata_mods_dir,
+            self.settings.stagingarea_mods_dir,
+            self.settings.language
+        )
+
+        for mod in self.mods:
+            a = QListWidgetItem(mod.name)
+            a.mod = mod
+            self.scrollcontent.addItem(a)
+
+        self.mod_info.setParent(None)  # Set RPanel to something
+        self.mod_info.pixmap = None
+        self.mod_info = RPanel(self.mods[0], self.settings)
+        self.h.addWidget(self.mod_info)
+        self.mod_info.show()
 
     def initMe(self):
         self.v = QVBoxLayout()
@@ -465,8 +493,13 @@ class Window(QMainWindow):
         open_settings.setStatusTip("Open Settings")
         open_settings.triggered.connect(self.open_Settings)
 
+        reload_mods = QAction("Reload Mods", self)
+        reload_mods.setStatusTip("Reload the Mod List")
+        reload_mods.triggered.connect(self.reload_mods)
+
         settings = menubar.addMenu("Settings")
         settings.addAction(open_settings)
+        settings.addAction(reload_mods)
 
         self.setGeometry(50, 50, 500, 500)
         self.setWindowTitle("Tpf2 NeonModManager")
@@ -480,6 +513,10 @@ class Window(QMainWindow):
 
     def set_status_bar_info(self, e):  # Set text of the statusbar
         self.state.showMessage(e)
+
+    def reload_mods(self):
+        sig.reload_mods.emit()
+        sig.status_bar_message.emit("Reloaded Mods")
 
     def export_modlist(self):
 

@@ -9,7 +9,8 @@ def install(link, userdataModsDirectory, sevenZipInstallation):
 
     if platform in ("linux", "darwin"):
         if link.lower().endswith('zip') or link.lower().endswith('rar') or link.lower().endswith("7z"):
-            subprocess.Popen(["7z", "x", link, f"-o{userdataModsDirectory}", "-y"])
+            p = subprocess.Popen(["7z", "x", link, f"-o{userdataModsDirectory}", "-y"])
+            p.wait()
             return True
         if os.path.isdir(link):
             _, b = os.path.split(link)
@@ -18,7 +19,9 @@ def install(link, userdataModsDirectory, sevenZipInstallation):
 
     elif platform == "win32":
         if link.lower().endswith('zip') or link.lower().endswith('rar') or link.lower().endswith("7z"):
-            subprocess.Popen(f'"{ os.path.join(sevenZipInstallation, "7z.exe") }" x {link} -o"{userdataModsDirectory}" -y')
+            p = subprocess.Popen(
+                f'"{ os.path.join(sevenZipInstallation, "7z.exe") }" x {link} -o"{userdataModsDirectory}" -y')
+            p.wait()
             return True
         if os.path.isdir(link):
             # copy subdirectory example
