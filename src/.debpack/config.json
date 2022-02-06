@@ -27,7 +27,8 @@
             "modlist.json": "/usr/share/Tpf2NeonModManager/modlist.json",
             "setup.py": "/usr/share/Tpf2NeonModManager/setup.py",
             "Tpf2-NeonModManager.desktop": "/usr/share/applications/Tpf2-NeonModManager.desktop",
-            "freezeutils.py": "/usr/share/Tpf2NeonModManager/freezeutils.py"
+            "freezeutils.py": "/usr/share/Tpf2NeonModManager/freezeutils.py",
+            "settings.py": "/usr/share/Tpf2NeonModManager/settings.py"
         }
     },
     "architecture_all": true
