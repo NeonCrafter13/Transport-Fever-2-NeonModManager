@@ -36,6 +36,8 @@ import images
 import modinstaller
 from mod import Mod
 from settings import Settings
+from searchbox import SearchBox
+
 
 app = QApplication(sys.argv)
 
@@ -337,35 +339,6 @@ class ModBox(QWidget):
         self.setLayout(layout)
 
 
-class SearchBox(QWidget):
-    def __init__(self, parent):
-        super().__init__()
-        self.parent = parent
-        self.initMe()
-
-    def initMe(self):
-        self.h = QHBoxLayout()
-        self.textbox = QLineEdit()
-
-        self.h.addWidget(self.textbox)
-
-        self.button = QPushButton('Search')
-        self.h.addWidget(self.button)
-        self.button.clicked.connect(self.search)
-
-        self.setLayout(self.h)
-
-    def keyPressEvent(self, event: QKeyEvent) -> None:
-        if event.key() == Qt.Key_Return:
-            self.search()
-            return
-        return super().keyPressEvent(event)
-
-    def search(self):
-        keyword = self.textbox.text()
-
-        self.parent.update_RPanel_With_Search(keyword)
-
 
 class MainWidget(QWidget):
     def __init__(self, settings):
@@ -423,7 +396,7 @@ class MainWidget(QWidget):
         self.h.addWidget(self.mod_info)
         self.mod_info.show()
 
-        searchbox = SearchBox(self)
+        searchbox = SearchBox(self.update_RPanel_With_Search)
         self.v.addWidget(searchbox)
         searchbox.show()
 
