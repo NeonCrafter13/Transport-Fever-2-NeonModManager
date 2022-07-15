@@ -67,7 +67,12 @@ class CompareMods(QWidget):
         self.setWindowTitle("Compare Mods")
         self.setStyleSheet(settings.style)
         self.mods = mod_finder.getAllMods(
-            settings.extern_mods_dir, settings.steam_mods_dir, settings.userdata_mods_dir, settings.stagingarea_mods_dir, settings.language)
+            settings.extern_mods_dir,
+            settings.steam_mods_dir,
+            settings.userdata_mods_dir,
+            settings.stagingarea_mods_dir,
+            settings.language
+        )
         self.initMe()
 
     def initMe(self):
@@ -339,13 +344,16 @@ class ModBox(QWidget):
         self.setLayout(layout)
 
 
-
 class MainWidget(QWidget):
     def __init__(self, settings):
         super().__init__()
         self.settings: Settings = settings
         self.mods = mod_finder.getAllMods(
-            settings.extern_mods_dir, settings.steam_mods_dir, settings.userdata_mods_dir, settings.stagingarea_mods_dir, settings.language)
+            settings.extern_mods_dir,
+            settings.steam_mods_dir, settings.userdata_mods_dir,
+            settings.stagingarea_mods_dir,
+            settings.language
+        )
 
         sig.reload_mods.connect(self.reload_mods)
 
@@ -545,7 +553,7 @@ class Window(QMainWindow):
 
     def open_Settings(self):
         import setup
-        self.settings = setup.Settings()
+        self.settings_menu = setup.Settings()
 
 
 def main():
@@ -559,8 +567,12 @@ def main():
         settings = Settings()
         if settings.load():
 
-            if not (os.path.isdir(settings.extern_mods_dir) and os.path.isdir(settings.steam_mods_dir) and os.path.isdir(
-                    settings.userdata_mods_dir) and os.path.isdir(settings.stagingarea_mods_dir)):
+            if not (
+                os.path.isdir(settings.extern_mods_dir) and
+                os.path.isdir(settings.steam_mods_dir) and
+                os.path.isdir(settings.userdata_mods_dir) and
+                os.path.isdir(settings.stagingarea_mods_dir)
+            ):
                 os.remove(f('settings.ini'))
                 e = ErrorBox("Mod-Directories are incorrect")
                 setting_up = True
