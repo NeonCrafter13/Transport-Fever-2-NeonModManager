@@ -112,5 +112,5 @@ Navigieren Sie in den Ordner "src". Geben Sie ein:
 `cd src`
 
 Starten sie das Programm. Geben Sie ein:
-`python3 main.py` * Falls sie eine .desktop Datei hinzufügen wollen, sodass Sie dass Pragramm von dem Menü aus starten können, so ändern sie bitte Zeile 44 von main.oy zu "if True:".*
+`python3 main.py` * Falls sie eine .desktop Datei hinzufügen wollen, sodass Sie dass Pragramm von dem Menü aus starten können, so ändern sie bitte Zeile 44 von main.py zu "if True:".*
 
