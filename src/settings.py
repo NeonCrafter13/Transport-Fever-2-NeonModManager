@@ -24,6 +24,14 @@ class Settings():
             self.style = ""
 
         try:
+            self.language = config["LANGUAGE"]["language"]
+            accepted_languages = ["english", "german"]
+            if not self.language in accepted_languages:
+                self.language = "english"
+        except:
+            return False
+
+        try:
             self.extern_mods_dir = os.path.normpath(
                 config['DIRECTORY']['externalMods'])
             self.steam_mods_dir = os.path.normpath(config["DIRECTORY"]["steamMods"])
@@ -33,9 +41,7 @@ class Settings():
                 config["DIRECTORY"]["stagingareamods"])
             self.sevenzip_dir = os.path.normpath(
                 config["DIRECTORY"]["7-zipInstallation"])
-
-            self.language = config["LANGUAGE"]["language"]
         except:
             return False
-        
+
         return True

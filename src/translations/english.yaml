@@ -1,0 +1,53 @@
+---
+CompareMods:
+  Title: "Compare mods"
+  NotInstalledLabel: "Mods that are not installed that are on the list"
+  InstalledLabel: "Installed mods that are on the list"
+  UnusedLabel: "Installed mods that aren't on the list:"
+
+InstallModWindow:
+  DropInfo: "Drag and drop your mod in here"
+  SelectFile: "Select a file"
+  SelectFolder: "Select a folder"
+
+RPanel:
+  Authors: "Authors"
+  AuthorsNotDetected: "Authors not detected"
+  source: "source"
+  minorVersion: "minorVersion"
+  hasOptions: "has Options"
+  Category: "Category"
+  open_btn: "open"
+  uninstall_btn: "Uninstall Mod"
+  FileExplorerNotSupported: "Your file explorer is at the moment not supported!"
+  ModCouldnotUninstall: "Mod couldn't be uninstalled"
+  ModUninstalled: "Mod uninstalled"
+
+MainWidget:
+  NoModFound: "No mod found with matching name"
+
+Window:
+  ActionExportModList: "export modlist"
+  ActionCompareModList: "Compare modlist"
+  ActionInstallMod: "install mod"
+  ActionAbout: "About Tpf2-NeonModManager"
+  ActionSettings: "Open Settings"
+  ActionReloadMods: "Reload Mods"
+  Title: "Tpf2 NeonModManager"
+  MenuAbout: "About"
+  MenuMod: "Mod"
+  MenuSettings: "Settings"
+  CouldnotFindModlist: "Couldn't find the Modlist"
+  Version: "Version"
+
+StatusBar:
+  InstallingMod: "Installing mod"
+  ModInstalled: "Mod installed"
+  ReloadedMods: "Reloaded Mods"
+  ChoseFolder: "Choosing folder for modlist.csv"
+  ExportingModlist: "Exporting modlist"
+  ExportedModlist: "Modlist exported"
+  ChoseFile: "Chose your modlist.csv"
+  ImportingFile: "Starting import of modlist.csv"
+  ImportedFile: "modlist imported"
+

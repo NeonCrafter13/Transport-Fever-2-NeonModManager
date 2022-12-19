@@ -1,4 +1,4 @@
 PyQt5==5.13.2
 numpy
 pillow
-
+PyYAML

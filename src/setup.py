@@ -4,7 +4,7 @@ from os.path import expanduser
 from PyQt5.QtCore import QCoreApplication, QObject, pyqtSignal
 from PyQt5.QtGui import QIcon, QIntValidator
 from PyQt5.QtWidgets import (
-    QCheckBox, QFileDialog, QHBoxLayout, QLabel, QLineEdit, QMainWindow, QPushButton, QVBoxLayout, QWidget
+    QCheckBox, QFileDialog, QHBoxLayout, QLabel, QLineEdit, QMainWindow, QPushButton, QVBoxLayout, QWidget, QComboBox
 )
 import configparser
 from freezeutils import find_data_file as f
@@ -143,7 +143,7 @@ class First(Install_Window):
         config.set("GRAPHICS", "imagesize", "384")
 
         config.add_section("LANGUAGE")
-        config.set("LANGUAGE", "language", "en")
+        config.set("LANGUAGE", "language", "english")
 
         with open(f('settings.ini'), 'w') as configfile:
             config.write(configfile)
@@ -264,8 +264,12 @@ class Settings(Install_Window):
         self.stagingarea.text.setText(self.stagingareadir)
         self.content.addWidget(self.stagingarea)
 
-        self.language = FormEntry("language", QLineEdit())
-        self.language.data.setText(self.languagebf)
+        language_combo = QComboBox()
+        language_combo.addItem("English", "english")
+        language_combo.addItem("Deutsch", "german")
+        self.language = FormEntry("language", language_combo)
+        self.language.data.setCurrentIndex(
+            self.language.data.findData(self.languagebf))
         self.content.addWidget(self.language)
 
         self.modernstyle = FormEntry("modernstyle", QCheckBox())
@@ -297,7 +301,7 @@ class Settings(Install_Window):
         config.set("GRAPHICS", "modernstyle", str(self.modernstyle.data.isChecked()))
         config.set("GRAPHICS", "imagesize", self.imagesize.data.text())
 
-        config.set("LANGUAGE", "language", self.language.data.text())
+        config.set("LANGUAGE", "language", self.language.data.itemData(self.language.data.currentIndex()))
 
         with open(f('settings.ini'), 'w') as configfile:
             config.write(configfile)
