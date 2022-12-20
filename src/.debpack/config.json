@@ -30,7 +30,8 @@
             "Tpf2-NeonModManager.desktop": "/usr/share/applications/Tpf2-NeonModManager.desktop",
             "freezeutils.py": "/usr/share/Tpf2NeonModManager/freezeutils.py",
             "settings.py": "/usr/share/Tpf2NeonModManager/settings.py",
-            "translations": "/usr/share/Tpf2NeonModManager/"
+            "translations": "/usr/share/Tpf2NeonModManager/",
+            "language.py": "/usr/share/Tpf2NeonModManager/language.py"
         }
     },
     "architecture_all": true
