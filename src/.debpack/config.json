@@ -31,7 +31,8 @@
             "freezeutils.py": "/usr/share/Tpf2NeonModManager/freezeutils.py",
             "settings.py": "/usr/share/Tpf2NeonModManager/settings.py",
             "translations": "/usr/share/Tpf2NeonModManager/",
-            "language.py": "/usr/share/Tpf2NeonModManager/language.py"
+            "language.py": "/usr/share/Tpf2NeonModManager/language.py",
+            "searchbox.py": "/usr/share/Tpf2NeonModManager/searchbox.py"
         }
     },
     "architecture_all": true
