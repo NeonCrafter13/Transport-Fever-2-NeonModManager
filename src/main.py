@@ -39,7 +39,7 @@ from mod import Mod
 from settings import Settings
 from searchbox import SearchBox
 
-VERSION = "testing 1.12"
+VERSION = "1.12"
 
 app = QApplication(sys.argv)
 
