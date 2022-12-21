@@ -1,6 +1,6 @@
 Summary: A Mod Manager for Transport-Fever 2
 Name: Tpf2-NeonModManager
-Version: 1.11
+Version: 1.12
 Release: 1
 License: GPLv3
 URL: https://github.com/NeonCrafter13/Transport-Fever-2-NeonModManager
@@ -9,6 +9,7 @@ Packager: NeonCrafter13
 Requires: python3
 Requires: PyQt5
 Requires: python3-numpy
+Requires: python3-pyyaml
 Requires: p7zip-plugins
 BuildRoot: ~/rpmbuild/
 
@@ -19,6 +20,7 @@ A simple Mod Manager written in Python, with which you can manage your mods in T
 echo "BUILDROOT = $RPM_BUILD_ROOT"
 mkdir -p $RPM_BUILD_ROOT/usr/share/Tpf2NeonModManager
 mkdir -p $RPM_BUILD_ROOT/usr/share/Tpf2NeonModManager/images
+mkdir -p $RPM_BUILD_ROOT/usr/share/Tpf2NeonModManager/translations
 mkdir -p $RPM_BUILD_ROOT/usr/share/applications
 
 cp /home/mm/Transport-Fever-2-NeonModManager/src/main.py $RPM_BUILD_ROOT/usr/share/Tpf2NeonModManager/main
@@ -34,6 +36,11 @@ cp /home/mm/Transport-Fever-2-NeonModManager/src/setup.py $RPM_BUILD_ROOT/usr/sh
 cp /home/mm/Transport-Fever-2-NeonModManager/src/images/* $RPM_BUILD_ROOT/usr/share/Tpf2NeonModManager/images
 cp /home/mm/Transport-Fever-2-NeonModManager/src/Tpf2-NeonModManager.desktop $RPM_BUILD_ROOT/usr/share/applications/Tpf2-NeonModManager.desktop
 cp /home/mm/Transport-Fever-2-NeonModManager/src/freezeutils.py $RPM_BUILD_ROOT/usr/share/Tpf2NeonModManager/freezeutils.py
+cp /home/mm/Transport-Fever-2-NeonModManager/src/settings.py $RPM_BUILD_ROOT/usr/share/Tpf2NeonModManager/settings.py
+cp /home/mm/Transport-Fever-2-NeonModManager/src/translations/* $RPM_BUILD_ROOT/usr/share/Tpf2NeonModManager/translations
+cp /home/mm/Transport-Fever-2-NeonModManager/src/language.py $RPM_BUILD_ROOT/usr/share/Tpf2NeonModManager/language.py
+cp /home/mm/Transport-Fever-2-NeonModManager/src/searchbox.py $RPM_BUILD_ROOT/usr/share/Tpf2NeonModManager/searchbox.py
+
 
 exit 
 
