@@ -16,12 +16,12 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 <PyQt5>
 Author
-PyQt5 is copyright (c) Riverbank Computing Limited. Its homepage is https://www.riverbankcomputing.com/software/pyqt/.
+PyQt6 is copyright (c) Riverbank Computing Limited. Its homepage is https://www.riverbankcomputing.com/software/pyqt/.
 
 Support may be obtained from the PyQt mailing list at https://www.riverbankcomputing.com/mailman/listinfo/pyqt/.
 
 License
-PyQt5 is released under the GPL v3 license and under a commercial license that allows for the development of proprietary applications.
+PyQt6 is released under the GPL v3 license and under a commercial license that allows for the development of proprietary applications.
 
 <Aqua Style>
 MIT License

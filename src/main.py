@@ -8,14 +8,13 @@ import subprocess
 from os.path import expanduser
 
 from freezeutils import find_data_file as f
-from PyQt5.QtWidgets import (
+from PyQt6.QtWidgets import (
     QStatusBar, QWidget,
     QPushButton,
     QHBoxLayout,
     QVBoxLayout,
     QApplication,
     QMainWindow,
-    QAction,
     QGridLayout,
     QScrollArea,
     QLabel,
@@ -26,8 +25,8 @@ from PyQt5.QtWidgets import (
     QListWidgetItem,
     QAbstractItemView
 )
-from PyQt5.QtGui import QIcon, QPixmap, QKeyEvent
-from PyQt5.QtCore import QObject, Qt, pyqtSignal
+from PyQt6.QtGui import QIcon, QPixmap, QKeyEvent, QAction
+from PyQt6.QtCore import QObject, Qt, pyqtSignal
 from language import Language
 
 import mod_finder
@@ -171,14 +170,14 @@ class InstallModWindow(QWidget):
 
     def dragMoveEvent(self, event):
         if event.mimeData().hasUrls:
-            event.setDropAction(Qt.CopyAction)
+            event.setDropAction(Qt.DropAction.CopyAction)
             event.accept()
         else:
             event.ignore()
 
     def dropEvent(self, event):
         if event.mimeData().hasUrls:
-            event.setDropAction(Qt.CopyAction)
+            event.setDropAction(Qt.DropAction.CopyAction)
             event.accept()
 
             links = []
@@ -198,7 +197,7 @@ class InstallModWindow(QWidget):
                 sig.reload_mods.emit()
         else:
             event.ignore()
-        self.close()
+        # self.close() # Produces Seg fault
 
     def openFile(self):
         fd = QFileDialog()
@@ -221,11 +220,11 @@ class InstallModWindow(QWidget):
 
     def openFolder(self):
         fd = QFileDialog()
+        fd.setFileMode(fd.FileMode.Directory)
         f_dir = fd.getExistingDirectory(
             self,
             "Install Mod",
-            expanduser("~"),
-            fd.ShowDirsOnly
+            expanduser("~")
         )
 
         if f_dir != "":
@@ -261,7 +260,7 @@ class RPanel(QWidget):
         else:
             pixmap = QPixmap(f("images/no_image.png"))
 
-        pixmap = pixmap.scaledToWidth(self.settings.image_width, mode=Qt.SmoothTransformation)
+        pixmap = pixmap.scaledToWidth(self.settings.image_width, mode=Qt.TransformationMode.SmoothTransformation)
         image.setPixmap(pixmap)
         layout.addWidget(image)
 
@@ -438,13 +437,13 @@ class MainWidget(QWidget):
         self.mod_info.show()
 
     def update_RPanel_With_Search(self, keyword):
-        items = self.scrollcontent.findItems(keyword, Qt.MatchContains)
+        items = self.scrollcontent.findItems(keyword, Qt.MatchFlag.MatchContains)
         if not items:
             self.error = ErrorBox(self.lang.getTranslation("MainWidget", "NoModFound"))
         else:
             item = items[0]
             item.setSelected(True)
-            self.scrollcontent.scrollToItem(item, QAbstractItemView.PositionAtTop)
+            self.scrollcontent.scrollToItem(item, QAbstractItemView.ScrollHint.PositionAtTop)
 
 
 class Window(QMainWindow):
@@ -455,7 +454,7 @@ class Window(QMainWindow):
         self.setStyleSheet(settings.style)
         sig.status_bar_message.connect(self.set_status_bar_info)
 
-        self.lang = Language(settings.language)
+        self.lang = Language(settings.uiLanguage) # UI Lang
         self.lang.load_lang()
 
         self.initMe()
@@ -521,7 +520,7 @@ class Window(QMainWindow):
     def show_info(self):
         QMessageBox.about(self, self.lang.getTranslation(
             "Window", "ActionAbout"),
-            f'{self.lang.getTranslation("Window", "Version")}: {VERSION}'
+            f'{self.lang.getTranslation("Window", "Version")}: {VERSION}\nhttps://github.com/NeonCrafter13/Transport-Fever-2-NeonModManager'
         )
         # self.aboutbox = AboutBox()
 
@@ -534,11 +533,11 @@ class Window(QMainWindow):
         sig.status_bar_message.emit(self.lang.getTranslation("StatusBar", "ChoseFolder"))
 
         fd = QFileDialog()
+        fd.setFileMode(fd.FileMode.Directory)
         f_dir = fd.getExistingDirectory(
             self,
             self.lang.getTranslation("StatusBar", "ChoseFolder"),
-            expanduser("~"),
-            fd.ShowDirsOnly
+            expanduser("~")
         )
         if f_dir == "":
             return
@@ -628,6 +627,6 @@ def main():
     if configfound and (not setting_up):
         w = Window(settings)
 
-    sys.exit(app.exec_())
+    sys.exit(app.exec())
 
 main()

@@ -24,10 +24,15 @@ class Settings():
             self.style = ""
 
         try:
-            self.language = config["LANGUAGE"]["language"]
+            self.uiLanguage = config["LANGUAGE"]["uiLanguage"]
             accepted_languages = ["english", "german"]
-            if not self.language in accepted_languages:
-                self.language = "english"
+            if not self.uiLanguage in accepted_languages:
+                self.uiLanguage = "english"
+        except:
+            self.uiLanguage = "english"
+
+        try:
+            self.language = config["LANGUAGE"]["language"]
         except:
             return False
 

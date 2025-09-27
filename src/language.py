@@ -12,6 +12,6 @@ class Language():
 
     def getTranslation(self, section: str, item: "str"):
         if self.data is None:
-            raise Exception("Language not laoded")
+            raise Exception("Language not loaded")
             return
         return self.data[section][item]

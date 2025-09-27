@@ -1,7 +1,7 @@
 from types import FunctionType
-from PyQt5.QtWidgets import QWidget, QHBoxLayout, QPushButton, QLineEdit
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QKeyEvent
+from PyQt6.QtWidgets import QWidget, QHBoxLayout, QPushButton, QLineEdit
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QKeyEvent
 
 
 class SearchBox(QWidget):
@@ -23,7 +23,7 @@ class SearchBox(QWidget):
         self.setLayout(self.h)
 
     def keyPressEvent(self, event: QKeyEvent) -> None:
-        if event.key() == Qt.Key_Return:
+        if event.key() == Qt.Key.Key_Return:
             self.search()
             return
         return super().keyPressEvent(event)

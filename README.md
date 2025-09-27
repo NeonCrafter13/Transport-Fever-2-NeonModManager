@@ -70,7 +70,7 @@ Navigate into the folder. Enter:
 
 Install all the dependencies. Enter:
 
-`pip install -r requirements.txt` * You might need run pip3 instead; You might need to install PyQt5 via a separate package. *
+`pip install -r requirements.txt` * You might need run pip3 instead; You might need to install PyQt6 via a separate package. *
 
 Navigate into src. Enter:
 `cd src`
@@ -106,7 +106,7 @@ Navigieren Sie in den Ordner. Geben Sie ein:
 
 Install all the dependencies. Geben Sie ein:
 
-`pip install -r requirements.txt` * Evntl. müssen sie stattdessen "pip3" ausführen; Evntl. müssen sie "PyQt5" über ein Paket extra installieren *
+`pip install -r requirements.txt` * Evntl. müssen sie stattdessen "pip3" ausführen; Evntl. müssen sie "PyQt6" über ein Paket extra installieren *
 
 Navigieren Sie in den Ordner "src". Geben Sie ein:
 `cd src`

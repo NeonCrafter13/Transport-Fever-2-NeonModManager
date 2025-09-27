@@ -1,9 +1,9 @@
 import os
 import sys
 from os.path import expanduser
-from PyQt5.QtCore import QCoreApplication, QObject, pyqtSignal
-from PyQt5.QtGui import QIcon, QIntValidator
-from PyQt5.QtWidgets import (
+from PyQt6.QtCore import QCoreApplication, QObject, pyqtSignal
+from PyQt6.QtGui import QIcon, QIntValidator
+from PyQt6.QtWidgets import (
     QCheckBox, QFileDialog, QHBoxLayout, QLabel, QLineEdit, QMainWindow, QPushButton, QVBoxLayout, QWidget, QComboBox
 )
 import configparser
@@ -65,11 +65,11 @@ class PathEntry(QWidget):
 
     def setPath(self, *arg):
         fd = QFileDialog()
+        fd.setFileMode(fd.FileMode.Directory)
         f_dir = fd.getExistingDirectory(
             self,
             self.opentitle,
-            expanduser("~"),
-            fd.ShowDirsOnly
+            expanduser("~")
         )
         if f_dir != "":
             self.text.setText(f_dir)
@@ -143,7 +143,8 @@ class First(Install_Window):
         config.set("GRAPHICS", "imagesize", "384")
 
         config.add_section("LANGUAGE")
-        config.set("LANGUAGE", "language", "english")
+        config.set("LANGUAGE", "language", "en")
+        config.set("LANGUAGE", "uiLanguage", "english")
 
         with open(f('settings.ini'), 'w') as configfile:
             config.write(configfile)
@@ -223,6 +224,8 @@ class Settings(Install_Window):
         self.modernstylebf = config["GRAPHICS"]["modernstyle"]
         self.imagesizebf = config["GRAPHICS"]["imagesize"]
         self.languagebf = config["LANGUAGE"]["language"]
+        self.UIlanguagebf = config["LANGUAGE"]["uiLanguage"]
+
 
         self.continue_btn.setToolTip("will close the app you will need to restart it")
         self.fill_content()
@@ -264,12 +267,16 @@ class Settings(Install_Window):
         self.stagingarea.text.setText(self.stagingareadir)
         self.content.addWidget(self.stagingarea)
 
-        language_combo = QComboBox()
-        language_combo.addItem("English", "english")
-        language_combo.addItem("Deutsch", "german")
-        self.language = FormEntry("language", language_combo)
-        self.language.data.setCurrentIndex(
-            self.language.data.findData(self.languagebf))
+        UIlanguage_combo = QComboBox()
+        UIlanguage_combo.addItem("English", "english")
+        UIlanguage_combo.addItem("Deutsch", "german")
+        self.UIlanguage = FormEntry("UI language", UIlanguage_combo)
+        self.UIlanguage.data.setCurrentIndex(
+            self.UIlanguage.data.findData(self.UIlanguagebf))
+        self.content.addWidget(self.UIlanguage)
+
+        self.language = FormEntry("Mod Name language", QLineEdit())
+        self.language.data.setText(self.languagebf)
         self.content.addWidget(self.language)
 
         self.modernstyle = FormEntry("modernstyle", QCheckBox())
@@ -301,7 +308,9 @@ class Settings(Install_Window):
         config.set("GRAPHICS", "modernstyle", str(self.modernstyle.data.isChecked()))
         config.set("GRAPHICS", "imagesize", self.imagesize.data.text())
 
-        config.set("LANGUAGE", "language", self.language.data.itemData(self.language.data.currentIndex()))
+        config.set("LANGUAGE", "language", self.language.data.text())
+        config.set("LANGUAGE", "uiLanguage", self.UIlanguage.data.itemData(self.UIlanguage.data.currentIndex()))
+
 
         with open(f('settings.ini'), 'w') as configfile:
             config.write(configfile)
