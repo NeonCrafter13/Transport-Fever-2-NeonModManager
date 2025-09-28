@@ -139,7 +139,7 @@ class First(Install_Window):
             config.set('DIRECTORY', '7-zipInstallation', "/usr/local/bin")
 
         config.add_section("GRAPHICS")
-        config.set("GRAPHICS", "modernstyle", "True")
+        config.set("GRAPHICS", "modernstyle", "False")
         config.set("GRAPHICS", "imagesize", "384")
 
         config.add_section("LANGUAGE")
