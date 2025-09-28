@@ -227,7 +227,7 @@ class Settings(Install_Window):
         try:
             self.UIlanguagebf = config["LANGUAGE"]["uiLanguage"]
         except KeyError:
-            self.UIlanguage = "english"
+            self.UIlanguagebf = "english"
 
 
         self.continue_btn.setToolTip("will close the app you will need to restart it")
