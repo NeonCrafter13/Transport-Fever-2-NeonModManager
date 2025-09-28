@@ -224,7 +224,10 @@ class Settings(Install_Window):
         self.modernstylebf = config["GRAPHICS"]["modernstyle"]
         self.imagesizebf = config["GRAPHICS"]["imagesize"]
         self.languagebf = config["LANGUAGE"]["language"]
-        self.UIlanguagebf = config["LANGUAGE"]["uiLanguage"]
+        try:
+            self.UIlanguagebf = config["LANGUAGE"]["uiLanguage"]
+        except KeyError:
+            self.UIlanguage = "english"
 
 
         self.continue_btn.setToolTip("will close the app you will need to restart it")
