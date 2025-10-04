@@ -7,7 +7,7 @@ URL: https://github.com/NeonCrafter13/Transport-Fever-2-NeonModManager
 Group: Amusements/Games
 Packager: NeonCrafter13
 Requires: python3
-Requires: PyQt6
+Requires: python-pyqt6
 Requires: python3-numpy
 Requires: python3-pyyaml
 Requires: p7zip-plugins
